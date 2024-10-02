@@ -4,8 +4,8 @@ import {Link , NavLink} from 'react-router-dom';
 export default function Header() {
     return (
         <header 
-            className="sticky top-0 shadow-neutral-500"
-            style={{boxShadow: '0px 30px 50px rgba(0 0 0/.4 )'}}
+            className="sticky top-0"
+            style={{boxShadow: '0px 10px 10px rgba(200 200 200 / 0.6)'}}
         >
             <nav className="flex h-[10vh] min-h-[80px] p-2 z-10 bg-white text-sm md:text-base">
                 <div className="flex h-full w-full items-center justify-between">
