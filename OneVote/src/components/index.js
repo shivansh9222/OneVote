@@ -3,5 +3,6 @@ import Footer from "./Footer/Footer";
 import Home from "./Home/Home";
 import About from "./About/About";
 import User from "./User/User"
+import Extra from "./Footer/extra";
 
-export {Header,Footer , Home,About , User};
+export {Header,Footer , Home,About , User,Extra};
