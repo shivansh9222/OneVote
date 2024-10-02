@@ -1,11 +1,21 @@
-import { useState } from 'react'
+import { createBrowserRouter, createRoutesFromElements, Route , RouterProvider } from 'react-router-dom'
+import {Home,About,User} from './components'
+import Layout from './Layout'
 
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Layout />} >
+      <Route path='' element={<Home/>} />
+      <Route path='about' element={<About/>}/>
+      <Route path='user/:userId' element={<User />} />
+    </Route>
+  )
+)
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <h1 className='bg-blue-400 text-black font-semibold p-2 text-xl text-center'>One Vote</h1>
+      <RouterProvider router={router} />
     </>
   )
 }
