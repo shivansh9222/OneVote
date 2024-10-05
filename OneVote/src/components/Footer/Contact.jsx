@@ -4,7 +4,7 @@ export default function Contact(){
     return(
         <div>
             <form action=""
-                className="flex flex-col items-center gap-y-0.5 text-base md:font-semibold mt-2 mb-2"
+                className="flex flex-col items-center gap-y-0.5 text-base md:font-semibold mt-2 mb-2 lg:text-xl"
             >
                 <h2>Contact Us</h2>
                 <div className="w-1/2 border-[1px] border-orange-600 mb-2"></div>
