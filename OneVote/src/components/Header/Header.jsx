@@ -7,7 +7,7 @@ export default function Header() {
             className="sticky top-0"
             style={{boxShadow: '0px 10px 10px rgba(200 200 200 / 0.6)'}}
         >
-            <nav className="flex h-[10vh] min-h-[80px] p-2 z-10 bg-white text-sm md:text-base">
+            <nav className="flex h-[10vh] min-h-[80px] p-2 z-20 bg-white text-sm md:text-base border-b-[4px] border-orange-500">
                 <div className="flex h-full w-full items-center justify-between">
                     <Link 
                         to='/' 
@@ -20,6 +20,8 @@ export default function Header() {
                             className="w-10 h-10 md:w-12 md:h-12"
                         />
                     </Link>
+
+                    <div><h1 className="hidden md:block ubuntu-bold-italic text-4xl text-orange-600 cursor-pointer items-center">One-Vote</h1></div>
 
                     <ul className="flex w-[60%] md:w-1/3 justify-evenly items-center ubuntu-light-italic md:ubuntu-medium-italic">
                         <li>
