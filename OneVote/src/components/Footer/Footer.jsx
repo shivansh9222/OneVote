@@ -12,10 +12,10 @@ function Footer(){
                 style={{boxShadow: '0px -10px 10px rgba(200 200 200 / 0.6)'}}
             >
                 {/* Info Section starts here */}
-                <section className='border-2 flex flex-col md:flex-row md:items-center md:justify-center'>
-                    <section className='md:flex-col md:w-full md:h-full md:justify-around md:items-center md:border-r-[2px] md:mb-2'>
+                <section>
+                    <section className='md:flex md:w-full md:justify-around md:items-center md:border-b-[2px] md:mb-2'>
                         {/* About us of company starts here */}
-                        <article className='flex flex-col items-center gap-y-0.5 mb-3 text-base md:font-semibold lg:text-xl md:w-1/2 md:max-w-[300px] md:mt-4 md:border-b-[2px]'>
+                        <article className='flex flex-col items-center gap-y-0.5 mb-3 text-base md:font-semibold lg:text-xl md:w-1/2 md:max-w-[300px] md:mt-4'>
                             <h2>About</h2>
                             <div className='w-1/2 border-[1px] border-orange-600 mb-2'></div>
                             <img 
@@ -63,7 +63,7 @@ function Footer(){
                         {/* Quick Links section ends here */}
                     </section>
 
-                    <section className='md:flex md:flex-col  md:w-full md:justify-around md:items-center'>
+                    <section className='md:flex md:w-full md:justify-around md:items-center'>
                         {/* Contact Us section starts here */}
                         <article className='md:w-1/2'>
                             <Contact />
