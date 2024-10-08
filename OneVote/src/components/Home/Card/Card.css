@@ -38,6 +38,11 @@
     width: 100%;
     backface-visibility: hidden;
     transform: rotateY(180deg);
+    overflow-y: scroll;
     /* border-radius: 10px; */
+}
+
+.theBack::-webkit-scrollbar{
+    display: none;
 }
 
