@@ -4,10 +4,10 @@ import {Link , NavLink} from 'react-router-dom';
 export default function Header() {
     return (
         <header 
-            className="sticky top-0"
+            className="sticky top-0 z-20"
             style={{boxShadow: '0px 10px 10px rgba(200 200 200 / 0.6)'}}
         >
-            <nav className="flex h-[10vh] min-h-[80px] p-2 z-20 bg-white text-sm md:text-base border-b-[4px] border-orange-500">
+            <nav className="flex h-[10vh] min-h-[80px] p-2  bg-white text-sm md:text-base border-b-[4px] border-orange-500">
                 <div className="flex h-full w-full items-center justify-between">
                     <Link 
                         to='/' 
