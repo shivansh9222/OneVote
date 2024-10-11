@@ -6,7 +6,7 @@ function Login(){
     return(
         <>
             <form action="" 
-                className="flex flex-col box-border p-3 gap-y-2 text-base md:text-xl text-orange-500 rounded-lg w-max h-[50vh] items-center justify-center mx-auto l overflow-auto bg-gray-50 shadow-lg shadow-gray-400 my-2 md:shadow-none md:w-full md:bg-white md:my-0 "
+                className="flex flex-col box-border p-3 gap-y-2 text-base md:text-xl text-orange-500 rounded-lg w-max h-max items-center justify-center mx-auto bg-gray-50 shadow-lg shadow-gray-400 my-2 md:shadow-none md:w-full md:bg-white md:my-0 "
             >
                 <h1 className="text-2xl md:hidden">Login</h1>
                 <div className="border-[1px] border-orange-400 w-1/2  mb-4 md:hidden"></div>

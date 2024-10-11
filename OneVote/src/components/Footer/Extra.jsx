@@ -5,6 +5,7 @@ function Extra(){
     <>
         <main className="w-full h-full">
             <section 
+                id="extra"
                 className="faq-container flex-col items-center my-[10%] md:my-[100px] mx-auto w-[80vw] max-w-[500px] p-4 bg-orange-500 rounded-lg text-sm md:text-base overflow-auto"
             >
                 <h1 

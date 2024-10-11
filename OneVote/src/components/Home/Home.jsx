@@ -12,7 +12,7 @@ function Home() {
     }
     return(
         <main 
-            className='w-full grid grid-cols-1 gap-5 justify-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+            className='w-full h-max grid grid-cols-1 gap-5 justify-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
         >
             {
                 Parties.map((party,index)=>{

@@ -16,7 +16,7 @@ function Registeration(){
     return (
         <>
             <Header />
-            <main className="w-[100vw] h-[100vh] ">
+            <main className="hidden md:block w-[100vw] h-[100vh] ">
                 <section 
                     className=" max-w-[60vw] h-max mx-auto my-[10vh] shadow-2xl shadow-gray-500 flex flex-col rounded-[40px] p-3"
                 >
@@ -46,12 +46,12 @@ function Registeration(){
                                 
                             >
                                 <div 
-                                    className={`h-full w-full flex items-center justify-center text-white text-2xl ubuntu-bold-italic`}
+                                    className={`h-full w-full flex items-center justify-center text-white md:text-lg lg:text-2xl ubuntu-bold-italic`}
                                 >
-                                    <span className={`${isLoginClicked ? 'block' : 'hidden'} transition-all ease-in-out duration-300`}>
+                                    <span className={`${isLoginClicked ? 'block' : 'hidden'} text-center transition-all ease-in-out duration-300`}>
                                         Hey User! <br />Welcome,<br /> Please Login to Continue
                                     </span>
-                                    <span className={`${!isLoginClicked ? 'block' : 'hidden'} transition-all ease-in-out duration-300`}>
+                                    <span className={`${!isLoginClicked ? 'block' : 'hidden'} text-center transition-all ease-in-out duration-300`}>
                                         Welcome Sir/Madam , <br /> Don't have an account? <br /> Sign-Up to continue.
                                     </span>
                                 </div>

@@ -5,15 +5,16 @@ function Card({name , logo, description, manifestoLink , onVote}){
     return (
         <main 
             className="cardContainer flex mb-4"
-            
         >
             <div className="card">
                 <div className="theFront p-2">
-                    <div className="w-full h-full flex items-center justify-center p-2 box-border border-[3px] border-orange-500 rounded-lg ">
+                    <div 
+                        className="w-full h-full flex items-center justify-center p-2 box-border rounded-lg object-contain"
+                    >
                         <img 
                             src={logo} 
                             alt="logo" 
-                            className="h-full w-full"
+                            className="h-[90%] w-[90%]"
                         />
                     </div>
                 </div>

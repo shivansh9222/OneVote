@@ -4,10 +4,10 @@ import {Link , NavLink} from 'react-router-dom';
 export default function Header() {
     return (
         <header 
-            className="sticky top-0 z-20"
+            className="sticky top-0 z-20 w-[100vw]"
             style={{boxShadow: '0px 10px 10px rgba(200 200 200 / 0.6)'}}
         >
-            <nav className="flex h-[10vh] min-h-[80px] p-2  bg-white text-sm md:text-base border-b-[4px] border-orange-500">
+            <nav className="flex h-[10vh] min-h-[80px] w-full p-2  bg-white text-sm md:text-base border-b-[4px] border-orange-500">
                 <div className="flex h-full w-full items-center justify-between">
                     <Link 
                         to='/' 
@@ -26,7 +26,7 @@ export default function Header() {
                         <li>
                             <NavLink 
                                 to='/'
-                                className={({isActive}) =>`${isActive? 'bg-orange-600 text-white' : 'bg-none text-orange-600'} p-2 rounded-2xl hover:-translate-y-2 hover:bg-orange-200 transition duration-300 ease-in-out` }
+                                className={({isActive}) =>`${isActive? 'bg-orange-600 text-white' : 'bg-none text-orange-600'} p-2 rounded-2xl hover:-translate-y-2 ${!isActive ? 'hover:bg-orange-200' : ''} transition duration-300 ease-in-out` }
                             
                             >
                                 Home
@@ -36,17 +36,24 @@ export default function Header() {
                         <li>
                             <NavLink 
                                 to='/about'
-                                className={({isActive}) =>`${isActive? 'bg-orange-600 text-white' : 'bg-none text-orange-600'} p-2 rounded-2xl  hover:bg-orange-200 transition duration-100 ease-in-out`}
+                                className={({isActive}) =>`${isActive? 'bg-orange-600 text-white' : 'bg-none text-orange-600'} p-2 rounded-2xl  ${!isActive ? 'hover:bg-orange-200' : ''} transition duration-100 ease-in-out`}
                             >
                                 About
                             </NavLink>
                         </li>
+
                         <li>
                             <NavLink 
-                                to='/user'
-                                className={({isActive}) =>`${isActive? 'bg-orange-600 text-white' : 'bg-none text-orange-600'} p-2 rounded-2xl  hover:bg-orange-200 transition duration-100 ease-in-out`}
+                                to='/login'
+                                className={({isActive}) =>`md:hidden ${isActive? 'bg-orange-600 text-white' : 'bg-none text-orange-600'} p-2 rounded-2xl ${!isActive ? 'hover:bg-orange-200' : ''} transition duration-100 ease-in-out`}
                             >
                                 User
+                            </NavLink>
+                            <NavLink 
+                                to='/registeration'
+                                className={({isActive}) =>`hidden md:block ${isActive? 'bg-orange-500 text-white' : 'bg-none text-orange-600'} p-2 rounded-2xl ${!isActive ? 'hover:bg-orange-200' : ''} transition duration-100 ease-in-out`}
+                            >
+                                UserMD
                             </NavLink>
                         </li>
                     </ul>

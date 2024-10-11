@@ -14,7 +14,7 @@ export default function PasswordInput(){
                     type={showPassword ? 'text' : 'password'}
                     name="pass" 
                     id=""
-                    className="w-full p-1 text-start focus-within:text-white rounded-lg md:rounded-full outline-none border-none bg-gray-100 focus-within:bg-orange-400 ubuntu-light-italic md:p-2  md:text-center"
+                    className="w-full p-1 text-start focus-within:text-white rounded-lg md:rounded-full outline-none border-none bg-gray-200 md:bg-gray-100 focus-within:bg-orange-400 ubuntu-light-italic md:p-2  md:text-center"
                 /> 
                 <div 
                     className="text-black absolute right-1 md:p-2"
