@@ -12,7 +12,6 @@ export default function Header() {
                     <Link 
                         to='/' 
                         className="flex w-1/3 p-2 md:p-3"
-                        
                     >
                         <img 
                             src="https://cdn-icons-png.flaticon.com/512/7444/7444400.png" 
@@ -40,6 +39,14 @@ export default function Header() {
                                 className={({isActive}) =>`${isActive? 'bg-orange-600 text-white' : 'bg-none text-orange-600'} p-2 rounded-2xl  hover:bg-orange-200 transition duration-100 ease-in-out`}
                             >
                                 About
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink 
+                                to='/user'
+                                className={({isActive}) =>`${isActive? 'bg-orange-600 text-white' : 'bg-none text-orange-600'} p-2 rounded-2xl  hover:bg-orange-200 transition duration-100 ease-in-out`}
+                            >
+                                User
                             </NavLink>
                         </li>
                     </ul>
