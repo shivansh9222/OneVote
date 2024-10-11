@@ -36,7 +36,7 @@ function SignUp(){
                         min={100000000000}
                         max={999999999999}
                         placeholder='enter 12 digit aadhar id'
-                        className='w-full rounded-lg md:rounded-full p-2 text-sm focus-within:bg-orange-400 focus-within:text-white focus-within:ubuntu-medium-italic outline-none md:text-base md:text-center bg-gray-200 md:bg-gray-100 focus-within:placeholder:text-gray-800' 
+                        className='w-full rounded-lg md:rounded-full p-2 text-sm focus-within:bg-orange-400 focus-within:text-white focus-within:ubuntu-medium-italic outline-none md:text-base md:text-center bg-gray-200 md:bg-gray-100 focus-within:placeholder:text-gray-800 appearance-none' 
                     />
                 </label>
 
