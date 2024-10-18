@@ -1,9 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function Contact(){
+    const [username , setUserName] = useState('');
+    const [email , setEmail] = useState('');
+    const [query, setQuery] = useState('');
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const response = await fetch('http://localhost:8000/api/contactUs/',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({username, email,query})
+        })
+
+        if(response.status === 'success'){
+            alert(response.message);
+            setUserName('');
+            setEmail('');
+            setQuery('');
+        } else{
+            alert(response.message);
+        }
+        
+    }
+
     return(
         <div>
-            <form action=""
+            <form 
+                onSubmit={handleSubmit}
+                
                 className="flex flex-col items-center gap-y-0.5 text-base md:font-semibold mt-2 mb-2 lg:text-xl"
             >
                 <h2>Contact Us</h2>
@@ -13,17 +40,29 @@ export default function Contact(){
                     <input 
                         type="text" 
                         name="userName" 
+                        value={username}
+                        onChange={(e) => {
+                            setUserName(e.target.value);
+                        }}
                         className="outline-none border-none rounded-lg p-1 md:p-2 pl-2 text-black text-sm ubuntu-light-italic md:ubuntu-medium-italic w-[100%]" 
                     />
                     <label htmlFor="Email">Email: </label>
                     <input 
                         type="email" 
                         name="userEmail"
+                        value={email}
+                        onChange={(e) => {
+                            setEmail(e.target.value);
+                        }}
                         className="outline-none border-none rounded-lg p-1 md:p-2 pl-2 text-black text-sm ubuntu-light-italic md:ubuntu-medium-italic w-[100%]" 
                     />
                     <label htmlFor="query">Write Your Queries: </label>
                     <textarea 
                         name="query" 
+                        value={query}
+                        onChange={(e) => {
+                            setQuery(e.target.value);
+                        }}
                         className="outline-none border-none rounded-lg p-2 md:p-3 py-2 text-black text-sm ubuntu-light-italic md:ubuntu-medium-italic w-[100%]"
                     />
                     <button 
