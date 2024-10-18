@@ -7,12 +7,17 @@ export default function Contact(){
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         const response = await fetch('http://localhost:8000/api/contactUs/',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
+<<<<<<< HEAD
+            body: JSON.stringify({name, email, queries})
+=======
             body: JSON.stringify({name, email,queries})
+>>>>>>> c5de8e79f3b6a0f1d2fb3dce8e007bf3ae14ad97
         })
         setUserName('');
             setEmail('');
