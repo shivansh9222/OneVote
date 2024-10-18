@@ -9,21 +9,7 @@ from .serializers import PartySerializer, ContactSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-
-# Create your views here.
-
-# def contact(request):
-#     if request.method == "POST":
-#         userName = request.POST.get('name','')
-#         usereEmail = request.POST.get('email','')
-#         userQuery = request.POST.get('query','')
-
-#         contact = Contact(name=userName, email=usereEmail, queries=userQuery)
-#         contact.save()
-
-#         return JsonResponse({'message':'success'})
-
-
+from rest_framework import generics
 
 
 # ViewSet for Party
