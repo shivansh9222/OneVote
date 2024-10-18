@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 
 export default function Contact(){
-    const [username , setUserName] = useState('');
+    const [name , setUserName] = useState('');
     const [email , setEmail] = useState('');
-    const [query, setQuery] = useState('');
+    const [queries, setQuery] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         const response = await fetch('http://localhost:8000/api/contactUs/',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({username, email,query})
+            body: JSON.stringify({name, email, queries})
         })
 
         if(response.status === 'success'){
@@ -40,7 +41,7 @@ export default function Contact(){
                     <input 
                         type="text" 
                         name="userName" 
-                        value={username}
+                        value={name}
                         onChange={(e) => {
                             setUserName(e.target.value);
                         }}
