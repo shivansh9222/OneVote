@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
 export default function Contact(){
-    const [username , setUserName] = useState('');
+    const [name , setUserName] = useState('');
     const [email , setEmail] = useState('');
-    const [query, setQuery] = useState('');
+    const [queries, setQuery] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -12,16 +12,17 @@ export default function Contact(){
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({username, email,query})
+            body: JSON.stringify({name, email,queries})
         })
-
-        if(response.status === 'success'){
-            alert(response.message);
-            setUserName('');
+        setUserName('');
             setEmail('');
             setQuery('');
+        if(response.status === 'success'){
+            const jsonResponse = await response.json();
+            alert(jsonResponse.message);
         } else{
-            alert(response.message);
+            const errorResponse = await response.json();
+            alert(errorResponse.message);
         }
         
     }
@@ -40,7 +41,7 @@ export default function Contact(){
                     <input 
                         type="text" 
                         name="userName" 
-                        value={username}
+                        value={name}
                         onChange={(e) => {
                             setUserName(e.target.value);
                         }}
@@ -59,7 +60,7 @@ export default function Contact(){
                     <label htmlFor="query">Write Your Queries: </label>
                     <textarea 
                         name="query" 
-                        value={query}
+                        value={queries}
                         onChange={(e) => {
                             setQuery(e.target.value);
                         }}
