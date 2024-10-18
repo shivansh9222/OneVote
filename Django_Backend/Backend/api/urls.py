@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import PartyViewSet, ContactViewSet
+from .views import PartyViewSet, ContactViewSet, contact_us
 
 # Create a router and register the viewsets
 router = DefaultRouter()
@@ -10,4 +10,5 @@ router.register(r'contact', ContactViewSet) # This will create /contact/ API
 # Include the router URLs in your urlpatterns
 urlpatterns = [
     path('api/', include(router.urls)),  # This will map URLs under /api/
+    path('api/contactUs/',contact_us,name='contactUs'),
 ]
