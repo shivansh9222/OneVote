@@ -12,3 +12,4 @@ class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
         fields = '__all__'  # Or list specific fields ['id', 'name', 'email', 'message']
+        

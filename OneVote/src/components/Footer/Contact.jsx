@@ -13,16 +13,21 @@ export default function Contact(){
             headers: {
                 'Content-Type': 'application/json',
             },
+<<<<<<< HEAD
             body: JSON.stringify({name, email, queries})
+=======
+            body: JSON.stringify({name, email,queries})
+>>>>>>> c5de8e79f3b6a0f1d2fb3dce8e007bf3ae14ad97
         })
-
-        if(response.status === 'success'){
-            alert(response.message);
-            setUserName('');
+        setUserName('');
             setEmail('');
             setQuery('');
+        if(response.status === 'success'){
+            const jsonResponse = await response.json();
+            alert(jsonResponse.message);
         } else{
-            alert(response.message);
+            const errorResponse = await response.json();
+            alert(errorResponse.message);
         }
         
     }
@@ -60,7 +65,7 @@ export default function Contact(){
                     <label htmlFor="query">Write Your Queries: </label>
                     <textarea 
                         name="query" 
-                        value={query}
+                        value={queries}
                         onChange={(e) => {
                             setQuery(e.target.value);
                         }}
