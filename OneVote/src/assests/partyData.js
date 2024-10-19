@@ -1,3 +1,9 @@
+// let Parties;
+fetch('http://127.0.0.1:8000/api/party')
+.then( response => response.json())
+.then(data => {
+    Parties = data;
+})
 const Parties = [
     {
         id:1,
