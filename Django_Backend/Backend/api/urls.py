@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import PartyViewSet, ContactViewSet, contact_us
+from .views import PartyViewSet, ContactViewSet, contact_us, SignupView
 
 # Create a router and register the viewsets
 router = DefaultRouter()
@@ -11,4 +11,5 @@ router.register(r'contact', ContactViewSet) # This will create /contact/ API
 urlpatterns = [
     path('api/', include(router.urls)),  # This will map URLs under /api/
     path('api/contactUs/',contact_us,name='contactUs'),
+    path('signup/', SignupView.as_view(), name='signup')
 ]
