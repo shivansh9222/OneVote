@@ -8,7 +8,7 @@ export default function Contact(){
     const handleSubmit = async (e) => {
 
         e.preventDefault();
-        const response = await fetch('http://localhost:8000/api/contactUs/',{
+        const response = await fetch('http://localhost:8000/api/contactus/',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
