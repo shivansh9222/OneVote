@@ -45,8 +45,9 @@ function SignUp(){
 
         if(!validatePassword(formData.password)){
             alert('password must be atleast 8 characters long');
+            return;
         }
-        
+
         console.log(formData);
         
         try {
