@@ -6,7 +6,7 @@ function Home() {
     const [partyData , setPartyData] = useState([]);
 
     const handleVote = (cardId) => {
-        fetch('http://localhost:8000/updatevote', {
+        fetch('http://localhost:8000/api/updatevote', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
