@@ -25,6 +25,7 @@ class Party(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
+    unique_id = models.CharField(max_length=12,unique=True,default="")
     is_voted = models.BooleanField(default=False)
     voted_at = models.DateTimeField(null=True, blank=True)
 

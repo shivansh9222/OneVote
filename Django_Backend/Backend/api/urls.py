@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import PartyViewSet, ContactViewSet, contact_us, SignupView, LoginView, LogoutView, update_vote
+from .views import PartyViewSet, ContactViewSet, contact_us, SignupView, LoginView, LogoutView, update_vote, home_view
 
 # Create a router and register the viewsets
 router = DefaultRouter()
@@ -14,5 +14,6 @@ urlpatterns = [
     path('api/signup/', SignupView.as_view(), name='signup'),
     path('api/login/', LoginView.as_view(), name='login'),
     path('api/logout/', LogoutView.as_view(), name='logout'),
-    path('api/updatevote/', update_vote, name='updateVote')
+    path('api/updatevote/', update_vote, name='updateVote'),
+    path('api/homeview', home_view, name='homeView')
 ]

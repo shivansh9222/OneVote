@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Party, Contact  # Import the models
+from .models import Party, Contact, Profile  # Import the models
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
@@ -17,34 +17,50 @@ class ContactSerializer(serializers.ModelSerializer):
         
 
 class SignupSerializer(serializers.ModelSerializer):
+    unique_id = serializers.CharField(max_length=12)
+
     class Meta:
         model = User
-        fields = ['username,email,password']
+        fields = ['username', 'email', 'password', 'unique_id']
+        extra_kwargs = {'password': {'write_only': True}}  # Make password write-only
 
-        def create(self, validated_data):
-            user = User.objects.create_user(
-                username=validated_data['username'],
-                email=validated_data['email'],
-                password=validated_data['password']
-            )
-            return user
+    def create(self, validated_data):
+        unique_id = validated_data.pop('unique_id')
+
+        # Create user
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            password=validated_data['password']
+        )
+
+        # Create associated profile with unique_id
+        Profile.objects.create(user=user, unique_id=unique_id)
+        return user   
         
 
 class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField(required=True)
+    unique_id = serializers.CharField(max_length=12, required=True)
     password = serializers.CharField(required=True, write_only=True)
 
     def validate(self, data):
-        username = data.get("username", "")
-        password = data.get("password", "")
+        unique_id = data.get("unique_id")
+        password = data.get("password")
 
-        if username and password:
-            user = authenticate(username=username, password=password)
+        if unique_id and password:
+            try:
+                profile = Profile.objects.get(unique_id=unique_id)
+            except Profile.DoesNotExist:
+                raise serializers.ValidationError("Invalid login credentials.")
+
+            user = authenticate(username=profile.user.username, password=password)
             if user:
                 if not user.is_active:
                     raise serializers.ValidationError("User is deactivated.")
-                return user
+                # Return the user in the validated data
+                return {"user": user}  # Change here to return a dictionary
             else:
                 raise serializers.ValidationError("Invalid login credentials.")
         else:
-            raise serializers.ValidationError("Must include both username and password.")
+            raise serializers.ValidationError("Must include both unique ID and password.")
+

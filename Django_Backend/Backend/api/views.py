@@ -50,10 +50,11 @@ class LoginView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.validated_data
+            user = serializer.validated_data["user"]  # Get the user from validated data
             login(request, user)
             return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class LogoutView(APIView):
     def post(self, request, *args, **kwargs):
@@ -85,3 +86,17 @@ def update_vote(request):
             return JsonResponse({'error': 'User not authenticated'}, status=403)
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+
+def home_view(request):
+    if request.user.is_authenticated:
+        data = {
+            "is_authenticated":True,
+            "username":request.user.username
+        }
+    else:
+        data = {
+            "is_authenticated": False,
+            "message": "Please log in to view the content.",
+        }
+    return JsonResponse(data)
