@@ -1,7 +1,10 @@
 from rest_framework import serializers
 from .models import Party, Contact  # Import the models
 from django.contrib.auth.models import User
+<<<<<<< HEAD
 from django.contrib.auth import authenticate
+=======
+>>>>>>> f5be5228eb21aa7a30007ae216c7920964df68e3
 
 # Serializer for Party model
 class PartySerializer(serializers.ModelSerializer):
@@ -14,9 +17,14 @@ class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
         fields = '__all__'  # Or list specific fields ['id', 'name', 'email', 'message']
+<<<<<<< HEAD
         
 
 class SignupSerializer(serializers.ModelSerializer):
+=======
+
+class SignupSerializer(serializers.ModelsSerializer):
+>>>>>>> f5be5228eb21aa7a30007ae216c7920964df68e3
     class Meta:
         model = User
         fields = ['username,email,password']
@@ -28,6 +36,7 @@ class SignupSerializer(serializers.ModelSerializer):
                 password=validated_data['password']
             )
             return user
+<<<<<<< HEAD
         
 
 class LoginSerializer(serializers.Serializer):
@@ -48,3 +57,6 @@ class LoginSerializer(serializers.Serializer):
                 raise serializers.ValidationError("Invalid login credentials.")
         else:
             raise serializers.ValidationError("Must include both username and password.")
+=======
+        
+>>>>>>> f5be5228eb21aa7a30007ae216c7920964df68e3
