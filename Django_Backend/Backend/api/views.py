@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from rest_framework import viewsets
 from .models import Party, Contact
-<<<<<<< HEAD
 from .serializers import PartySerializer, ContactSerializer, SignupSerializer, LoginSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -29,14 +28,6 @@ from django.utils import timezone
 #         return JsonResponse({'message':'success'})
 
 
-=======
-from .serializers import PartySerializer, ContactSerializer, SignupSerializer
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework import generics
-from rest_framework.views import APIView
->>>>>>> f5be5228eb21aa7a30007ae216c7920964df68e3
 
 
 # ViewSet for Party
@@ -63,19 +54,10 @@ class SignupView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = SignupSerializer(data=request.data)
 
-<<<<<<< HEAD
-=======
-
-class SignupView(APIView):
-    def post(self, request, *args, **kwargs):
-        serializer = SignupSerializer(data=request.data)
-
->>>>>>> f5be5228eb21aa7a30007ae216c7920964df68e3
         if serializer.is_valid():
             serializer.save()
             return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-<<<<<<< HEAD
     
 
 class LoginView(APIView):
@@ -116,7 +98,3 @@ def update_vote(request):
             return JsonResponse({'error': 'User not authenticated'}, status=403)
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=400)
-=======
-
-
->>>>>>> f5be5228eb21aa7a30007ae216c7920964df68e3
