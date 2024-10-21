@@ -11,8 +11,8 @@ router.register(r'contact', ContactViewSet) # This will create /contact/ API
 urlpatterns = [
     path('api/', include(router.urls)),  # This will map URLs under /api/
     path('api/contactus/',contact_us,name='contactUs'),
-    path('signup/', SignupView.as_view(), name='signup'),
-    path('login/', LoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
-    path('updatevote/', update_vote, name='updateVote')
+    path('api/signup/', SignupView.as_view(), name='signup'),
+    path('api/login/', LoginView.as_view(), name='login'),
+    path('api/logout/', LogoutView.as_view(), name='logout'),
+    path('api/updatevote/', update_vote, name='updateVote')
 ]
