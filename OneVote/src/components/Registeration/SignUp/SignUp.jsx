@@ -13,20 +13,40 @@ function SignUp(){
         confirmPassword: ''
     });
 
+    //cannot understand it need to update.
     const isUniqueIdValid = (uniqueId) => {
         return /^\d+$/.test(uniqueId); // Returns true if uniqueId contains only digits
     };
+
+    const validatePassword = (password) => {
+        return password.length >= 8;
+    }
     
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        //check if unique is atleast 12 digits
         if(formData.uniqueId.length < 12){
             return (alert('unique id must be of atleast 12 digits.'))
         }
+
+        //check if the uniqueId only contsists of numbers.
         if( !isUniqueIdValid(formData.uniqueId)){
             alert('unique id must contain only numbers')
             return;
         }
+
+        //check if password and confirm password field matches.
+        if(formData.password != formData.confirmPassword){
+            alert('password fields do not match');
+            return;
+        }
+
+        if(!validatePassword(formData.password)){
+            alert('password must be atleast 8 characters long');
+        }
+        
         console.log(formData);
         
         try {
@@ -35,7 +55,14 @@ function SignUp(){
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(
+                    {
+                        username: formData.name, 
+                        email: formData.email,
+                        password: formData.password ,
+                        unique_id: formData.uniqueId
+                    }
+                )
             })
 
             const data = await response.json();
