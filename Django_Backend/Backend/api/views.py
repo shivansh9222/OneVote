@@ -14,22 +14,6 @@ from rest_framework.permissions import AllowAny
 import json
 from django.utils import timezone
 
-# Create your views here.
-
-# def contact(request):
-#     if request.method == "POST":
-#         userName = request.POST.get('name','')
-#         usereEmail = request.POST.get('email','')
-#         userQuery = request.POST.get('query','')
-
-#         contact = Contact(name=userName, email=usereEmail, queries=userQuery)
-#         contact.save()
-
-#         return JsonResponse({'message':'success'})
-
-
-
-
 # ViewSet for Party
 class PartyViewSet(viewsets.ModelViewSet):
     queryset = Party.objects.all()
@@ -88,12 +72,15 @@ def update_vote(request):
             party.totalVote += 1
             party.save()
 
-            user_vote = Profile.objects.get(user=request.user)
-            user_vote.is_voted = True
-            user_vote.voted_at = timezone.now()
-            user_vote.save()
+            user_vote, created = Profile.objects.get_or_create(user=request.user)
 
-            return JsonResponse({'success': True, 'totalVote': party.totalVote})
+            if not user_vote.is_voted:  # Only update if the user hasn't voted yet
+                user_vote.is_voted = True
+                user_vote.voted_at = timezone.now()
+                user_vote.save()
+                return JsonResponse({'success': True, 'totalVote': party.totalVote})
+            else:
+                return JsonResponse({'error': 'User has already voted'}, status=400)
         else:
             return JsonResponse({'error': 'User not authenticated'}, status=403)
     else:
