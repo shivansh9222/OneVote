@@ -51,20 +51,26 @@ function SignUp(){
         console.log(formData);
         
         try {
-            const response = await fetch('http://localhost:8000/api/signup/',{
+            const response = await fetch('http://localhost:8000/api/signup',{
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(
-                    {
-                        username: formData.name, 
-                        email: formData.email,
-                        password: formData.password ,
-                        unique_id: formData.uniqueId
-                    }
-                )
+                body: JSON.stringify({
+                    username: formData.name, 
+                    email: formData.email,
+                    password: formData.password,
+                    unique_id: formData.uniqueId
+                })
             })
+
+            console.log(response.status);
+            console.log(response);
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Something went wrong');
+            }
 
             const data = await response.json();
             alert(data.message);

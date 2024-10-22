@@ -42,7 +42,7 @@ function Login(){
                         onChange={ (e) =>  {
                             setUniqueId(e.target.value);
                         }}
-                        className="w-full p-1 text-start text-white rounded-lg md:rounded-full outline-none border-none bg-gray-100 focus-within:bg-orange-400 ubuntu-light-italic md:p-2 md:text-center"
+                        className="w-full p-1 text-start text-gray-500 rounded-lg md:rounded-full outline-none border-none bg-gray-100 focus-within:bg-orange-400 focus-within:text-white ubuntu-light-italic md:p-2 md:text-center"
                     />
                 </div>
                 
