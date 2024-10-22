@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 function Home() {
     const [partyData , setPartyData] = useState([]);
+    const [isUserLogged , setIsUserLogged] = useState('');
 
     const handleVote = (cardId) => {
         fetch('http://localhost:8000/api/updatevote', {
@@ -55,30 +56,41 @@ function Home() {
         .then( response => response.json())
         .then( data => setPartyData(data));
     } , [])
+
+    useEffect( () => {
+        fetch('http://localhost:8000/api/homeview')
+        .then(response => response.json())
+        .then(data => setIsUserLogged(data.is_authenticated))
+    } , [])
     
-    return(
-        <main 
-            className='w-full h-max grid grid-cols-1 gap-5 justify-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
-        >
-            {
-                partyData.map((party,index)=>{
-                    return(
-                        <div key={index}>
-                            <Card 
-                                name={party.name}
-                                logo={party.logo}
-                                description={party.description}
-                                manifestoLink={party.manifestoLink}
-                                onVote={() => {
-                                    handleVote(party.party_id);
-                                }}
-                            />
-                        </div>
-                    )
-                })
-            }
-        </main>
-    );
+    
+    if(isUserLogged){
+        return(
+            <main 
+                className='w-full h-max grid grid-cols-1 gap-5 justify-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+            >
+                {
+                    partyData.map((party,index)=>{
+                        return(
+                            <div key={index}>
+                                <Card 
+                                    name={party.name}
+                                    logo={party.logo}
+                                    description={party.description}
+                                    manifestoLink={party.manifestoLink}
+                                    onVote={() => {
+                                        handleVote(party.party_id);
+                                    }}
+                                />
+                            </div>
+                        )
+                    })
+                }
+            </main>
+        );
+    }
+    return <div className='w-full h-[40vh] text-2xl text-orange-500 bg-white text-center'>Please Login to Work.</div>
+    
 }
 
 export default Home;
