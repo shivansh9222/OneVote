@@ -14,7 +14,7 @@ function Login(){
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({uniqueId , password})
+            body: JSON.stringify({unique_id:uniqueId , password}) //{unique_id: uniqueId , password}
         })
         .then(response => response.json())
         .then(data => {
