@@ -29,8 +29,9 @@ class SignupSerializer(serializers.ModelSerializer):
 
         # Create user
         user = User.objects.create_user(
-            username=validated_data['username'],
+            username=unique_id,
             email=validated_data['email'],
+            first_name=validated_data('username'),
             password=validated_data['password']
         )
 
@@ -48,12 +49,7 @@ class LoginSerializer(serializers.Serializer):
         password = data.get("password")
 
         if unique_id and password:
-            try:
-                profile = Profile.objects.get(unique_id=unique_id)
-            except Profile.DoesNotExist:
-                raise serializers.ValidationError("Invalid login credentials.")
-
-            user = authenticate(username=profile.user.username, password=password)
+            user = authenticate(username=unique_id, password=password)
             if user:
                 if not user.is_active:
                     raise serializers.ValidationError("User is deactivated.")

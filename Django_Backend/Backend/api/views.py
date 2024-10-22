@@ -40,8 +40,8 @@ class SignupView(APIView):
 
         if serializer.is_valid():
             serializer.save()
-            return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "User created successfully","status": "success"})
+        return Response({"message": "User already exists","status": "error"}, serializer.errors)
     
 
 class LoginView(APIView):
@@ -53,7 +53,7 @@ class LoginView(APIView):
             user = serializer.validated_data["user"]  # Get the user from validated data
             login(request, user)
             return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "Invalid credentials! Please try again"}, serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LogoutView(APIView):
