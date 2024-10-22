@@ -15,5 +15,5 @@ urlpatterns = [
     path('api/login/', LoginView.as_view(), name='login'),
     path('api/logout/', LogoutView.as_view(), name='logout'),
     path('api/updatevote/', update_vote, name='updateVote'),
-    path('api/homeview', home_view, name='homeView')
+    path('api/homeview/', home_view, name='homeView')
 ]

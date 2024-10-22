@@ -14,7 +14,11 @@ function Login(){
             headers: {
                 'Content-Type': 'application/json',
             },
+<<<<<<< HEAD
             body: JSON.stringify({unique_id:uniqueId , password}) //{unique_id: uniqueId , password}
+=======
+            body: JSON.stringify({unique_id: uniqueId , password})
+>>>>>>> f516845432c9d38fbec8c4f1b1c99d4a2de45e0d
         })
         .then(response => response.json())
         .then(data => {

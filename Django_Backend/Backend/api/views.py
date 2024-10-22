@@ -33,15 +33,23 @@ def contact_us(request):
             serializer.save()
             return Response({'status': 'success', 'message': 'Message sent successfully!'}, status=status.HTTP_201_CREATED)
         return Response({'status': 'error', 'message': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
+import logging
+
+logger = logging.getLogger(__name__)
+
 class SignupView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = SignupSerializer(data=request.data)
-
         if serializer.is_valid():
             serializer.save()
-            return Response({"message": "User created successfully","status": "success"})
-        return Response({"message": "User already exists","status": "error"}, serializer.errors)
+            return Response({"message": "User created successfully", "status": "success"}, status=201)
+        else:
+            logger.error(f"Signup error: {serializer.errors}")
+            return Response({"message": "User already exists", "status": "error", "errors": serializer.errors}, status=400)
+
+
     
 
 class LoginView(APIView):
@@ -53,7 +61,7 @@ class LoginView(APIView):
             user = serializer.validated_data["user"]  # Get the user from validated data
             login(request, user)
             return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
-        return Response({"message": "Invalid credentials! Please try again"}, serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "Invalid credentials! Please try again", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LogoutView(APIView):
