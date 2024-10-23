@@ -1,14 +1,6 @@
-import { createContext, useContext } from "react";
+import {createContext } from "react";
+// import { User } from "../components";
 
-export const UserContext = createContext(
-    {
-        isAuthenticated: 'false',
-        setIsAuthenticated: () => {}
-    }
-)
+const UserContext = createContext()
 
-export const UserContextProvider = UserContext.Provider;
-
-export function useUser(){
-    return useContext(UserContext);
-}
+export default UserContext;
