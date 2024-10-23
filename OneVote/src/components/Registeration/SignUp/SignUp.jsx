@@ -1,7 +1,8 @@
 import React from 'react';
 import { useState } from 'react';
 import PasswordInput from '../PasswordInput/PasswordInput';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useToggle } from '../../../context/ComponentToggleContext';
 
 function SignUp(){
     
@@ -48,7 +49,7 @@ function SignUp(){
             return;
         }
 
-        console.log(formData);
+        // console.log(formData);
         
         try {
             const response = await fetch('http://localhost:8000/api/signup/',{
@@ -64,16 +65,24 @@ function SignUp(){
                 })
             })
 
-            console.log(response.status);
-            console.log(response);
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Something went wrong');
-            }
-
+            // console.log(response.status);
+            // console.log(response);
             const data = await response.json();
             alert(data.message);
+
+            if(data.status === 'success'){
+                window.location.href = '/registeration';
+            }
+            // if (!response.ok) {
+            //     const errorData = await response.json();
+            //     throw new Error(errorData.message || 'Something went wrong');
+            // }
+            //  else{
+            //     alert('Please Login with your credentials')
+                
+            // }
+
+            
 
             //setfields to initial.
             setformData({
@@ -83,6 +92,7 @@ function SignUp(){
                 password: '',
                 confirmPassword: ''
             })
+            // useNavigate('/registeration');
         } catch (error) {
             console.log('Error during signup: ',error)
             alert('Sign-Up failed , User already exists.')
@@ -90,12 +100,24 @@ function SignUp(){
         
     }
 
+    //Togglecomponent
+    // const {component , toggleToLogin , toggleToSignup} = useToggle();
+
+    // const handleClick = () => {
+    //     toggleToLogin();
+    // }
+    const navigate = useNavigate();
+
+    const toggleToLogin = () => {
+        navigate('/registeration')
+    }
+
     return(
         <>
             <form 
                 action=""
                 onSubmit={handleSubmit}
-                className='flex flex-col box-border my-3 mx-auto  md:my-0 w-max md:w-full p-4 text-orange-500 shadow-lg shadow-gray-400 bg-gray-100 md:bg-white text-base ubuntu-light-italic md:ubuntu-light-italic md:text-lg rounded-lg gap-y-3 md:gap-y-4 justify-center md:shadow-none '
+                className='flex flex-col box-border my-3 mx-auto  md:my-0 w-max h-max md:w-full p-4 text-orange-500 shadow-lg shadow-gray-400 bg-gray-100 md:bg-white text-base ubuntu-light-italic md:ubuntu-light-italic md:text-lg rounded-lg gap-y-3 md:gap-y-4 justify-center md:shadow-none '
             >
                 <h1 className="text-xl text-center md:hidden">Sign Up</h1>
                 <div className="border-[1px] border-orange-400 w-1/2 mb-4 mx-auto md:hidden"></div>
@@ -176,9 +198,12 @@ function SignUp(){
 
                 <div className='text-sm md:hidden ubuntu-light-italic mx-auto'>
                     Already have an account?
-                    <Link to='/login' className='text-blue-400 hover:text-blue-500 text-sm md:hidden underline text-center ml-3'>
+                    <button 
+                        onClick={toggleToLogin}
+                        className='text-blue-400 hover:text-blue-500 text-sm md:hidden underline text-center ml-3'
+                    >
                         Login
-                    </Link>
+                    </button>
                 </div>
             </form>
         </>

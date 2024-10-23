@@ -13,6 +13,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 import json
 from django.utils import timezone
+from django.shortcuts import redirect
 
 # ViewSet for Party
 class PartyViewSet(viewsets.ModelViewSet):
@@ -60,6 +61,7 @@ class LoginView(APIView):
         if serializer.is_valid():
             user = serializer.validated_data["user"]  # Get the user from validated data
             login(request, user)
+            # return redirect('/home')
             return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
         return Response({"message": "Invalid credentials! Please try again", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 

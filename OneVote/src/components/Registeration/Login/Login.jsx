@@ -1,32 +1,89 @@
 import React, { useState } from "react";
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import PasswordInput from "../PasswordInput/PasswordInput";
+import { useToggle } from "../../../context/ComponentToggleContext";
 
 function Login(){
     const [uniqueId , setUniqueId] = useState('');
     const [password,setPassword] = useState('');
 
-    const handleSubmit = (e) => {
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        fetch('http://localhost:8000/api/login/' , {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({unique_id:uniqueId , password}) //{unique_id: uniqueId , password}
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message);
-            // console.log(data);
-            setUniqueId('')
-            setPassword('')
+        try {
+            const response = await fetch('http://localhost:8000/api/login/' , {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({unique_id:uniqueId , password}) //{unique_id: uniqueId , password}
+            })
 
+            const data = await response.json();
+            
+            if(response.ok){
+                alert(data.message);
+                navigate('/home');
+            } else{
+                alert(data.message);
+            }
+        } catch (error) {
+            console.log(error);
+            alert(data.message);
+        }
+
+        //setData to default
+        setUniqueId('');
+        setPassword('');
+
+        // const response = await fetch('http://localhost:8000/api/login/' , {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({unique_id:uniqueId , password}) //{unique_id: uniqueId , password}
+        // })
+        // .then(response => response.json())
+        // .then(data => {
+        //     alert(data.message);
+        //     // console.log(data);
+        //     setUniqueId('')
+        //     setPassword('')
+
+        //     console.log(data.status);
+
+            // if(response.ok){
+            //     history.push('/home');
+            // } else{
+            //     alert('Invalid credentials');
+            // }
+
+            // fetch('http://localhost:8000/api/homeview/')
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         if(data.is_authenticated){
+            //             const navigate = useNavigate();
+            //             navigate('/home');
+            //         }
+            //     })
             // if(data.status)
-        })
-        .catch(error => alert(error))
+        // })
+        // .catch(error => alert(error))
     }
+
+    //Toggle Component.
+    // const {component , toggleToLogin , toggleToSignup} = useToggle();
+
+    // const handleClick = () => {
+    //     toggleToSignup();
+    // }
+    const toggleToSignUp = () => {
+        navigate('/signUp');
+    }
+
+    
     return(
         <>
             <form action=""
@@ -73,12 +130,12 @@ function Login(){
                 <div className="mt-3 md:hidden">
                     <p className="text-sm">
                         New User?
-                        <Link 
-                            to='/signUp'
+                        <button 
+                            onClick={toggleToSignUp}
                             className="ml-2 text-blue-400 underline cursor-pointer hover:text-blue-600"
                         >
                             Sign-up here.
-                        </Link>
+                        </button>
                     </p>
                 </div>
             </form>

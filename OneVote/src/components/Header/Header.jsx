@@ -10,7 +10,7 @@ export default function Header() {
             <nav className="flex h-[10vh] min-h-[80px] w-full p-2  bg-white text-sm md:text-base border-b-[4px] border-orange-500">
                 <div className="flex h-full w-full items-center justify-between">
                     <Link 
-                        to='/' 
+                        to='/home' 
                         className="flex w-1/3 p-2 md:p-3"
                     >
                         <img 
@@ -25,7 +25,7 @@ export default function Header() {
                     <ul className="flex w-[60%] md:w-1/3 justify-evenly items-center ubuntu-light-italic md:ubuntu-medium-italic">
                         <li>
                             <NavLink 
-                                to='/'
+                                to='/home'
                                 className={({isActive}) =>`${isActive? 'bg-orange-600 text-white' : 'bg-none text-orange-600'} p-2 rounded-2xl hover:-translate-y-2 ${!isActive ? 'hover:bg-orange-200' : ''} transition duration-300 ease-in-out` }
                             
                             >
