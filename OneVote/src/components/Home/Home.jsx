@@ -1,10 +1,10 @@
 import Card from './Card/Card';
 // import Parties from '../../assests/partyData';
 import { useEffect, useState } from 'react';
+import { useUser } from '../../context/UserContext';
 
 function Home() {
     const [partyData , setPartyData] = useState([]);
-    const [isUserLogged , setIsUserLogged] = useState('');
 
     const handleVote = (cardId) => {
         fetch('http://localhost:8000/api/updatevote', {
@@ -51,20 +51,16 @@ function Home() {
         // }
     };
 
+    //fetching all the card data for creating party cards.
     useEffect( () => {
         fetch('http://localhost:8000/api/party/')
         .then( response => response.json())
         .then( data => setPartyData(data));
     } , [])
 
-    useEffect( () => {
-        fetch('http://localhost:8000/api/homeview')
-        .then(response => response.json())
-        .then(data => setIsUserLogged(data.is_authenticated))
-    } , [])
     
     
-    if(isUserLogged){
+    
         return(
             <main 
                 className='w-full h-max grid grid-cols-1 gap-5 justify-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
@@ -88,8 +84,8 @@ function Home() {
                 }
             </main>
         );
-    }
-    return <div className='w-full h-[40vh] text-2xl text-orange-500 bg-white text-center'>Please Login to Work.</div>
+    
+    
     
 }
 

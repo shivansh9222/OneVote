@@ -18,9 +18,12 @@ function Login(){
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
+            alert(data.message);
+            // console.log(data);
             setUniqueId('')
             setPassword('')
+
+            // if(data.status)
         })
         .catch(error => alert(error))
     }

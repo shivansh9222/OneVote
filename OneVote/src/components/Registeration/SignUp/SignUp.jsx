@@ -4,7 +4,7 @@ import PasswordInput from '../PasswordInput/PasswordInput';
 import { Link } from 'react-router-dom';
 
 function SignUp(){
-
+    
     const [formData , setformData] = useState({
         name: '',
         email: '',
@@ -85,7 +85,7 @@ function SignUp(){
             })
         } catch (error) {
             console.log('Error during signup: ',error)
-            alert('Sign-Up failed , Try again later.')
+            alert('Sign-Up failed , User already exists.')
         }
         
     }

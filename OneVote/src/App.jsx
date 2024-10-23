@@ -2,6 +2,8 @@ import { createBrowserRouter, createRoutesFromElements, Route , RouterProvider }
 import {Home,About,User, Extra, Login, SignUp} from './components'
 import Layout from './Layout'
 import Registeration from './components/Registeration/Registeration'
+import { UserContextProvider, useUser } from './context/UserContext'
+import { useEffect } from 'react'
 
 // More useful method ,but i don't know how to add new independent layout to it.
 
@@ -17,6 +19,8 @@ import Registeration from './components/Registeration/Registeration'
 //     </Route>
 //   )
 // )
+
+
 
 const router = createBrowserRouter(
   [
@@ -58,6 +62,14 @@ const router = createBrowserRouter(
 )
 
 function App() {
+
+    // const setIsAuthenticated = () => {
+
+    // }
+    // const {isAuthenticated} = useUser()
+
+    // console.log(isAuthenticated)
+
   return (
     <>
       <RouterProvider router={router} />
