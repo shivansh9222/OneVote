@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {Link, useNavigate} from 'react-router-dom'
 import PasswordInput from "../PasswordInput/PasswordInput";
 import { useToggle } from "../../../context/ComponentToggleContext";
+import UserContext from "../../../context/UserContext";
 
 function Login(){
     const [uniqueId , setUniqueId] = useState('');
     const [password,setPassword] = useState('');
+
+    const[loggedIn , setIsLoggedIn] = useState('false');
+    const{setUser} = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -25,6 +29,8 @@ function Login(){
             
             if(response.ok){
                 alert(data.message);
+                setIsLoggedIn(true)
+                setUser(loggedIn);
                 navigate('/home');
             } else{
                 alert(data.message);

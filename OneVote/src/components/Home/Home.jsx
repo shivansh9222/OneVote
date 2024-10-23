@@ -1,13 +1,20 @@
+import UserContext from '../../context/UserContext';
 import Card from './Card/Card';
 // import Parties from '../../assests/partyData';
-import { useEffect, useState } from 'react';
-import { useUser } from '../../context/UserContext';
+import { useContext, useEffect, useState } from 'react';
 
 function Home() {
     const [partyData , setPartyData] = useState([]);
 
+    const {user} = useContext(UserContext);
+
     const handleVote = (cardId) => {
-        fetch('http://localhost:8000/api/updatevote', {
+
+        if(!user){
+            return alert("Please login to vote");
+        }
+        
+        fetch('http://localhost:8000/api/updatevote/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
