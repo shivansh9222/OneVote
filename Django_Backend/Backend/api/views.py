@@ -73,6 +73,7 @@ class LogoutView(APIView):
 
 
 def update_vote(request):
+    print("aa")
     if request.method == 'POST':
         if request.user.is_authenticated:
             data = json.loads(request.body)
