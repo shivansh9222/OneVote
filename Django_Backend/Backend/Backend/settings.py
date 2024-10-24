@@ -132,6 +132,7 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_HEADERS = [
     'content-type',
+    'x-csrftoken',
     'authorization',
     'x-requested-with',
     'accept',
@@ -141,3 +142,18 @@ CORS_ALLOW_HEADERS = [
 ]
 CORS_ALLOW_CREDENTIALS = True
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',  # Requires CSRF tokens
+        'rest_framework.authentication.BasicAuthentication',
+
+    )
+}
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:5173'
+]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:5173'
+]  
