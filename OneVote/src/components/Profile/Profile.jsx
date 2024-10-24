@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 function Profile() {
     const navigate = useNavigate();
-    const {user,setUser} = useContext(UserContext);
+    const {user , setUser , isLoggedIn , setIsLoggedIn} = useContext(UserContext);
 
     const handleLogout = () => {
-        if(!user){
+        if(!isLoggedIn){
             return alert('user not found.')
         }
         fetch('http://localhost:8000/api/logout/', {
@@ -20,8 +20,8 @@ function Profile() {
             if (!response.ok) {
                 return alert('failed to logout')
             } else{
-                setUser(false);
-                
+                setUser({});
+                setIsLoggedIn(false);
             }
             return response.json();
         })
@@ -40,7 +40,7 @@ function Profile() {
             >
                 <h1 className="text-lg md:text-xl ubuntu-medium-italic mb-0 text-center">Profile</h1>
                 <div className="w-[70%] border-[2px] border-white mb-3 mt-1 mx-auto"></div>
-                <div>Unique Id: </div>
+                <div>Unique Id:{user.uniqueId} </div>
                 <div>Voted: </div>
                 <button 
                     onClick={handleLogout}

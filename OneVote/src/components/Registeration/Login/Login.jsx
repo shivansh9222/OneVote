@@ -1,16 +1,14 @@
 import React, { useContext, useState } from "react";
 import {Link, useNavigate} from 'react-router-dom'
 import PasswordInput from "../PasswordInput/PasswordInput";
-import { useToggle } from "../../../context/ComponentToggleContext";
 import UserContext from "../../../context/UserContext";
 
 function Login(){
     const [uniqueId , setUniqueId] = useState('');
     const [password,setPassword] = useState('');
 
-    // const[loggedIn , setIsLoggedIn] = useState(false);
-
-    const {setUser} = useContext(UserContext);
+    
+    const {setIsLoggedIn,setUser} = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -30,70 +28,27 @@ function Login(){
             
             if(response.ok){
                 alert(data.message);
-                // console.log(data);
-                // setIsLoggedIn(true)
-                setUser(true);
-                // localStorage.setItem('user' , user);
+                setIsLoggedIn(true);
+                setUser( (prev) => {
+                    return {...prev , uniqueId}
+                });
                 navigate('/home');
             } else{
                 alert(data.message);
             }
         } catch (error) {
             console.log(error);
-            const data = await response.json();
-            alert(data.message);
         }
 
         //setData to default
         setUniqueId('');
         setPassword('');
-
-        // const response = await fetch('http://localhost:8000/api/login/' , {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({unique_id:uniqueId , password}) //{unique_id: uniqueId , password}
-        // })
-        // .then(response => response.json())
-        // .then(data => {
-        //     alert(data.message);
-        //     // console.log(data);
-        //     setUniqueId('')
-        //     setPassword('')
-
-        //     console.log(data.status);
-
-            // if(response.ok){
-            //     history.push('/home');
-            // } else{
-            //     alert('Invalid credentials');
-            // }
-
-            // fetch('http://localhost:8000/api/homeview/')
-            //     .then(response => response.json())
-            //     .then(data => {
-            //         if(data.is_authenticated){
-            //             const navigate = useNavigate();
-            //             navigate('/home');
-            //         }
-            //     })
-            // if(data.status)
-        // })
-        // .catch(error => alert(error))
     }
 
-    //Toggle Component.
-    // const {component , toggleToLogin , toggleToSignup} = useToggle();
-
-    // const handleClick = () => {
-    //     toggleToSignup();
-    // }
     const toggleToSignUp = () => {
         navigate('/signUp');
     }
 
-    
     return(
         <>
             <form action=""

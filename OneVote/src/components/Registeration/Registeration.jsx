@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Login from "./Login/Login";
 import SignUp from "./SignUp/SignUp";
 import {Header} from '../index'
-import { useToggle } from "../../context/ComponentToggleContext";
 import { Link } from "react-router-dom";
 
 
@@ -16,20 +15,20 @@ function Registeration(){
         setIsSignUpClicked(isLoginClicked);
     }
 
-    //Toggle section
-    const {component}  = useToggle();
-
     return (
         <>
             {/* <Header /> */}
+            {/* Navbar section starts here */}
             <nav 
                 className="text-xl md:text-2xl bg-orange-500 text-white text-center p-3 my-3 mx-auto  md:w-[50vw] rounded md:rounded-full flex items-center justify-around"
             >
-                <h1>Welcome , Please Login or SignUp to Continue.</h1>
-                {/* <Link
-                    className=""
-                >Results</Link> */}
+                <h1>
+                    Welcome , Please Login or SignUp to Continue.
+                </h1>
             </nav>
+            {/* Navbar section ends here */}
+
+            {/* Signup and login form starts here */}
             <main className="hidden md:block w-[100vw] h-[100vh] ">
                 <section 
                     className=" max-w-[60vw] h-max mx-auto my-[10vh] shadow-2xl shadow-gray-500 flex flex-col rounded-[40px] p-3"
@@ -87,10 +86,11 @@ function Registeration(){
                     {/* Registeration section ends here */}
                 </section>
             </main>
+            {/* Signup and login form starts here */}
 
+            {/* Screen size render */}
             <main className="flex md:hidden w-[100vw] h-[100vh]">
                 <Login />
-                {/* {component === 'loign' ? <Login /> : <SignUp />} */}
             </main>
         </>
     );

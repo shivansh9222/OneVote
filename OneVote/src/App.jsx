@@ -3,13 +3,7 @@ import {Home,About,User, Extra, Login, SignUp, Profile} from './components'
 import Layout from './Layout'
 import Registeration from './components/Registeration/Registeration'
 import { useEffect , useState } from 'react'
-
-import { ComponentToggleProvider } from './context/ComponentToggleContext'
-
 import UserContextProvider from './context/UserContextProvider'
-
-import L from './components/Pracitce/L'
-import P from './components/Pracitce/P'
 
 // More useful method ,but i don't know how to add new independent layout to it.
 
@@ -27,9 +21,7 @@ const router = createBrowserRouter(
         {/* <Route path='signUp' element={<SignUp />}/> */}
       </Route>,
       <Route path='/registeration' element={<Registeration />} />,
-      <Route path='/signUp' element={<SignUp />}/>,
-      <Route path='/l' element={<L />} />,
-      <Route path='/p' element={<P />} />
+      <Route path='/signUp' element={<SignUp />}/>
     </>
     
   )
@@ -82,8 +74,6 @@ function App() {
     <UserContextProvider>
       <RouterProvider router={router} />
     </UserContextProvider>
-      
-    // </ComponentToggleProvider>
   )
 }
 

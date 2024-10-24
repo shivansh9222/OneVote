@@ -6,8 +6,7 @@ import { useContext, useEffect, useState } from 'react';
 function Home() {
     const [partyData , setPartyData] = useState([]);
 
-    const {user} = useContext(UserContext);
-    // setUser( localStorage.getItem(JSON.parse(user)))
+    const {user , isLoggedIn} = useContext(UserContext);
 
     // const getCsrfToken = () => {
     //     const cookies = document.cookie.split(';');
@@ -52,17 +51,10 @@ function Home() {
 
     const handleVote = async (cardId) => {
 
-        if(!user){
+        if(!isLoggedIn){
             return alert("Please login to vote");
         }
-        console.log(user);
-        // const csrfToken =getCsrfToken();
-        
-        // if(!csrfToken){
-        //     return alert('Failed to get CSRF token');
-        // }
-
-        // console.log('inside click:',csrfToken);
+        console.log(isLoggedIn);
         
         try {
             const response = await fetch('http://localhost:8000/api/updatevote/' , {
@@ -126,34 +118,37 @@ function Home() {
         //     console.error('Error:', error);
         //     alert('Error voting: ' + error);
         // });
-        // for (let i = 0; i < partyData.length; i++) {
-        //     if (partyData[i].party_id === cardId) {
-        //         partyData[i].totalVote += 1;
+
+        /*
+        for (let i = 0; i < partyData.length; i++) {
+            if (partyData[i].party_id === cardId) {
+                partyData[i].totalVote += 1;
     
-        //         // Send the updated total votes to the backend
-        //         fetch(`http://localhost:8000/api/party/${cardId}/`, {
-        //             method: 'PUT', // or 'PATCH' depending on your API design
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //             },
-        //             body: JSON.stringify({ totalVote: partyData[i].totalVote }), // Send the updated vote count
-        //         })
-        //         .then(response => {
-        //             if (!response.ok) {
-        //                 throw new Error('Network response was not ok');
-        //             }
-        //             return response.json();
-        //         })
-        //         .then(data => {
-        //             alert('Vote updated successfully:', data);
-        //         })
-        //         .catch(error => {
-        //             alert('There was a problem with the fetch operation:', error);
-        //         });
+                // Send the updated total votes to the backend
+                fetch(`http://localhost:8000/api/party/${cardId}/`, {
+                    method: 'PUT', // or 'PATCH' depending on your API design
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ totalVote: partyData[i].totalVote }), // Send the updated vote count
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Vote updated successfully:', data);
+                })
+                .catch(error => {
+                    alert('There was a problem with the fetch operation:', error);
+                });
     
-        //         break;
-        //     }
-        // }
+                break;
+            }
+        }
+        */
     };
 
     //fetching all the card data for creating party cards.
