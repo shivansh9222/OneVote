@@ -8,7 +8,7 @@ function Login(){
     const [uniqueId , setUniqueId] = useState('');
     const [password,setPassword] = useState('');
 
-    const[loggedIn , setIsLoggedIn] = useState(false);
+    // const[loggedIn , setIsLoggedIn] = useState(false);
 
     const {setUser} = useContext(UserContext);
 
@@ -30,6 +30,7 @@ function Login(){
             
             if(response.ok){
                 alert(data.message);
+                // console.log(data);
                 // setIsLoggedIn(true)
                 setUser(true);
                 // localStorage.setItem('user' , user);
