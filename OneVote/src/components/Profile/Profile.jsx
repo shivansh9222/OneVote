@@ -3,24 +3,34 @@ import UserContext from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
 function Profile() {
+    const navigate = useNavigate();
     const {user,setUser} = useContext(UserContext);
+
     const handleLogout = () => {
-        // try{
-        //     const =
-        // }
         if(!user){
             return alert('user not found.')
         }
-        fetch('http://localhost:8000/api/logout/')
+        fetch('http://localhost:8000/api/logout/', {
+            method: 'POST', // Change GET to POST or DELETE as needed
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
         .then(response => {
             if (!response.ok) {
                 return alert('failed to logout')
+            } else{
+                setUser(false);
+                
             }
+            return response.json();
         })
         .then(data => {
-            setUser(false);
             alert(data.message);
-            useNavigate('');
+            navigate('/registeration');
+        })
+        .catch(error => {
+            console.log(error);
         })
     }
     return (
@@ -30,8 +40,8 @@ function Profile() {
             >
                 <h1 className="text-lg md:text-xl ubuntu-medium-italic mb-0 text-center">Profile</h1>
                 <div className="w-[70%] border-[2px] border-white mb-3 mt-1 mx-auto"></div>
-                <div>Unique Id:</div>
-                <div>Voted</div>
+                <div>Unique Id: </div>
+                <div>Voted: </div>
                 <button 
                     onClick={handleLogout}
                     className="bg-white p-2 my-2 text-orange-500 w-max mx-auto rounded-[20px] hover:rounded-[13px] transition-all ease-in-out duration-150 text-sm md:text-base"
