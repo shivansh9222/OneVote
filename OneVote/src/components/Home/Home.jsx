@@ -20,33 +20,33 @@ function Home() {
     //     return null;
     // };
 
-    const fetchCsrfToken = async () => {
-        try {
-            const response = await fetch('http://localhost:8000/api/get-csrf-token/', {
-                method: 'GET',
-                credentials: 'include'  // Important for including cookies
-            });
-            const data = await response.json();
-            return data.csrfToken;  // Extract the CSRF token from the response
-        } catch (error) {
-            console.error('Error fetching CSRF token:', error);
-            return null;
-        }
-    };
+    // const fetchCsrfToken = async () => {
+    //     try {
+    //         const response = await fetch('http://localhost:8000/api/get-csrf-token/', {
+    //             method: 'GET',
+    //             credentials: 'include'  // Important for including cookies
+    //         });
+    //         const data = await response.json();
+    //         return data.csrfToken;  // Extract the CSRF token from the response
+    //     } catch (error) {
+    //         console.error('Error fetching CSRF token:', error);
+    //         return null;
+    //     }
+    // };
 
-    const getCsrfToken = () => {
-        const name = 'csrftoken';
-        const cookieValue = document.cookie
-            .split('; ')
-            .find(row => row.startsWith(name))
-            ?.split('=')[1];
+    // const getCsrfToken = () => {
+    //     const name = 'csrftoken';
+    //     const cookieValue = document.cookie
+    //         .split('; ')
+    //         .find(row => row.startsWith(name))
+    //         ?.split('=')[1];
         
-        console.log('CSRF Token:', cookieValue); // Log CSRF token
-        return cookieValue;
-    };
+    //     console.log('CSRF Token:', cookieValue); // Log CSRF token
+    //     return cookieValue;
+    // };
     
     // console.log('fetch:',fetchCsrfToken());
-    console.log('get:',getCsrfToken());
+    // console.log('get:',getCsrfToken());
     // console.log(fetchCsrfToken())
     
 
@@ -56,30 +56,54 @@ function Home() {
             return alert("Please login to vote");
         }
         console.log(user);
-        const csrfToken =getCsrfToken();
+        // const csrfToken =getCsrfToken();
         
-        if(!csrfToken){
-            return alert('Failed to get CSRF token');
-        }
+        // if(!csrfToken){
+        //     return alert('Failed to get CSRF token');
+        // }
 
-        console.log('inside click:',csrfToken);
+        // console.log('inside click:',csrfToken);
         
-        
-        fetch('http://localhost:8000/api/updatevote/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken,
-            },
-            credentials: 'include',
-            body: JSON.stringify({partyId: cardId })
-        })
-        .then((response) => {
-            console.log(response);
-            if (response.status === 403) {
-                throw new Error('CSRF token missing or incorrect');
+        try {
+            const response = await fetch('http://localhost:8000/api/updatevote/' , {
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json',
+                },
+                body:JSON.stringify({partyId: cardId})
+            })
+
+            const data = await response.json();
+            if(data.status === 'success'){
+                alert('Vote casted successfully');
             }
-            return response.json();
+            else{
+                alert('Failed To Vote');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        
+        // fetch('http://localhost:8000/api/updatevote/', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         // 'X-CSRFToken': csrfToken,
+        //     },
+        //     // credentials: 'include',
+        //     body: JSON.stringify({partyId: cardId })
+        // })
+        // .then((response) => {
+        //     console.log(response);
+        //     if(response.ok){
+        //         alert('vote successfully added');
+        //     } else{
+        //         alert('Failed to add vote');
+        //     }
+            // if (response.status === 403) {
+            //     throw new Error('CSRF token missing or incorrect');
+            // }
+            // return response.json();
             // if (response.ok) {
             //     return response.json();
             // } else {
@@ -87,13 +111,13 @@ function Home() {
             //         throw new Error(err.error);
             //     });
             // }
-        })
-        .then(data => {
-            console.log('Vote successful:', data);
-        })
-        .catch(error => {
-            console.log('Error:', error);
-        });
+        // })
+        // .then(data => {
+        //     console.log('Vote successful:', data);
+        // })
+        // .catch(error => {
+        //     console.log('Error:', error);
+        // });
         // .then(data => {
         //     alert('Vote added successfully');
         //     console.log('Response data:', data);

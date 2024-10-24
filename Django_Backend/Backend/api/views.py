@@ -77,14 +77,14 @@ class LogoutView(APIView):
         logout(request)
         return Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
 
-@api_view(['POST'])
-@authentication_classes([SessionAuthentication])
-@permission_classes([IsAuthenticated])
-@csrf_protect
+# @api_view(['POST'])
+# @authentication_classes([SessionAuthentication])
+# @permission_classes([IsAuthenticated])
+# @csrf_protect
 def update_vote(request):
-    try:
-        if request.method == 'POST':
-            if request.user.is_authenticated:
+    # try:
+        # if request.method == 'POST':
+        #     if request.user.is_authenticated:
                 data = json.loads(request.body)
                 party_id = data.get('partyId')
 
@@ -102,12 +102,12 @@ def update_vote(request):
                     return JsonResponse({'success': True, 'totalVote': party.totalVote})
                 else:
                     return JsonResponse({'error': 'User has already voted'}, status=400)
-            else:
-                return JsonResponse({'error': 'User not authenticated'}, status=403)
-        else:
-            return JsonResponse({'error': 'Invalid request method'}, status=400)
-    except Exception as e:
-        print("Error in update_vote:", str(e))
+            # else:
+                # return JsonResponse({'error': 'User not authenticated'}, status=403)
+        # else:
+        #     return JsonResponse({'error': 'Invalid request method'}, status=400)
+    # except Exception as e:
+    #     print("Error in update_vote:", str(e))
         # return JsonResponse({'error': 'Internal Server Error'}, status=500)
 # def update_vote(request):
 #     print('csrf token',{get_token(request)})
