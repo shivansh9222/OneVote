@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 function Profile() {
     const navigate = useNavigate();
     const {user , setUser , isLoggedIn , setIsLoggedIn} = useContext(UserContext);
-    console.log(user);
+    console.log('profile',user);
 
     const handleLogout = () => {
         if(!isLoggedIn){

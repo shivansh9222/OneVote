@@ -2,7 +2,11 @@ import UserContext from "./UserContext";
 import { useContext , useState } from "react";
 
 const UserContextProvider = ({children}) => {
-    const [user , setUser] = useState({})
+    const [user , setUser] = useState({
+        uniqueId:'',
+        hasVoted:'',
+        votedAt:''
+    })
     const [isLoggedIn , setIsLoggedIn] = useState(false);
 
     return(
