@@ -88,20 +88,20 @@ def update_vote(request):
             data = json.loads(request.body)
             party_id = data.get('partyId')
 
-                party = Party.objects.get(party_id=party_id)
+            party = Party.objects.get(party_id=party_id)
 
-                party.totalVote += 1
-                party.save()
+            party.totalVote += 1
+            party.save()
 
-                user_vote, created = Profile.objects.get_or_create(user=request.user)
+            user_vote, created = Profile.objects.get_or_create(user=request.user)
 
-                if not user_vote.is_voted:
-                    user_vote.is_voted = True
-                    user_vote.voted_at = timezone.now()
-                    user_vote.save()
-                    return JsonResponse({'success': True, 'totalVote': party.totalVote})
-                else:
-                    return JsonResponse({'error': 'User has already voted'}, status=400)
+            if not user_vote.is_voted:
+                user_vote.is_voted = True
+                user_vote.voted_at = timezone.now()
+                user_vote.save()
+                return JsonResponse({'success': True, 'totalVote': party.totalVote})
+            else:
+                return JsonResponse({'error': 'User has already voted'}, status=400)
             # else:
                 # return JsonResponse({'error': 'User not authenticated'}, status=403)
         # else:
