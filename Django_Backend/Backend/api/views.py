@@ -59,16 +59,49 @@ class SignupView(APIView):
 
     
 
+# class LoginView(APIView):
+#     permission_classes = [AllowAny]
+
+#     def post(self, request, *args, **kwargs):
+#         serializer = LoginSerializer(data=request.data)
+#         if serializer.is_valid():
+#             user = serializer.validated_data["user"]  # Get the user from validated data
+#             login(request, user)
+#             return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
+#         return Response({"message": "Invalid credentials! Please try again", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+# views.py
+
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth import login
+from .serializers import LoginSerializer
+
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.validated_data["user"]  # Get the user from validated data
-            login(request, user)
-            return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
-        return Response({"message": "Invalid credentials! Please try again", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            validated_data = serializer.validated_data  # Get validated data from serializer
+            user = validated_data["user"]  # Extract the user object
+            login(request, user)  # Log in the user
+
+            # Return tokens and success message in the response
+            return Response({
+                "message": "Login successful",
+                "refresh": validated_data["refresh"],
+                "access": validated_data["access"],
+            }, status=status.HTTP_200_OK)
+
+        # Handle invalid data
+        return Response({
+            "message": "Invalid credentials! Please try again",
+            "errors": serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class LogoutView(APIView):
@@ -76,31 +109,70 @@ class LogoutView(APIView):
         logout(request)
         return Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
 
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from .models import Party, Profile
+import json
+from django.utils import timezone
+
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def update_vote(request):
+    try:
+        data = json.loads(request.body)
+        party_id = data.get('partyId')
+        party = Party.objects.get(party_id=party_id)
+
+        
+
+        # Ensure user hasn't already voted
+        user_vote, created = Profile.objects.get_or_create(user=request.user)
+        if not user_vote.is_voted:
+            user_vote.is_voted = True
+            user_vote.voted_at = timezone.now()
+            user_vote.save()
+            # Update vote count
+            party.totalVote += 1
+            party.save()
+            return JsonResponse({'success': True, 'totalVote': party.totalVote})
+        else:
+            return JsonResponse({'error': 'User has already voted'}, status=400)
+
+    except Party.DoesNotExist:
+        return JsonResponse({'error': 'Party not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': 'An error occurred: ' + str(e)}, status=500)
+
 # @api_view(['POST'])
 # @authentication_classes([SessionAuthentication])
 # @permission_classes([IsAuthenticated])
 # @csrf_protect
-def update_vote(request):
-    # try:
-        # if request.method == 'POST':
-        #     if request.user.is_authenticated:
-                data = json.loads(request.body)
-                party_id = data.get('partyId')
+# def update_vote(request):
+#     # try:
+#         # if request.method == 'POST':
+#         #     if request.user.is_authenticated:
+#                 data = json.loads(request.body)
+#                 party_id = data.get('partyId')
 
-                party = Party.objects.get(party_id=party_id)
+#                 party = Party.objects.get(party_id=party_id)
 
-                party.totalVote += 1
-                party.save()
+#                 party.totalVote += 1
+#                 party.save()
 
-                user_vote, created = Profile.objects.get_or_create(user=request.user)
+#                 user_vote, created = Profile.objects.get_or_create(user=request.user)
 
-                if not user_vote.is_voted:
-                    user_vote.is_voted = True
-                    user_vote.voted_at = timezone.now()
-                    user_vote.save()
-                    return JsonResponse({'success': True, 'totalVote': party.totalVote})
-                else:
-                    return JsonResponse({'error': 'User has already voted'}, status=400)
+#                 if not user_vote.is_voted:
+#                     user_vote.is_voted = True
+#                     user_vote.voted_at = timezone.now()
+#                     user_vote.save()
+#                     return JsonResponse({'success': True, 'totalVote': party.totalVote})
+#                 else:
+#                     return JsonResponse({'error': 'User has already voted'}, status=400)
             # else:
                 # return JsonResponse({'error': 'User not authenticated'}, status=403)
         # else:
@@ -159,6 +231,8 @@ def home_view(request):
 
 # views.py
 
+# views.py
+
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
@@ -166,3 +240,4 @@ from rest_framework.permissions import IsAuthenticated
 @permission_classes([IsAuthenticated])
 def protected_view(request):
     return Response({'message': 'OK, user is authenticated'}, status=status.HTTP_200_OK)
+

@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
 import Card from './Card/Card';
 // import Parties from '../../assests/partyData';
@@ -5,38 +6,68 @@ import { useContext, useEffect, useState } from 'react';
 
 function Home() {
     const [partyData , setPartyData] = useState([]);
-
+    const navigate = useNavigate();
     const {user , isLoggedIn , setUser , setIsLoggedIn} = useContext(UserContext);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+        console.log('useeffect' , token);
         if (!token) {
-          navigate('/login'); // Redirect to login if token is absent
+          navigate('/registeration'); // Redirect to login if token is absent
         } else {
           // Call an API to verify the token and load user data if necessary
-          fetchUserData();
+        fetchUserData(token);
         }
-      }, [navigate]);
+    }, [navigate]);
 
 
-    const fetchUserData = async () => {
-        const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:8000/api/protected_view/', {
-            method: 'GET',
-            headers: {
-            'Authorization': `Bearer ${token}`, // Include the token in the request headers
-            },
-        });
 
-        if (response.ok) {
-            const data = await response.json();
-            console.log('User authenticated:', data);
-        } else {
-            console.log('User not authenticated or token expired');
-            localStorage.removeItem('token');
-            navigate('/registeration'); // Redirect to login if token is invalid
+    const fetchUserData = async (token) => {
+        try {
+            const response = await fetch('http://localhost:8000/api/protected_view/', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(token);
+                console.log('User authenticated:', data);
+                setIsLoggedIn(true); // Update login status
+                setUser(data); // Set user data in context
+            } else {
+                console.log('Invalid or expired token');
+                console.log(token);
+                localStorage.removeItem('token');
+                navigate('/registeration'); // Redirect if token invalid
+            }
+        } catch (error) {
+            console.error('Error verifying user:', error);
+            navigate('/registeration'); // Redirect on error
         }
     };
+
+
+    // const fetchUserData = async () => {
+    //     const token = localStorage.getItem('token');
+    //     const response = await fetch('http://localhost:8000/api/protected_view/', {
+    //         method: 'GET',
+    //         headers: {
+    //         'Authorization': `Bearer ${token}`, // Include the token in the request headers
+    //         },
+    //     });
+
+    //     if (response.ok) {
+    //         const data = await response.json();
+    //         console.log('User authenticated:', data);
+    //     } else {
+    //         console.log('User not authenticated or token expired');
+    //         localStorage.removeItem('token');
+    //         navigate('/registeration'); // Redirect to login if token is invalid
+    //     }
+    // };
 
     // const getCsrfToken = () => {
     //     const cookies = document.cookie.split(';');
@@ -80,6 +111,8 @@ function Home() {
     
 
     const handleVote = async (cardId) => {
+        const token = localStorage.getItem('token');
+        console.log('handle vote',token);
 
         if(!isLoggedIn){
             return alert("Please login to vote");
@@ -87,24 +120,48 @@ function Home() {
         console.log(isLoggedIn);
         
         try {
-            const response = await fetch('http://localhost:8000/api/updatevote/' , {
+            const response = await fetch('http://localhost:8000/api/updatevote/', {
                 method: 'POST',
-                headers:{
+                headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                body:JSON.stringify({partyId: cardId})
-            })
-
+                body: JSON.stringify({ partyId: cardId }),
+            });
+    
             const data = await response.json();
-            if(data.status === 'success'){
+            console.log(response);
+            console.log(data);
+            if (response.ok) {
                 alert('Vote casted successfully');
-            }
-            else{
+            } else {
                 alert('Failed To Vote');
             }
         } catch (error) {
-            console.log(error);
+            console.log('Error casting vote:', error);
         }
+        // try {
+        //     const response = await fetch('http://localhost:8000/api/updatevote/' , {
+        //         method: 'POST',
+        //         headers:{
+        //             'Authorization': `Bearer ${token}`,
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body:JSON.stringify({partyId: cardId})
+        //     })
+
+        //     const data = await response.json();
+        //     if(data.status === 'success'){
+        //         alert('Vote casted successfully');
+        //     }
+        //     else{
+        //         alert('Failed To Vote');
+        //     }
+        // } catch (error) {
+        //     console.log(error);
+        // }
+
+        
         
         // fetch('http://localhost:8000/api/updatevote/', {
         //     method: 'POST',
