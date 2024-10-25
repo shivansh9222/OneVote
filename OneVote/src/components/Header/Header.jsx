@@ -44,8 +44,8 @@ export default function Header() {
 
                         <li>
                             <NavLink 
-                                to='/login'
-                                className={({isActive}) =>`md:hidden p-2 rounded-full ${!isActive ? 'hover:bg-orange-200' : ''} transition duration-100 ease-in-out`}
+                                to='/profile'
+                                className={({isActive}) =>`block ${isActive? 'bg-orange-500 text-white' : 'bg-none text-orange-600'} p-2 rounded-full items-center ${!isActive ? 'hover:bg-orange-200' : ''} transition duration-100 ease-in-out`}
                             >
                                 <img 
                                     src="https://cdn-icons-png.flaticon.com/512/10628/10628940.png" 
@@ -53,7 +53,7 @@ export default function Header() {
                                     className="h-5 w-5"
                                 />
                             </NavLink>
-                            <NavLink 
+                            {/* <NavLink 
                                 to='/registeration'
                                 className={({isActive}) =>`hidden md:block ${isActive? 'bg-orange-500 text-white' : 'bg-none text-orange-600'} p-2 rounded-full items-center ${!isActive ? 'hover:bg-orange-200' : ''} transition duration-100 ease-in-out`}
                             >
@@ -62,7 +62,7 @@ export default function Header() {
                                     alt="User"
                                     className="h-6 w-6 object-center"
                                 />
-                            </NavLink>
+                            </NavLink> */}
                         </li>
                     </ul>
                 </div>

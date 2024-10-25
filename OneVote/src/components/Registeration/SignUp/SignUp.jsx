@@ -2,7 +2,6 @@ import React from 'react';
 import { useState } from 'react';
 import PasswordInput from '../PasswordInput/PasswordInput';
 import { Link, useNavigate } from 'react-router-dom';
-import { useToggle } from '../../../context/ComponentToggleContext';
 
 function SignUp(){
     
@@ -65,24 +64,12 @@ function SignUp(){
                 })
             })
 
-            // console.log(response.status);
-            // console.log(response);
             const data = await response.json();
             alert(data.message);
 
             if(data.status === 'success'){
                 window.location.href = '/registeration';
             }
-            // if (!response.ok) {
-            //     const errorData = await response.json();
-            //     throw new Error(errorData.message || 'Something went wrong');
-            // }
-            //  else{
-            //     alert('Please Login with your credentials')
-                
-            // }
-
-            
 
             //setfields to initial.
             setformData({
@@ -92,7 +79,6 @@ function SignUp(){
                 password: '',
                 confirmPassword: ''
             })
-            // useNavigate('/registeration');
         } catch (error) {
             console.log('Error during signup: ',error)
             alert('Sign-Up failed , User already exists.')
@@ -100,12 +86,6 @@ function SignUp(){
         
     }
 
-    //Togglecomponent
-    // const {component , toggleToLogin , toggleToSignup} = useToggle();
-
-    // const handleClick = () => {
-    //     toggleToLogin();
-    // }
     const navigate = useNavigate();
 
     const toggleToLogin = () => {
