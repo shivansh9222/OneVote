@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 function Profile() {
     const navigate = useNavigate();
     const {user , setUser , isLoggedIn , setIsLoggedIn} = useContext(UserContext);
+    console.log(user);
 
     const handleLogout = () => {
         if(!isLoggedIn){
@@ -40,7 +41,7 @@ function Profile() {
             >
                 <h1 className="text-lg md:text-xl ubuntu-medium-italic mb-0 text-center">Profile</h1>
                 <div className="w-[70%] border-[2px] border-white mb-3 mt-1 mx-auto"></div>
-                <div>Unique Id:{user.uniqueId} </div>
+                <div>Unique Id:{user.uniqueId}</div>
                 <div>Voted: </div>
                 <button 
                     onClick={handleLogout}

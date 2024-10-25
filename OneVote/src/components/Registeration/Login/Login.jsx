@@ -32,6 +32,11 @@ function Login(){
                 setUser( (prev) => {
                     return {...prev , uniqueId}
                 });
+                localStorage.setItem('token' , data.access);
+                const token = localStorage.getItem('token');
+                console.log(token);
+                // const token = localStorage.getItem(token);
+                // console.log(token)
                 navigate('/home');
             } else{
                 alert(data.message);
