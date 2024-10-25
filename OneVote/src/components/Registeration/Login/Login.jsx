@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {Link, useNavigate} from 'react-router-dom'
 import PasswordInput from "../PasswordInput/PasswordInput";
-import { useToggle } from "../../../context/ComponentToggleContext";
+import UserContext from "../../../context/UserContext";
 
 function Login(){
     const [uniqueId , setUniqueId] = useState('');
     const [password,setPassword] = useState('');
+
+    
+    const {setIsLoggedIn,setUser} = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -25,69 +28,31 @@ function Login(){
             
             if(response.ok){
                 alert(data.message);
+                setIsLoggedIn(true);
+                setUser( (prev) => {
+                    return {...prev , uniqueId}
+                });
                 navigate('/home');
             } else{
                 alert(data.message);
             }
         } catch (error) {
             console.log(error);
-            alert(data.message);
         }
 
         //setData to default
         setUniqueId('');
         setPassword('');
-
-        // const response = await fetch('http://localhost:8000/api/login/' , {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({unique_id:uniqueId , password}) //{unique_id: uniqueId , password}
-        // })
-        // .then(response => response.json())
-        // .then(data => {
-        //     alert(data.message);
-        //     // console.log(data);
-        //     setUniqueId('')
-        //     setPassword('')
-
-        //     console.log(data.status);
-
-            // if(response.ok){
-            //     history.push('/home');
-            // } else{
-            //     alert('Invalid credentials');
-            // }
-
-            // fetch('http://localhost:8000/api/homeview/')
-            //     .then(response => response.json())
-            //     .then(data => {
-            //         if(data.is_authenticated){
-            //             const navigate = useNavigate();
-            //             navigate('/home');
-            //         }
-            //     })
-            // if(data.status)
-        // })
-        // .catch(error => alert(error))
     }
 
-    //Toggle Component.
-    // const {component , toggleToLogin , toggleToSignup} = useToggle();
-
-    // const handleClick = () => {
-    //     toggleToSignup();
-    // }
     const toggleToSignUp = () => {
         navigate('/signUp');
     }
 
-    
     return(
         <>
             <form action=""
-                onSubmit={handleSubmit}
+                // onSubmit={handleSubmit}
                 className="flex flex-col box-border p-3 gap-y-2 text-base md:text-xl text-orange-500 rounded-lg w-max h-max items-center justify-center mx-auto bg-gray-50 shadow-lg shadow-gray-400 my-2 md:shadow-none md:w-full md:bg-white md:my-0 "
             >
                 <h1 className="text-2xl md:hidden">Login</h1>
@@ -122,6 +87,7 @@ function Login(){
 
                 <button 
                     type="submit"
+                    onClick={handleSubmit}
                     className="mt-2 bg-orange-400 text-white p-1 px-2 md:px-4 rounded-lg md:rounded-[24px] cursor-pointer hover:bg-orange-600"
                 >
                     Login

@@ -1,11 +1,9 @@
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route , RouterProvider } from 'react-router-dom'
-import {Home,About,User, Extra, Login, SignUp} from './components'
+import {Home,About,User, Extra, Login, SignUp, Profile} from './components'
 import Layout from './Layout'
 import Registeration from './components/Registeration/Registeration'
-import { UserContextProvider, useUser } from './context/UserContext'
 import { useEffect , useState } from 'react'
-
-import { ComponentToggleProvider } from './context/ComponentToggleContext'
+import UserContextProvider from './context/UserContextProvider'
 
 // More useful method ,but i don't know how to add new independent layout to it.
 
@@ -18,6 +16,7 @@ const router = createBrowserRouter(
         <Route path='about' element={<About/>}/>
         <Route path='user/:userId' element={<User  />} />
         <Route path='extra' element={<Extra />} />
+        <Route path='profile' element={<Profile />} />
         {/* <Route path='login' element={<Login />}/> */}
         {/* <Route path='signUp' element={<SignUp />}/> */}
       </Route>,
@@ -71,33 +70,10 @@ const router = createBrowserRouter(
 
 function App() {
 
-    // const setIsAuthenticated = () => {
-
-    // }
-    // const {isAuthenticated} = useUser()
-
-    // console.log(isAuthenticated)
-
-    // const [component , setComponent] = useState('loign');
-
-    // const toggleToLogin = () => {
-    //     setComponent('login');
-    // }
-
-    // const toggleToSignup = () => {
-    //     setComponent('signup');
-    // }
-
   return (
-    // <ComponentToggleProvider 
-    //   value={{component,
-    //   toggleToLogin , toggleToSignup}}
-    // >
-    <>
+    <UserContextProvider>
       <RouterProvider router={router} />
-    </>
-      
-    // </ComponentToggleProvider>
+    </UserContextProvider>
   )
 }
 
