@@ -67,7 +67,6 @@ class LoginView(APIView):
         if serializer.is_valid():
             user = serializer.validated_data["user"]  # Get the user from validated data
             login(request, user)
-            # return redirect('/home')
             return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
         return Response({"message": "Invalid credentials! Please try again", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -153,7 +152,17 @@ def home_view(request):
 
 
 
-def get_csrf_token(request):
-    csrf_token = get_token(request)
-    # prin
-    return JsonResponse({'csrfToken': csrf_token})
+# def get_csrf_token(request):
+#     csrf_token = get_token(request)
+#     # prin
+#     return JsonResponse({'csrfToken': csrf_token})
+
+# views.py
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def protected_view(request):
+    return Response({'message': 'OK, user is authenticated'}, status=status.HTTP_200_OK)

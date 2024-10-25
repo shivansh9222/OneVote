@@ -6,7 +6,37 @@ import { useContext, useEffect, useState } from 'react';
 function Home() {
     const [partyData , setPartyData] = useState([]);
 
-    const {user , isLoggedIn} = useContext(UserContext);
+    const {user , isLoggedIn , setUser , setIsLoggedIn} = useContext(UserContext);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          navigate('/login'); // Redirect to login if token is absent
+        } else {
+          // Call an API to verify the token and load user data if necessary
+          fetchUserData();
+        }
+      }, [navigate]);
+
+
+    const fetchUserData = async () => {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:8000/api/protected_view/', {
+            method: 'GET',
+            headers: {
+            'Authorization': `Bearer ${token}`, // Include the token in the request headers
+            },
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log('User authenticated:', data);
+        } else {
+            console.log('User not authenticated or token expired');
+            localStorage.removeItem('token');
+            navigate('/registeration'); // Redirect to login if token is invalid
+        }
+    };
 
     // const getCsrfToken = () => {
     //     const cookies = document.cookie.split(';');

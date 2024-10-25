@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'corsheaders',
+    'rest_framework_simplejwt'
 ]
 
 MIDDLEWARE = [
@@ -146,7 +147,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',  # Requires CSRF tokens
         'rest_framework.authentication.BasicAuthentication',
-
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
 

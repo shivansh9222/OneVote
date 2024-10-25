@@ -3,6 +3,11 @@ from .models import Party, Contact, Profile  # Import the models
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import authenticate
+from rest_framework.response import Response
+from rest_framework import status
+
 # Serializer for Party model
 class PartySerializer(serializers.ModelSerializer):
     class Meta:
@@ -51,12 +56,20 @@ class LoginSerializer(serializers.Serializer):
         if unique_id and password:
             user = authenticate(username=unique_id, password=password)
             if user:
-                if not user.is_active:
-                    raise serializers.ValidationError("User is deactivated.")
+                refresh = RefreshToken.for_user(user)
+                return Response({
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token),
+                }, status=status.HTTP_200_OK)
+            
+                # if not user.is_active:
+                #     raise serializers.ValidationError("User is deactivated.")
                 # Return the user in the validated data
-                return {"user": user}  # Change here to return a dictionary
+                
+                # return {"user": user}  # Change here to return a dictionary
             else:
-                raise serializers.ValidationError("Invalid login credentials.")
+                return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+                # raise serializers.ValidationError("Invalid login credentials.")
         else:
             raise serializers.ValidationError("Must include both unique ID and password.")
 

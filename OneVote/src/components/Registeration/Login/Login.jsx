@@ -32,6 +32,7 @@ function Login(){
                 setUser( (prev) => {
                     return {...prev , uniqueId}
                 });
+                localStorage.setItem('token' , data.access);
                 navigate('/home');
             } else{
                 alert(data.message);
