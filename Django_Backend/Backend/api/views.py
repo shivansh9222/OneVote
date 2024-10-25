@@ -88,9 +88,16 @@ class LoginView(APIView):
             validated_data = serializer.validated_data  # Get validated data from serializer
             user = validated_data["user"]  # Extract the user object
             login(request, user)  # Log in the user
+            profile = Profile.objects.get(user=user)
+            user_profile = {
+                "unique_id": profile.unique_id,
+                "has_voted": profile.is_voted,
+                "voted_at": profile.voted_at,
+            }
 
             # Return tokens and success message in the response
             return Response({
+                "profile": user_profile,
                 "message": "Login successful",
                 "refresh": validated_data["refresh"],
                 "access": validated_data["access"],
