@@ -11,12 +11,12 @@ function Home() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        console.log('useeffect' , token);
+        // console.log('useeffect' , token);
         if (!token) {
           navigate('/registeration'); // Redirect to login if token is absent
         } else {
           // Call an API to verify the token and load user data if necessary
-        fetchUserData(token);
+            fetchUserData(token);
         }
     }, [navigate]);
 
@@ -33,13 +33,13 @@ function Home() {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(token);
-                console.log('User authenticated:', data);
-                setIsLoggedIn(true); // Update login status
-                setUser(data); // Set user data in context
+                // console.log(token);
+                // console.log('User authenticated:', data);
+                // setIsLoggedIn(true); // Update login status
+                // setUser(data); // Set user data in context
             } else {
-                console.log('Invalid or expired token');
-                console.log(token);
+                alert('Invalid or expired token');
+                // console.log(token);
                 localStorage.removeItem('token');
                 navigate('/registeration'); // Redirect if token invalid
             }
@@ -112,12 +112,12 @@ function Home() {
 
     const handleVote = async (cardId) => {
         const token = localStorage.getItem('token');
-        console.log('handle vote',token);
+        // console.log('handle vote',token);
 
         if(!isLoggedIn){
             return alert("Please login to vote");
         }
-        console.log(isLoggedIn);
+        // console.log(isLoggedIn);
         
         try {
             const response = await fetch('http://localhost:8000/api/updatevote/', {
@@ -130,9 +130,15 @@ function Home() {
             });
     
             const data = await response.json();
-            console.log(response);
-            console.log(data);
+            // console.log(response);
+            // console.log(data);
             if (response.ok) {
+                const now = new Date();
+                setUser( (prev) => ({
+                    ...prev,
+                    has_voted: true,
+                    voted_at: now.toLocaleDateString()
+                }))
                 alert('Vote casted successfully');
             } else {
                 alert('Failed To Vote');

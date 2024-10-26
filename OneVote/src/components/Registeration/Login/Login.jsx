@@ -1,19 +1,22 @@
 import React, { useContext, useState , useEffect} from "react";
 import {Link, useNavigate} from 'react-router-dom'
 import PasswordInput from "../PasswordInput/PasswordInput";
-import UserContext from "../../../context/UserContext";
+// import UserContext from "../../../context/UserContext";
+
+import UserContext from '../../../context/UserContext'
 
 function Login(){
     const [uniqueId , setUniqueId] = useState('');
     const [password,setPassword] = useState('');
+    const [hasVoted , setHasVoted] = useState(false)
+    const [votedAt , setVotedAt] = useState()
 
     
-    const {setIsLoggedIn,setUser,user} = useContext(UserContext);
+    const{user , setUser , isLoggedIn , setIsLoggedIn} = useContext(UserContext)
+
+    // console.log('context data', isLoggedIn , user);
 
     const navigate = useNavigate();
-
-
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -30,19 +33,22 @@ function Login(){
             const data = await response.json();
             
             if(response.ok){
+                // console.log("Login API response:", data);
+
                 alert(data.message);
+                // console.log("Response Profile data from server:", data.user_profile);
+                // setHasVoted(data.user_profile.has_voted);
+                // setVotedAt(data.user_profile.voted_at)
+
                 setIsLoggedIn(true);
                 // console.log('login',data);
                 // setUser( (prev) => {
                 //     return {...prev , uniqueId}
                 // });
-                console.log("Response Data:", data);
-                console.log("Response Data:", data.profile);
-                setUser((prev) => { return {...prev , 
-                    uniqueId: data.profile.unique_id,
-                    hasVoted: data.profile.has_voted,
-                    votedAt: data.profile.voted_at}
-                })
+                // console.log("Response Data:", data);
+                
+                setUser(data.user_profile)
+                // console.log('clicked login context data' , isLoggedIn, user);
                 // setUser({
                 //     userId: data.profile.unique_id,
                 //     hasVoted: data.profile.has_voted,
@@ -51,11 +57,11 @@ function Login(){
                 // unique_id": profile.unique_id,
                 // "has_voted": profile.is_voted,
                 // "voted_at": profile.voted_at,
-                console.log('login state',user);
+                // console.log('login state',user);
 
                 localStorage.setItem('token' , data.access);
-                const token = localStorage.getItem('token');
-                console.log(token);
+                // const token = localStorage.getItem('token');
+                // console.log(token);
                 // const token = localStorage.getItem(token);
                 // console.log(token)
                 navigate('/home');
@@ -71,9 +77,16 @@ function Login(){
         setPassword('');
     }
 
-    useEffect(() => {
-        console.log("Updated user:", user);
-    }, [user]);
+
+    // useEffect(() => {
+    //     console.log("User context updated:", user);
+    //     console.log("isLoggedIn context updated:", isLoggedIn);
+    //   }, [user, isLoggedIn]);
+      
+
+    // useEffect(() => {
+    //     console.log("Updated user:", user);
+    // }, [user]);
 
 
     const toggleToSignUp = () => {

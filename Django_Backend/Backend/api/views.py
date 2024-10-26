@@ -94,10 +94,12 @@ class LoginView(APIView):
                 "has_voted": profile.is_voted,
                 "voted_at": profile.voted_at,
             }
+            
 
+            # print(user_profile)
             # Return tokens and success message in the response
             return Response({
-                "profile": user_profile,
+                "user_profile": user_profile,
                 "message": "Login successful",
                 "refresh": validated_data["refresh"],
                 "access": validated_data["access"],
