@@ -7,15 +7,7 @@ import { useNavigate } from "react-router-dom";
 function Profile() {
     const navigate = useNavigate();
     const {user , isLoggedIn , setUser , setIsLoggedIn} = useContext(UserContext);
-
-    // console.log('profile section: ',user);
-
-    // useEffect(() => {
-    //     console.log("User context updated:", user);
-    //     console.log("isLoggedIn context updated:", isLoggedIn);
-    //   }, [user, isLoggedIn]);
     
-
     const handleLogout = () => {
         if(!isLoggedIn){
             return alert('user not found.')

@@ -1,20 +1,13 @@
 import React, { useContext, useState , useEffect} from "react";
 import {Link, useNavigate} from 'react-router-dom'
 import PasswordInput from "../PasswordInput/PasswordInput";
-// import UserContext from "../../../context/UserContext";
-
 import UserContext from '../../../context/UserContext'
 
 function Login(){
     const [uniqueId , setUniqueId] = useState('');
     const [password,setPassword] = useState('');
-    const [hasVoted , setHasVoted] = useState(false)
-    const [votedAt , setVotedAt] = useState()
 
-    
     const{user , setUser , isLoggedIn , setIsLoggedIn} = useContext(UserContext)
-
-    // console.log('context data', isLoggedIn , user);
 
     const navigate = useNavigate();
 
@@ -33,37 +26,10 @@ function Login(){
             const data = await response.json();
             
             if(response.ok){
-                // console.log("Login API response:", data);
-
                 alert(data.message);
-                // console.log("Response Profile data from server:", data.user_profile);
-                // setHasVoted(data.user_profile.has_voted);
-                // setVotedAt(data.user_profile.voted_at)
-
                 setIsLoggedIn(true);
-                // console.log('login',data);
-                // setUser( (prev) => {
-                //     return {...prev , uniqueId}
-                // });
-                // console.log("Response Data:", data);
-                
                 setUser(data.user_profile)
-                // console.log('clicked login context data' , isLoggedIn, user);
-                // setUser({
-                //     userId: data.profile.unique_id,
-                //     hasVoted: data.profile.has_voted,
-                //     votedAt: data.profile.voted_at,
-                // });
-                // unique_id": profile.unique_id,
-                // "has_voted": profile.is_voted,
-                // "voted_at": profile.voted_at,
-                // console.log('login state',user);
-
                 localStorage.setItem('token' , data.access);
-                // const token = localStorage.getItem('token');
-                // console.log(token);
-                // const token = localStorage.getItem(token);
-                // console.log(token)
                 navigate('/home');
             } else{
                 alert(data.message);
@@ -77,18 +43,6 @@ function Login(){
         setPassword('');
     }
 
-
-    // useEffect(() => {
-    //     console.log("User context updated:", user);
-    //     console.log("isLoggedIn context updated:", isLoggedIn);
-    //   }, [user, isLoggedIn]);
-      
-
-    // useEffect(() => {
-    //     console.log("Updated user:", user);
-    // }, [user]);
-
-
     const toggleToSignUp = () => {
         navigate('/signUp');
     }
@@ -96,7 +50,6 @@ function Login(){
     return(
         <>
             <form action=""
-                // onSubmit={handleSubmit}
                 className="flex flex-col box-border p-3 gap-y-2 text-base md:text-xl text-orange-500 rounded-lg w-max h-max items-center justify-center mx-auto bg-gray-50 shadow-lg shadow-gray-400 my-2 md:shadow-none md:w-full md:bg-white md:my-0 "
             >
                 <h1 className="text-2xl md:hidden">Login</h1>

@@ -53,16 +53,6 @@ export default function Header() {
                                     className="h-5 w-5"
                                 />
                             </NavLink>
-                            {/* <NavLink 
-                                to='/registeration'
-                                className={({isActive}) =>`hidden md:block ${isActive? 'bg-orange-500 text-white' : 'bg-none text-orange-600'} p-2 rounded-full items-center ${!isActive ? 'hover:bg-orange-200' : ''} transition duration-100 ease-in-out`}
-                            >
-                                <img 
-                                    src="https://cdn-icons-png.flaticon.com/512/10628/10628940.png" 
-                                    alt="User"
-                                    className="h-6 w-6 object-center"
-                                />
-                            </NavLink> */}
                         </li>
                     </ul>
                 </div>

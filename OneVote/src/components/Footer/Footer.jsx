@@ -39,7 +39,7 @@ function Footer(){
                                 className='text-sm md:text-base text-orange-600 ubuntu-light-italic md:ubuntu-medium'
                             >
                                 <li className='underline hover:text-blue-500'> 
-                                    <Link to='/'>
+                                    <Link to='/home'>
                                         Home
                                     </Link>
                                 </li>

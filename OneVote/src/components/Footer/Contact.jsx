@@ -20,13 +20,6 @@ export default function Contact(){
             setQuery('');
             const data = await response.json();
             alert(data.message);
-        // if(response.status === 'success'){
-        //     const jsonResponse = await response.json();
-        //     alert(jsonResponse.message);
-        // } else{
-        //     const errorResponse = await response.json();
-        //     alert(errorResponse.message);
-        // }
     }
 
     return(
