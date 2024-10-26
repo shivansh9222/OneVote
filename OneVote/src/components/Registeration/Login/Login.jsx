@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState , useEffect} from "react";
 import {Link, useNavigate} from 'react-router-dom'
 import PasswordInput from "../PasswordInput/PasswordInput";
 import UserContext from "../../../context/UserContext";
@@ -8,9 +8,12 @@ function Login(){
     const [password,setPassword] = useState('');
 
     
-    const {setIsLoggedIn,setUser} = useContext(UserContext);
+    const {setIsLoggedIn,setUser,user} = useContext(UserContext);
 
     const navigate = useNavigate();
+
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,9 +32,27 @@ function Login(){
             if(response.ok){
                 alert(data.message);
                 setIsLoggedIn(true);
-                setUser( (prev) => {
-                    return {...prev , uniqueId}
-                });
+                // console.log('login',data);
+                // setUser( (prev) => {
+                //     return {...prev , uniqueId}
+                // });
+                console.log("Response Data:", data);
+                console.log("Response Data:", data.profile);
+                setUser((prev) => { return {...prev , 
+                    uniqueId: data.profile.unique_id,
+                    hasVoted: data.profile.has_voted,
+                    votedAt: data.profile.voted_at}
+                })
+                // setUser({
+                //     userId: data.profile.unique_id,
+                //     hasVoted: data.profile.has_voted,
+                //     votedAt: data.profile.voted_at,
+                // });
+                // unique_id": profile.unique_id,
+                // "has_voted": profile.is_voted,
+                // "voted_at": profile.voted_at,
+                console.log('login state',user);
+
                 localStorage.setItem('token' , data.access);
                 const token = localStorage.getItem('token');
                 console.log(token);
@@ -49,6 +70,11 @@ function Login(){
         setUniqueId('');
         setPassword('');
     }
+
+    useEffect(() => {
+        console.log("Updated user:", user);
+    }, [user]);
+
 
     const toggleToSignUp = () => {
         navigate('/signUp');
