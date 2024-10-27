@@ -15,7 +15,8 @@ function SignUp(){
 
     //cannot understand it need to update.
     const isUniqueIdValid = (uniqueId) => {
-        return /^\d+$/.test(uniqueId); // Returns true if uniqueId contains only digits
+        return /^\d+$/.test(uniqueId); 
+        // Returns true if uniqueId contains only digits
     };
 
     const validatePassword = (password) => {
@@ -28,28 +29,28 @@ function SignUp(){
 
         //check if unique is atleast 12 digits
         if(formData.uniqueId.length < 12){
-            return (alert('unique id must be of atleast 12 digits.'))
+            return (alert('UniqueId must be of atleast 12 digits.'))
         }
 
         //check if the uniqueId only contsists of numbers.
         if( !isUniqueIdValid(formData.uniqueId)){
-            alert('unique id must contain only numbers')
+            alert('UniqueId must contain only numbers')
             return;
         }
 
         //check if password and confirm password field matches.
         if(formData.password != formData.confirmPassword){
-            alert('password fields do not match');
+            alert('Password fields do not match');
             return;
         }
 
         if(!validatePassword(formData.password)){
-            alert('password must be atleast 8 characters long');
+            alert('Password must be atleast 8 characters long');
             return;
         }
-
-        // console.log(formData);
         
+
+        //fetching signup from the server.
         try {
             const response = await fetch('http://localhost:8000/api/signup/',{
                 method: "POST",
@@ -81,7 +82,7 @@ function SignUp(){
             })
         } catch (error) {
             console.log('Error during signup: ',error)
-            alert('Sign-Up failed , User already exists.')
+            alert('Sign-Up failed.')
         }
         
     }

@@ -1,35 +1,40 @@
 import React, { useContext , useEffect } from "react";
-// import UserContext from "../../context/UserContext";
-
 import UserContext from '../../context/UserContext'
 import { useNavigate } from "react-router-dom";
 
 function Profile() {
     const navigate = useNavigate();
     const {user , isLoggedIn , setUser , setIsLoggedIn} = useContext(UserContext);
-    
+
     const handleLogout = () => {
         if(!isLoggedIn){
-            return alert('user not found.')
+            alert('user not found.')
+            navigate('/registeration')
+            return 
         }
         fetch('http://localhost:8000/api/logout/', {
-            method: 'GET', // Change GET to POST or DELETE as needed
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
         })
         .then(response => {
             if (!response.ok) {
-                return alert('failed to logout')
-            } else{
-                setUser({});
-                setIsLoggedIn(false);
+                alert('Session has expired. Please Login again.')
+                navigate('/registeration')
+                return
+            } 
+            else{
+                
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                localStorage.removeItem('isLoggedIn');
             }
             return response.json();
         })
         .then(data => {
-            alert(data.message);
             navigate('/registeration');
+            alert(data.message);
         })
         .catch(error => {
             console.log(error);
