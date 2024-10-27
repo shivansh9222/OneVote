@@ -1,11 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 function Hero () {
     return (
-        <>
-            <header className="bg-gray-800 text-white ">
-                <nav className="container mx-auto flex justify-between items-center p-5 border-b-[2px] border-white w-full">
+        <main className="h-screen w-screen">
+            <header className=" sticky top-0 right-0 z-30 text-orange-500 bg-white w-full h-[15vh] md:h-[10vh]">
+                <nav className="container mx-auto flex justify-between items-center p-3 border-b-[2px] border-white w-full h-full">
 
                     <Link 
                         to='' 
@@ -22,12 +22,22 @@ function Hero () {
                         <h1 className="block ubuntu-medium-italic md:ubuntu-bold-italic text-2xl md:text-4xl cursor-pointer items-center transition-all duration-200 ease-in-out">One-Vote</h1>
                     </div>
 
-                    <Link className="text-lg md:text-xl hover:text-gray-300 transition-all duration-200 ease-in-out" to="">Result</Link>
+                    <NavLink 
+                        to=""
+                        className={({isActive}) => {
+                            return `text-base md:text-xl hover:text-gray-300 transition-all duration-200 ease-in-out rounded-[20px]  p-2 ${isActive ? 'bg-orange-400 text-white' : ''} hover:bg-orange-300`
+                        }}
+                    >
+                        Result
+                    </NavLink>
                 </nav>
             </header>
 
             <div 
-                className="flex flex-col items-center justify-center h-screen text-center bg-cover bg-center bg-gray-800 text-white overflow-y-auto "
+                className="flex flex-col items-center justify-center h-[85vh] md:h-[90vh] w-full text-center text-black overflow-y-auto 
+                bg-[url('https://i.pinimg.com/originals/16/10/79/161079382ab41eb5712b3c97aa9145a1.gif')]
+                bg-cover md:bg-contain bg-center bg-repeat-none
+                "
             >
                 <h1 className="text-3xl md:text-5xl font-extrabold mb-4 transition-all duration-200 ease-in-out">Welcome to OneVote</h1>
 
@@ -37,12 +47,12 @@ function Hero () {
 
                 <Link 
                     to="/registeration" 
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg"
+                    className="bg-orange-400 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded-lg"
                 >
                     Get Started
                 </Link>
             </div>
-        </>
+        </main>
     )
 }
 export default Hero;

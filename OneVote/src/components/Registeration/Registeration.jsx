@@ -16,13 +16,15 @@ function Registeration(){
     }
 
     return (
-        <main className="bg-gradient-to-tl from-orange-100 to-orange-300 h-[100vh] overflow-y-scroll">
+        <main 
+            className="flex flex-col sm:flex-row justify-between bg-gradient-to-r from-orange-50 to-orange-100 h-[100vh] overflow-y-scroll "
+        >
             <nav 
-                className="text-xl md:text-2xl bg-orange-500 text-white text-center p-3 mb-3 mx-auto  md:w-[45vw] rounded md:rounded-full flex items-center justify-around 
-                bg-[url('https://i.pinimg.com/originals/4a/01/59/4a01599692eaa47afc113c5a3b043ed8.gif')] 
-                bg-cover bg-top"
+                className="flex items-center justify-center bg-orange-400 w-full sm:max-w-[200px] h-max sm:h-full
+                mb-32 sm:mb-0
+                "
             >
-                <h1>
+                <h1 className="text-center ubuntu-bold-italic text-xl text-white p-4">
                     Welcome , Please Login or SignUp to Continue.
                 </h1>
             </nav>
@@ -31,7 +33,8 @@ function Registeration(){
             {/* Signup and login form starts here */}
             <main 
                 className="
-                hidden md:block w-[95vw] 
+                hidden md:block 
+                mx-auto
                 "
             >
                 <section 
