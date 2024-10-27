@@ -25,7 +25,7 @@ function Hero () {
                     <NavLink 
                         to=""
                         className={({isActive}) => {
-                            return `text-base md:text-xl hover:text-gray-300 transition-all duration-200 ease-in-out rounded-[20px]  p-2 ${isActive ? 'bg-orange-400 text-white' : ''} hover:bg-orange-300`
+                            return `text-base md:text-xl transition-all duration-200 ease-in-out rounded-[24px]  p-2 ${isActive ? 'bg-orange-500 text-white' : ''} hover:bg-orange-400`
                         }}
                     >
                         Result

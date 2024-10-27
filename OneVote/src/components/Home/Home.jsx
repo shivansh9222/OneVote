@@ -51,7 +51,7 @@ function Home() {
         if(!isLoggedIn){
             return alert("Please login to vote");
         }
-        let data;
+        // let data;
         try {
             const response = await fetch('http://localhost:8000/api/updatevote/', {
                 method: 'POST',
@@ -62,7 +62,7 @@ function Home() {
                 body: JSON.stringify({ partyId: cardId }),
             });
     
-            data = await response.json();
+            const data = await response.json();
             if (response.ok) {
                 const now = new Date();
                 setUser( (prev) => ({
@@ -75,8 +75,8 @@ function Home() {
                 alert(data.error || 'Failed To Vote');
             }
         } catch (error) {
-            if(data.status === 404) return alert(data.error)
-            if (data.status === 500) return alert(data.error)
+            // if(data.status === 404) return alert(data.error)
+            // if (data.status === 500) return alert(data.error)
             console.log('Error casting vote:', error);
         }
     };

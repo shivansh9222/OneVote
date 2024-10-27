@@ -35,7 +35,7 @@ function Profile() {
             return response.json();
         })
         .then(data => {
-            navigate('/registeration');
+            navigate('/hero');
             alert(data.message);
         })
         .catch(error => {
