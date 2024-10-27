@@ -16,11 +16,11 @@ function Registeration(){
     }
 
     return (
-        <>
-            {/* <Header /> */}
-            {/* Navbar section starts here */}
+        <main className="bg-gradient-to-tl from-orange-100 to-orange-300 h-[100vh] overflow-y-scroll">
             <nav 
-                className="text-xl md:text-2xl bg-orange-500 text-white text-center p-3 my-3 mx-auto  md:w-[50vw] rounded md:rounded-full flex items-center justify-around"
+                className="text-xl md:text-2xl bg-orange-500 text-white text-center p-3 mb-3 mx-auto  md:w-[45vw] rounded md:rounded-full flex items-center justify-around 
+                bg-[url('https://i.pinimg.com/originals/4a/01/59/4a01599692eaa47afc113c5a3b043ed8.gif')] 
+                bg-cover bg-top"
             >
                 <h1>
                     Welcome , Please Login or SignUp to Continue.
@@ -29,9 +29,13 @@ function Registeration(){
             {/* Navbar section ends here */}
 
             {/* Signup and login form starts here */}
-            <main className="hidden md:block w-[100vw] h-[100vh] ">
+            <main 
+                className="
+                hidden md:block w-[95vw] 
+                "
+            >
                 <section 
-                    className=" max-w-[60vw] h-max mx-auto my-[10vh] shadow-2xl shadow-gray-500 flex flex-col rounded-[40px] p-3"
+                    className=" max-w-[60vw] max-h-max mx-auto my-[10vh] shadow-2xl shadow-gray-500 flex flex-col rounded-[40px] p-3 bg-white"
                 >
                     {/* Switch section starts here */}
                     <section className="w-full flex">
@@ -92,7 +96,7 @@ function Registeration(){
             <main className="flex md:hidden w-[100vw] h-[100vh]">
                 <Login />
             </main>
-        </>
+        </main>
     );
 }
 
