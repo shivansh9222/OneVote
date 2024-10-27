@@ -1,10 +1,12 @@
 import React, { useContext , useEffect } from "react";
 import UserContext from '../../context/UserContext'
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 function Profile() {
     const navigate = useNavigate();
     const {user , isLoggedIn , setUser , setIsLoggedIn} = useContext(UserContext);
+    useAuth();
 
     const handleLogout = () => {
         if(!isLoggedIn){

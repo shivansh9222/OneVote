@@ -1,6 +1,10 @@
 import React from 'react';
+import useAuth from '../../hooks/useAuth';
 
 function About() {
+
+    useAuth()//for route protection
+    
     return (
     <div className="container mx-auto p-4 pt-6 md:p-6 lg:p-12">
         <h1 className="text-3xl font-bold mb-4 text-center">About Our Online Voting System</h1>

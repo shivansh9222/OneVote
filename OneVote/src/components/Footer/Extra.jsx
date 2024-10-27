@@ -1,6 +1,8 @@
 import React from "react";
+import useAuth from "../../hooks/useAuth";
 
 function Extra(){
+    useAuth();
     return(
     <>
         <main className="w-full h-full">
