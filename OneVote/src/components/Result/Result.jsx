@@ -33,10 +33,10 @@ function Result() {
 
     return (
         <main 
-            className="h-screen w-screen flex flex-col items-center justify-around bg-gray-800 text-white"
+            className="h-screen w-screen flex flex-col items-center justify-around bg-gradient-to-r from-orange-50 to-orange-100 text-white"
         >
             {/* Heading section */}
-            <section className="text-2xl font-bold mb-4 text-white bg-orange-500 p-4 rounded-lg shadow-md shadow-white">
+            <section className="text-2xl font-bold mb-4 text-white bg-orange-500 p-4 rounded-lg shadow-md shadow-white w-[60vw] text-center cursor-pointer">
                 Results Are Here
             </section>
 
@@ -57,9 +57,9 @@ function Result() {
                             className="h-1/2 w-1/2 mb-2" 
                         />
                         
-                        <h2 className="text-lg font-semibold text-blue-600">{party.name}</h2>
+                        <h2 className="text-lg font-semibold text-blue-600 mt-1">{party.name}</h2>
                         <div 
-                            className="absolute -bottom-[20px] box-border h-10 w-10 p-2 text-white text-center text-lg md:text-xl bg-orange-500 rounded-full"
+                            className="absolute -bottom-[20px] box-border h-10 w-10 p-2 text-white text-center text-lg md:text-xl bg-blue-600 rounded-full"
                         >
                             {party.totalVote}
                         </div>
