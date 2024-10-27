@@ -125,7 +125,6 @@ def update_vote(request):
         party = Party.objects.get(party_id=party_id)
 
         
-
         # Ensure user hasn't already voted
         user_vote, created = Profile.objects.get_or_create(user=request.user)
         if not user_vote.is_voted:
@@ -165,5 +164,5 @@ from rest_framework.permissions import IsAuthenticated
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def protected_view(request):
-    return Response({'message': 'OK, user is authenticated'}, status=status.HTTP_200_OK)
+    return Response({'message': 'User is authenticated'}, status=status.HTTP_200_OK)
 

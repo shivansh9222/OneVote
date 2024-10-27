@@ -11,7 +11,8 @@ function Home() {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (!token) {
-          navigate('/registeration'); // Redirect to login if token is absent
+            navigate('/registeration'); 
+          // Redirect to login if token is absent
         } else {
           // Call an API to verify the token and load user data if necessary
             fetchUserData(token);
@@ -31,15 +32,17 @@ function Home() {
 
             if (response.ok) {
                 const data = await response.json();
+                // alert(data.message);
             } else {
-                alert('Invalid or expired token');
+                alert('Token Expired.');
                 localStorage.removeItem('token');
-                navigate('/registeration'); // Redirect if token invalid
+                navigate('/registeration'); 
             }
         } catch (error) {
             console.error('Error verifying user:', error);
-            navigate('/registeration'); // Redirect on error
+            navigate('/registeration');
         }
+        
     };
 
     const handleVote = async (cardId) => {
@@ -48,7 +51,7 @@ function Home() {
         if(!isLoggedIn){
             return alert("Please login to vote");
         }
-        
+        let data;
         try {
             const response = await fetch('http://localhost:8000/api/updatevote/', {
                 method: 'POST',
@@ -59,7 +62,7 @@ function Home() {
                 body: JSON.stringify({ partyId: cardId }),
             });
     
-            const data = await response.json();
+            data = await response.json();
             if (response.ok) {
                 const now = new Date();
                 setUser( (prev) => ({
@@ -67,11 +70,13 @@ function Home() {
                     has_voted: true,
                     voted_at: now.toLocaleDateString()
                 }))
-                alert('Vote casted successfully');
+                alert('Thank You for voting.');
             } else {
-                alert('Failed To Vote');
+                alert(data.error || 'Failed To Vote');
             }
         } catch (error) {
+            if(data.status === 404) return alert(data.error)
+            if (data.status === 500) return alert(data.error)
             console.log('Error casting vote:', error);
         }
     };

@@ -26,15 +26,18 @@ function Login(){
             const data = await response.json();
             
             if(response.ok){
-                alert(data.message);
+                
                 setIsLoggedIn(true);
                 setUser(data.user_profile)
+                
                 localStorage.setItem('token' , data.access);
                 navigate('/home');
+                alert(data.message);
             } else{
                 alert(data.message);
             }
         } catch (error) {
+            alert('server error');
             console.log(error);
         }
 
