@@ -1,5 +1,5 @@
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route , RouterProvider } from 'react-router-dom'
-import {Home,About,User, Extra, Login, SignUp, Profile, Hero} from './components'
+import {Home,About,User, Extra, Login, SignUp, Profile, Hero, Result} from './components'
 import Layout from './Layout'
 import Registeration from './components/Registeration/Registeration'
 import UserContextProvider from './context/UserContextProvider'
@@ -17,7 +17,8 @@ const router = createBrowserRouter(
       </Route>,
       <Route path='/registeration' element={<Registeration />} />,
       <Route path='/signUp' element={<SignUp />}/>,
-      <Route path='/hero' element={<Hero />} />
+      <Route path='/hero' element={<Hero />} />,
+      <Route path='/results' element={<Result />} />
     </>
     
   )
