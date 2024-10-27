@@ -45,47 +45,6 @@ class SignupSerializer(serializers.ModelSerializer):
         return user   
         
 
-
-# class LoginSerializer(serializers.Serializer):
-#     unique_id = serializers.CharField(max_length=12, required=True)
-#     password = serializers.CharField(required=True, write_only=True)
-
-#     def validate(self, data):
-#         unique_id = data.get("unique_id")
-#         password = data.get("password")
-
-#         if unique_id and password:
-#             user = authenticate(username=unique_id, password=password)
-#             if user is not None:
-#             # Generate JWT tokens
-#             refresh = RefreshToken.for_user(user)
-#             return {
-#                 "user": user,
-#                 "refresh": str(refresh),
-#                 "access": str(refresh.access_token),
-#             }
-#         else:
-#             raise serializers.ValidationError("Invalid login credentials")
-#             # if user:
-#             #     refresh = RefreshToken.for_user(user)
-#             #     return Response({
-#             #         'refresh': str(refresh),
-#             #         'access': str(refresh.access_token),
-#             #     }, status=status.HTTP_200_OK)
-            
-#                 # if not user.is_active:
-#                 #     raise serializers.ValidationError("User is deactivated.")
-#                 # Return the user in the validated data
-                
-#                 # return {"user": user}  # Change here to return a dictionary
-#         #     else:
-#         #         return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
-#         #         # raise serializers.ValidationError("Invalid login credentials.")
-#         # else:
-#         #     raise serializers.ValidationError("Must include both unique ID and password.")
-
-
-
 # serializers.py
 
 from rest_framework import serializers

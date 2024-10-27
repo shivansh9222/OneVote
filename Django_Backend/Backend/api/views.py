@@ -57,19 +57,6 @@ class SignupView(APIView):
             return Response({"message": "User already exists", "status": "error", "errors": serializer.errors}, status=400)
 
 
-    
-
-# class LoginView(APIView):
-#     permission_classes = [AllowAny]
-
-#     def post(self, request, *args, **kwargs):
-#         serializer = LoginSerializer(data=request.data)
-#         if serializer.is_valid():
-#             user = serializer.validated_data["user"]  # Get the user from validated data
-#             login(request, user)
-#             return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
-#         return Response({"message": "Invalid credentials! Please try again", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-
 # views.py
 
 from rest_framework.views import APIView
@@ -157,66 +144,6 @@ def update_vote(request):
     except Exception as e:
         return JsonResponse({'error': 'An error occurred: ' + str(e)}, status=500)
 
-# @api_view(['POST'])
-# @authentication_classes([SessionAuthentication])
-# @permission_classes([IsAuthenticated])
-# @csrf_protect
-# def update_vote(request):
-#     # try:
-#         # if request.method == 'POST':
-#         #     if request.user.is_authenticated:
-#                 data = json.loads(request.body)
-#                 party_id = data.get('partyId')
-
-#                 party = Party.objects.get(party_id=party_id)
-
-#                 party.totalVote += 1
-#                 party.save()
-
-#                 user_vote, created = Profile.objects.get_or_create(user=request.user)
-
-#                 if not user_vote.is_voted:
-#                     user_vote.is_voted = True
-#                     user_vote.voted_at = timezone.now()
-#                     user_vote.save()
-#                     return JsonResponse({'success': True, 'totalVote': party.totalVote})
-#                 else:
-#                     return JsonResponse({'error': 'User has already voted'}, status=400)
-            # else:
-                # return JsonResponse({'error': 'User not authenticated'}, status=403)
-        # else:
-        #     return JsonResponse({'error': 'Invalid request method'}, status=400)
-    # except Exception as e:
-    #     print("Error in update_vote:", str(e))
-        # return JsonResponse({'error': 'Internal Server Error'}, status=500)
-# def update_vote(request):
-#     print('csrf token',{get_token(request)})
-#     if request.method == 'POST':
-#         if request.user.is_authenticated:
-
-#             data = json.loads(request.body)
-#             # print(data)
-#             party_id = data.get('partyId')
-
-#             party = Party.objects.get(party_id=party_id)
-
-#             party.totalVote += 1
-#             party.save()
-
-#             user_vote, created = Profile.objects.get_or_create(user=request.user)
-
-#             if not user_vote.is_voted:  # Only update if the user hasn't voted yet
-#                 user_vote.is_voted = True
-#                 user_vote.voted_at = timezone.now()
-#                 user_vote.save()
-#                 return JsonResponse({'success': True, 'totalVote': party.totalVote})
-#             else:
-#                 return JsonResponse({'error': 'User has already voted'}, status=400)
-#         else:
-#             return JsonResponse({'error': 'User not authenticated'}, status=403)
-#     else:
-#         return JsonResponse({'error': 'Invalid request method'}, status=400)
-
 
 def home_view(request):
     if request.user.is_authenticated:
@@ -231,16 +158,6 @@ def home_view(request):
         }
     return JsonResponse(data)
 
-
-
-# def get_csrf_token(request):
-#     csrf_token = get_token(request)
-#     # prin
-#     return JsonResponse({'csrfToken': csrf_token})
-
-# views.py
-
-# views.py
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
