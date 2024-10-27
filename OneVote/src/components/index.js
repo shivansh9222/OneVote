@@ -7,5 +7,6 @@ import Extra from "./Footer/extra";
 import Login from "./Registeration/Login/Login";
 import SignUp from "./Registeration/SignUp/SignUp";
 import Profile from "./Profile/Profile";
+import Hero from "./Hero/Hero";
 
-export {Header,Footer , Home,About , User,Extra, Login, SignUp , Profile};
+export {Header,Footer , Home,About , User,Extra, Login, SignUp , Profile , Hero};
