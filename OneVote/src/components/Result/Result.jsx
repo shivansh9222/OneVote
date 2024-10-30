@@ -33,7 +33,7 @@ function Result() {
 
     return (
         <main 
-            className="h-screen w-screen flex flex-col items-center justify-around bg-gradient-to-r from-orange-50 to-orange-100 text-white"
+            className="h-screen w-screen flex flex-col items-center justify-around bg-orange-100 text-white"
         >
             {/* Heading section */}
             <section className="text-2xl font-bold mb-4 text-white bg-orange-500 p-4 rounded-lg shadow-md shadow-white w-[60vw] text-center cursor-pointer">
@@ -69,7 +69,7 @@ function Result() {
 
             {/* Return section */}
             <section className="mt-4">
-                <button className="p-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-xl shadow-lg shadow-white">
+                <button className="p-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-xl shadow-lg shadow-white mt-5">
                     <Link to='/hero'>
                         Go back
                     </Link>

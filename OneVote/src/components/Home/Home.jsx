@@ -3,7 +3,6 @@ import UserContext from '../../context/UserContext';
 import Card from './Card/Card';
 import { useContext, useEffect, useState } from 'react';
 import Modal from '../Modal/Modal';
-import { voteSuccessfulurl , crossSymbol , sessionExpired } from '../../assests/background';
 
 function Home() {
     const [partyData , setPartyData] = useState([]);
