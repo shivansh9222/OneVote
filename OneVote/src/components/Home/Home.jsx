@@ -2,11 +2,25 @@ import { useNavigate } from 'react-router-dom';
 import UserContext from '../../context/UserContext';
 import Card from './Card/Card';
 import { useContext, useEffect, useState } from 'react';
+import Modal from '../Modal/Modal';
+import { voteSuccessfulurl , crossSymbol , sessionExpired } from '../../assests/background';
 
 function Home() {
     const [partyData , setPartyData] = useState([]);
     const navigate = useNavigate();
     const {user , isLoggedIn , setUser , setIsLoggedIn} = useContext(UserContext);
+
+    // Modal section starts here.
+    const [showModal , setShowModal] = useState(false);
+    const [modalMessage , setModalMessage] = useState('');
+    const [modalLink, setModalLink] = useState('');
+    const [path , setPath] = useState('');
+
+    const closeModal = () => {
+        setShowModal(false);
+        navigate(path);
+    }
+    // Modal section ends here
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -34,9 +48,14 @@ function Home() {
                 const data = await response.json();
                 // alert(data.message);
             } else {
-                alert('Token Expired.');
                 localStorage.removeItem('token');
-                navigate('/registeration'); 
+                setModalMessage('Token Expired')
+                setPath('/registeration')
+                setShowModal(true)
+                // <Modal isOpen={showModal} closeModal={closeModal} link={sessionExpired} message={'Token Expired'}/>
+                // alert('Token Expired.');
+                
+                // navigate('/registeration'); 
             }
         } catch (error) {
             console.error('Error verifying user:', error);
@@ -49,7 +68,10 @@ function Home() {
         const token = localStorage.getItem('token');
 
         if(!isLoggedIn){
-            return alert("Please login to vote");
+                setModalMessage("Please login to vote")
+                setPath('/registeration')
+                setShowModal(true)
+            // return alert("Please login to vote");
         }
         // let data;
         try {
@@ -70,9 +92,17 @@ function Home() {
                     has_voted: true,
                     voted_at: now.toLocaleDateString()
                 }))
-                alert('Thank You for voting.');
+                setModalMessage('Thank You for voting.')
+                // setModalLink(voteSuccessfulurl)
+                setModalLink('/home')
+                setShowModal(true)
+                // alert('');
             } else {
-                alert(data.error || 'Failed To Vote');
+                setModalMessage(data.error || 'Failed To Vote')
+                // setModalLink(voteSuccessfulurl)
+                setModalLink('/home')
+                setShowModal(true)
+                // alert();
             }
         } catch (error) {
             // if(data.status === 404) return alert(data.error)
@@ -89,27 +119,37 @@ function Home() {
     } , [])
 
         return(
-            <main 
-                className='w-full h-max grid grid-cols-1 gap-5 justify-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
-            >
-                {
-                    partyData.map((party,index)=>{
-                        return(
-                            <div key={index}>
-                                <Card 
-                                    name={party.name}
-                                    logo={party.logo}
-                                    description={party.description}
-                                    manifestoLink={party.manifestoLink}
-                                    onVote={() => {
-                                        handleVote(party.party_id);
-                                    }}
-                                />
-                            </div>
-                        )
-                    })
-                }
-            </main>
+            <>
+                {/* Modal Component */}
+                <Modal 
+                    isOpen={showModal} 
+                    closeModal={closeModal} 
+                    message={modalMessage}
+                    link={modalLink}
+                />
+                <main 
+                    className='w-full h-max grid grid-cols-1 gap-5 justify-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+                >
+                    {
+                        partyData.map((party,index)=>{
+                            return(
+                                <div key={index}>
+                                    <Card 
+                                        name={party.name}
+                                        logo={party.logo}
+                                        description={party.description}
+                                        manifestoLink={party.manifestoLink}
+                                        onVote={() => {
+                                            handleVote(party.party_id);
+                                        }}
+                                    />
+                                </div>
+                            )
+                        })
+                    }
+                </main>
+            </>
+            
         );
     
     

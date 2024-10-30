@@ -1,12 +1,26 @@
-import React, { useContext , useEffect } from "react";
+import React, { useContext , useEffect , useState } from "react";
 import UserContext from '../../context/UserContext'
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import Modal from "../Modal/Modal";
+import { loginSuccess } from "../../assests/background";
 
 function Profile() {
     const navigate = useNavigate();
     const {user , isLoggedIn , setUser , setIsLoggedIn} = useContext(UserContext);
     useAuth();
+
+    // Modal section starts here.
+    const [showModal , setShowModal] = useState(false);
+    const [modalMessage , setModalMessage] = useState('');
+    const [modalLink, setModalLink] = useState('');
+    const [path , setPath] = useState('');
+
+    const closeModal = () => {
+        setShowModal(false);
+        navigate(path);
+    }
+    // Modal section ends here
 
     const handleLogout = () => {
         if(!isLoggedIn){
@@ -22,9 +36,12 @@ function Profile() {
         })
         .then(response => {
             if (!response.ok) {
-                alert('Session has expired. Please Login again.')
-                navigate('/registeration')
-                return
+                setModalMessage('Session has expired. Please Login again.')
+                setPath('/registeration')
+                setShowModal(true)
+                // alert('Session has expired. Please Login again.')
+                // navigate('/registeration')
+                // return
             } 
             else{
                 
@@ -35,8 +52,12 @@ function Profile() {
             return response.json();
         })
         .then(data => {
-            navigate('/hero');
-            alert(data.message);
+            setModalMessage(data.message)
+            // setModalLink(loginSuccess)
+            setPath('/hero')
+            setShowModal(true);
+            // navigate('/hero');
+            // alert(data.message);
         })
         .catch(error => {
             console.log(error);
@@ -44,6 +65,13 @@ function Profile() {
     }
     return (
         <>
+            {/* Modal Component */}
+            <Modal 
+                isOpen={showModal} 
+                closeModal={closeModal} 
+                message={modalMessage}
+                link={modalLink}
+            />
             <main 
                 className="w-[80vw] md:max-w-[300px] h-max my-12 mx-auto  flex flex-col bg-orange-400 text-white p-2 md:p-4 shadow shadow-gray-500 rounded-lg"
             >
