@@ -9,6 +9,6 @@ import SignUp from "./Registeration/SignUp/SignUp";
 import Profile from "./Profile/Profile";
 import Hero from "./Hero/Hero";
 import Result from "./Result/Result";
+import Modal from "./Modal/Modal";
 
-
-export {Header,Footer , Home,About , User,Extra, Login, SignUp , Profile , Hero , Result};
+export {Header,Footer , Home,About , User,Extra, Login, SignUp , Profile , Hero , Result , Modal };

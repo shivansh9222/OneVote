@@ -2,6 +2,8 @@ import React, { useContext, useState , useEffect} from "react";
 import {Link, useNavigate} from 'react-router-dom'
 import PasswordInput from "../PasswordInput/PasswordInput";
 import UserContext from '../../../context/UserContext'
+import Modal from "../../Modal/Modal";
+import { signUpurl , loginSuccess , invalidData , crossSymbol , voteSuccessfulurl } from "../../../assests/background";
 
 function Login(){
     const [uniqueId , setUniqueId] = useState('');
@@ -9,12 +11,25 @@ function Login(){
 
     const{user , setUser , isLoggedIn , setIsLoggedIn} = useContext(UserContext)
 
+    // Modal section starts here.
+    const [showModal , setShowModal] = useState(false);
+    const [modalMessage , setModalMessage] = useState('');
+    const [modalLink, setModalLink] = useState('');
+    const [path , setPath] = useState('');
+
+    const closeModal = () => {
+        setShowModal(false);
+        navigate(path);
+    }
+    // Modal section ends here
+
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
+            // if(!uniq 
             const response = await fetch('http://localhost:8000/api/login/' , {
                 method: 'POST',
                 headers: {
@@ -29,15 +44,23 @@ function Login(){
                 
                 setIsLoggedIn(true);
                 setUser(data.user_profile)
-                
                 localStorage.setItem('token' , data.access);
-                navigate('/home');
-                alert(data.message);
+
+                // Modal section
+                setModalMessage(data.message)
+                setPath('/home')
+                setShowModal(true)
             } else{
-                alert(data.message);
+                setModalMessage(data.message)
+                // setModalLink(crossSymbol)
+                setPath('/registeration')
+                setShowModal(true)
             }
         } catch (error) {
-            alert('server error');
+            setModalMessage('server error')
+            setPath('/registeration')
+            setShowModal(true)
+            // alert('server error');
             console.log(error);
         }
 
@@ -52,6 +75,15 @@ function Login(){
 
     return(
         <>
+            {/* Modal Component */}
+            <Modal 
+                isOpen={showModal} 
+                closeModal={closeModal} 
+                message={modalMessage}
+                link={modalLink}
+            />
+
+
             <form action=""
                 className="flex flex-col box-border p-3 gap-y-2 text-base md:text-xl text-orange-500 rounded-lg w-max h-max items-center justify-center mx-auto bg-gray-50 shadow-lg shadow-gray-400 my-2 md:shadow-none md:w-full md:bg-white md:my-0 "
             >

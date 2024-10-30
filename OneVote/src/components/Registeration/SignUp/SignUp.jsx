@@ -2,8 +2,20 @@ import React from 'react';
 import { useState } from 'react';
 import PasswordInput from '../PasswordInput/PasswordInput';
 import { Link, useNavigate } from 'react-router-dom';
+import Modal from '../../Modal/Modal';
 
 function SignUp(){
+
+    // Modal section starts here.
+    const [showModal , setShowModal] = useState(false);
+    const [modalMessage , setModalMessage] = useState('');
+    const [path , setPath] = useState('');
+
+    const closeModal = () => {
+        setShowModal(false);
+        navigate(path);
+    }
+    // Modal section ends here
     
     const [formData , setformData] = useState({
         name: '',
@@ -29,23 +41,33 @@ function SignUp(){
 
         //check if unique is atleast 12 digits
         if(formData.uniqueId.length < 12){
-            return (alert('UniqueId must be of atleast 12 digits.'))
+            setModalMessage('UniqueId must be of atleast 12 digits.')
+            // setPath()
+            setShowModal(true)
+            // return (alert('UniqueId must be of atleast 12 digits.'))
+            return
         }
 
         //check if the uniqueId only contsists of numbers.
         if( !isUniqueIdValid(formData.uniqueId)){
-            alert('UniqueId must contain only numbers')
+            setModalMessage('UniqueId must contain only numbers')
+            setShowModal(true);
+            // alert('UniqueId must contain only numbers')
             return;
         }
 
         //check if password and confirm password field matches.
         if(formData.password != formData.confirmPassword){
-            alert('Password fields do not match');
+            setModalMessage('Password fields do not match')
+            setShowModal(true)
+            // alert('Password fields do not match');
             return;
         }
 
         if(!validatePassword(formData.password)){
-            alert('Password must be atleast 8 characters long');
+            setModalMessage('Password must be atleast 8 characters long')
+            setShowModal(true)
+            // alert('Password must be atleast 8 characters long');
             return;
         }
         
@@ -66,7 +88,9 @@ function SignUp(){
             })
 
             const data = await response.json();
-            alert(data.message);
+            setModalMessage(data.message)
+            setShowModal(true)
+            // alert(data.message);
 
             if(data.status === 'success'){
                 window.location.href = '/registeration';
@@ -82,7 +106,9 @@ function SignUp(){
             })
         } catch (error) {
             console.log('Error during signup: ',error)
-            alert('Sign-Up failed.')
+            setModalMessage('Sign-Up failed.')
+            setShowModal(true)
+            // alert('Sign-Up failed.')
         }
         
     }
@@ -95,6 +121,11 @@ function SignUp(){
 
     return(
         <>
+            <Modal 
+                isOpen={showModal}
+                closeModal={closeModal}
+                message={modalMessage}
+            />
             <form 
                 action=""
                 onSubmit={handleSubmit}
