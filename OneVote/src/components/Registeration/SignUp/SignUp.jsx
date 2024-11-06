@@ -3,8 +3,15 @@ import { useState } from 'react';
 import PasswordInput from '../PasswordInput/PasswordInput';
 import { Link, useNavigate } from 'react-router-dom';
 import Modal from '../../Modal/Modal';
+import {FaceCapture} from '../../index'
 
 function SignUp(){
+
+    //Biometrics Section starts here
+    const handleSuccess = (message) => alert(message);
+    const handleError = (error) => alert(error);
+
+    //Biometrics section ends here
 
     // Modal section starts here.
     const [showModal , setShowModal] = useState(false);
@@ -129,7 +136,7 @@ function SignUp(){
             <form 
                 action=""
                 onSubmit={handleSubmit}
-                className='flex flex-col box-border my-3 mx-auto  md:my-0 w-max max-h-max md:w-full p-4 text-orange-500 shadow-lg shadow-gray-400 bg-gray-100 md:bg-white text-base ubuntu-light-italic md:ubuntu-light-italic md:text-lg rounded-lg gap-y-3 md:gap-y-4 justify-center md:shadow-none '
+                className='flex flex-col box-border my-3 mx-auto  md:my-0 w-max max-h-max md:w-full p-4 text-orange-500 shadow-lg shadow-gray-400 bg-gray-100 md:bg-white text-base ubuntu-light-italic md:ubuntu-light-italic md:text-lg rounded-lg gap-y-3 md:gap-y-4 justify-center md:shadow-none'
             >
                 <h1 className="text-xl text-center md:hidden">Sign Up</h1>
                 <div className="border-[1px] border-orange-400 w-1/2 mb-4 mx-auto md:hidden"></div>
@@ -217,6 +224,17 @@ function SignUp(){
                         Login
                     </button>
                 </div>
+
+                {/* Face Section starts here */}
+                <div>
+                    <h2>Signup - Face Registration</h2>
+                    <FaceCapture
+                        endpoint="http://localhost:8000/api/register-face/" // Backend registration endpoint
+                        onCaptureSuccess={handleSuccess}
+                        onCaptureError={handleError}
+                    />
+                </div>
+                {/* Face Section ends here */}
             </form>
         </>
     )
