@@ -100,7 +100,7 @@ function SignUp(){
             // alert(data.message);
 
             if(data.status === 'success'){
-                window.location.href = '/registeration';
+                // window.location.href = '/registeration';
             }
 
             //setfields to initial.
