@@ -73,3 +73,50 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Invalid login credentials")
 
 
+from deepface import DeepFace
+from django.core.files.base import ContentFile
+import base64
+
+class UserProfileRegistrationSerializer(serializers.ModelSerializer):
+    image = serializers.CharField(write_only=True)  # Base64 image field, write-only
+
+    class Meta:
+        model = Profile
+        fields = ['image', 'face_image', 'face_encoding']  # Expose face_image and face_encoding
+
+    def create(self, validated_data):
+        image_data = validated_data.pop('image')
+        format, imgstr = image_data.split(';base64,')
+        img_data = ContentFile(base64.b64decode(imgstr), name='profile.jpg')
+
+        # Generate the face encoding using DeepFace
+        face_encoding = DeepFace.represent(img_data, model_name="Facenet")[0]["embedding"]
+
+        # Create a new UserProfile instance with the image and encoding
+        user_profile = Profile.objects.create(
+            user=self.context['request'].user,
+            face_image=img_data,
+            face_encoding=face_encoding
+        )
+        return user_profile
+    
+
+class FaceVerificationSerializer(serializers.Serializer):
+    image = serializers.CharField(write_only=True)  # Base64 image for verification
+
+    def validate(self, data):
+        image_data = data.get('image')
+        format, imgstr = image_data.split(';base64,')
+        live_img = ContentFile(base64.b64decode(imgstr), name='live_temp.jpg')
+
+        user = self.context['request'].user
+        profile = Profile.objects.get(user=user)
+
+        # Verify face using DeepFace
+        result = DeepFace.verify(img1_path=live_img, img2_path=profile.face_image.path, model_name="Facenet")
+
+        if not result["verified"]:
+            raise serializers.ValidationError("Face verification failed.")
+
+        return data
+

@@ -28,6 +28,8 @@ class Profile(models.Model):
     unique_id = models.CharField(max_length=12,unique=True,default="")
     is_voted = models.BooleanField(default=False)
     voted_at = models.DateTimeField(null=True, blank=True)
+    face_encoding = models.JSONField(null=True, blank=True)  # Store face encoding as JSON
+    face_image = models.ImageField(upload_to="face_images/", null=True, blank=True)  # Store profile image
 
     def __str__(self):
         return f"Vote by {self.user.username}"

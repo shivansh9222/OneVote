@@ -1,11 +1,12 @@
 from django.shortcuts import render
+from numpy import generic
 from .models import Contact, Party, Profile
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from rest_framework import viewsets
 from .models import Party, Contact
-from .serializers import PartySerializer, ContactSerializer, SignupSerializer, LoginSerializer
+from .serializers import PartySerializer, ContactSerializer, SignupSerializer, LoginSerializer, UserProfileRegistrationSerializer, FaceVerificationSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -20,6 +21,8 @@ from django.views.decorators.csrf import csrf_protect
 from rest_framework.decorators import api_view,authentication_classes,permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication
+
+from rest_framework import generics, permissions
 
 # ViewSet for Party
 class PartyViewSet(viewsets.ModelViewSet):
@@ -166,3 +169,21 @@ from rest_framework.permissions import IsAuthenticated
 def protected_view(request):
     return Response({'message': 'User is authenticated'}, status=status.HTTP_200_OK)
 
+
+
+class RegisterFaceView(generics.CreateAPIView):
+    serializer_class = UserProfileRegistrationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+
+class VerifyFaceView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        serializer = FaceVerificationSerializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        return Response({"message": "Face verified successfully!"}, status=status.HTTP_200_OK)
