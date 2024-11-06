@@ -17,6 +17,6 @@ urlpatterns = [
     path('api/updatevote/', update_vote, name='updateVote'),
     path('api/protected_view/',protected_view, name='protectedView'),
     path('api/homeview/', home_view, name='homeView'),
-    path('register-face/', RegisterFaceView.as_view(), name='register-face'),
-    path('verify-face/', VerifyFaceView.as_view(), name='verify-face'),
+    path('api/register-face/', RegisterFaceView.as_view(), name='register-face'),
+    path('api/verify-face/', VerifyFaceView.as_view(), name='verify-face'),
 ]
