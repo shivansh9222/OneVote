@@ -42,7 +42,9 @@ function FaceCapture({ endpoint, onCaptureSuccess, onCaptureError }) {
             <button
                 className='rounded-full bg-orange-500 text-white mx-auto p-2 text-base mb-2 hover:bg-orange-600'
                 onClick={captureImage}
-            >Capture</button>
+            >
+                Capture
+            </button>
         </div>
     );
 }

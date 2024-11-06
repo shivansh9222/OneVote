@@ -229,7 +229,7 @@ function SignUp(){
                 <div>
                     <h2>Signup - Face Registration</h2>
                     <FaceCapture
-                        endpoint="/api/register-face/" // Backend registration endpoint
+                        endpoint="http://localhost:8000/api/register-face/" // Backend registration endpoint
                         onCaptureSuccess={handleSuccess}
                         onCaptureError={handleError}
                     />

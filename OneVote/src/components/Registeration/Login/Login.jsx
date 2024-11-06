@@ -129,7 +129,7 @@ function Login(){
                     
                     <FaceCapture
                         
-                        endpoint="/api/login-face/" // Backend login endpoint
+                        endpoint="http://localhost:8000/api/login-face/" // Backend login endpoint
                         onCaptureSuccess={handleSuccess}
                         onCaptureError={handleError}
                     />
