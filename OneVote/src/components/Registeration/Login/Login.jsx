@@ -3,9 +3,16 @@ import {Link, useNavigate} from 'react-router-dom'
 import PasswordInput from "../PasswordInput/PasswordInput";
 import UserContext from '../../../context/UserContext'
 import Modal from "../../Modal/Modal";
+import FaceCapture from "../../FaceCapture/FaceCapture";
 import { signUpurl , loginSuccess , invalidData , crossSymbol , voteSuccessfulurl } from "../../../assests/background";
 
 function Login(){
+
+    //Biometrics section starts here
+    const handleSuccess = (message) => alert(message);
+    const handleError = (error) => alert(error);
+    //Biometrics section ends here
+
     const [uniqueId , setUniqueId] = useState('');
     const [password,setPassword] = useState('');
 
@@ -85,7 +92,7 @@ function Login(){
 
 
             <form action=""
-                className="flex flex-col box-border p-3 gap-y-2 text-base md:text-xl text-orange-500 rounded-lg w-max h-max items-center justify-center mx-auto bg-gray-50 shadow-lg shadow-gray-400 my-2 md:shadow-none md:w-full md:bg-white md:my-0 "
+                className="flex flex-col box-border p-3 gap-y-2 text-base md:text-xl text-orange-500 rounded-lg w-max h-max items-center justify-center mx-auto bg-gray-50 shadow-lg shadow-gray-400 my-2 md:shadow-none md:w-full md:bg-white md:my-0"
             >
                 <h1 className="text-2xl md:hidden">Login</h1>
                 <div className="border-[1px] border-orange-400 w-1/2  mb-4 md:hidden"></div>
@@ -116,6 +123,18 @@ function Login(){
                     />
                     
                 </div>
+
+                {/* Biometrics section starts here */}
+                <div className="flex flex-wrap">
+                    
+                    <FaceCapture
+                        
+                        endpoint="/api/login-face/" // Backend login endpoint
+                        onCaptureSuccess={handleSuccess}
+                        onCaptureError={handleError}
+                    />
+                </div>
+                {/* biometrics section ends here */}
 
                 <button 
                     type="submit"
