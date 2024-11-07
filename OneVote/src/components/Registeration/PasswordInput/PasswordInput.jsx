@@ -2,6 +2,7 @@ import React,{useState} from "react";
 
 
 export default function PasswordInput({value , onChange}){
+
     const [showPassword , setShowPassword] = useState(false);
 
     const handleImageClick = () => {
@@ -9,7 +10,16 @@ export default function PasswordInput({value , onChange}){
     }
     return (
         <>
-            <div className="flex w-full gap-y-[-3px] items-center justify-end relative">
+            <div 
+                className="flex w-full gap-y-[-3px] items-center justify-end relative"
+            >
+                <label 
+                    htmlFor="password"
+                    className=""
+                > 
+                    Password: 
+                </label>
+                
                 <input 
                     type={showPassword ? 'text' : 'password'}
                     value={value}
