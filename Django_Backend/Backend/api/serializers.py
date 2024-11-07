@@ -249,22 +249,65 @@ class SignupSerializer(serializers.ModelSerializer):
         return user  # Return the created user object
     
 
+# class FaceVerificationSerializer(serializers.Serializer):
+#     image = serializers.CharField(write_only=True)  # Base64 image for verification
+
+#     def validate(self, data):
+#         image_data = data.get('image')
+#         format, imgstr = image_data.split(';base64,')
+#         live_img = ContentFile(base64.b64decode(imgstr), name='live_temp.jpg')
+
+#         user = self.context['request'].user
+#         profile = Profile.objects.get(user=user)
+
+#         # Verify face using DeepFace
+#         result = DeepFace.verify(img1_path=live_img, img2_path=profile.face_image.path, model_name="Facenet")
+
+#         if not result["verified"]:
+#             raise serializers.ValidationError("Face verification failed.")
+
+#         return data
+
+
+
+import base64
+from django.core.files.base import ContentFile
+from rest_framework import serializers
+from deepface import DeepFace
+from PIL import Image
+from io import BytesIO
+import tempfile
+
 class FaceVerificationSerializer(serializers.Serializer):
     image = serializers.CharField(write_only=True)  # Base64 image for verification
 
     def validate(self, data):
         image_data = data.get('image')
+        
+        # Split base64 string into format and the actual base64 string
         format, imgstr = image_data.split(';base64,')
+        
+        # Decode the base64 string to get the image content
         live_img = ContentFile(base64.b64decode(imgstr), name='live_temp.jpg')
+
+        # Save the ContentFile as a temporary file
+        live_img_path = self.save_temp_image(live_img)
 
         user = self.context['request'].user
         profile = Profile.objects.get(user=user)
 
         # Verify face using DeepFace
-        result = DeepFace.verify(img1_path=live_img, img2_path=profile.face_image.path, model_name="Facenet")
+        result = DeepFace.verify(img1_path=live_img_path, img2_path=profile.face_image.path, model_name="Facenet")
 
         if not result["verified"]:
             raise serializers.ValidationError("Face verification failed.")
 
         return data
+
+    def save_temp_image(self, content_file):
+        # Save the ContentFile as a temporary file
+        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.jpg')
+        temp_file.write(content_file.read())
+        temp_file.close()
+        return temp_file.name  # Return the path of the temporary file
 

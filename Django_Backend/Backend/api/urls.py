@@ -19,7 +19,7 @@ urlpatterns = [
     path('api/updatevote/', update_vote, name='updateVote'),
     path('api/protected_view/',protected_view, name='protectedView'),
     path('api/homeview/', home_view, name='homeView'),
-    path('api/verify-face/', VerifyFaceView.as_view(), name='verify-face'),
+    path('api/verify_face/', VerifyFaceView.as_view(), name='verify-face'),
 ]
 
 
