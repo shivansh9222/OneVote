@@ -1,6 +1,8 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import PartyViewSet, ContactViewSet, contact_us, SignupView, LoginView, LogoutView, update_vote, home_view, protected_view, RegisterFaceView, VerifyFaceView
+from .views import PartyViewSet, ContactViewSet, contact_us, SignupView, LoginView, LogoutView, update_vote, home_view, protected_view, VerifyFaceView
 
 # Create a router and register the viewsets
 router = DefaultRouter()
@@ -17,6 +19,9 @@ urlpatterns = [
     path('api/updatevote/', update_vote, name='updateVote'),
     path('api/protected_view/',protected_view, name='protectedView'),
     path('api/homeview/', home_view, name='homeView'),
-    path('api/register-face/', RegisterFaceView.as_view(), name='register-face'),
-    path('api/verify-face/', VerifyFaceView.as_view(), name='verify-face'),
+    path('api/verify_face/', VerifyFaceView.as_view(), name='verify-face'),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
