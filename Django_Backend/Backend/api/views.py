@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from rest_framework import viewsets
 from .models import Party, Contact
-from .serializers import PartySerializer, ContactSerializer, SignupSerializer, LoginSerializer, UserProfileRegistrationSerializer, FaceVerificationSerializer
+from .serializers import PartySerializer, ContactSerializer, SignupSerializer, LoginSerializer, FaceVerificationSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -49,12 +49,26 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+# class SignupView(APIView):
+#     def post(self, request, *args, **kwargs):
+#         serializer = SignupSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response({"message": "User created successfully", "status": "success"}, status=201)
+#         else:
+#             logger.error(f"Signup error: {serializer.errors}")
+#             return Response({"message": "User already exists", "status": "error", "errors": serializer.errors}, status=400)
+
 class SignupView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = SignupSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response({"message": "User created successfully", "status": "success"}, status=201)
+            try:
+                user = serializer.save()  # Create the user and associated profile
+                return Response({"message": "User created successfully", "status": "success"}, status=201)
+            except Exception as e:
+                logger.error(f"Error during user creation: {str(e)}")
+                return Response({"message": "An error occurred during user creation", "status": "error", "error": str(e)}, status=500)
         else:
             logger.error(f"Signup error: {serializer.errors}")
             return Response({"message": "User already exists", "status": "error", "errors": serializer.errors}, status=400)
@@ -171,12 +185,12 @@ def protected_view(request):
 
 
 
-class RegisterFaceView(generics.CreateAPIView):
-    serializer_class = UserProfileRegistrationSerializer
-    permission_classes = [permissions.IsAuthenticated]
+# class RegisterFaceView(generics.CreateAPIView):
+#     serializer_class = UserProfileRegistrationSerializer
+#     permission_classes = [permissions.IsAuthenticated]
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+#     def perform_create(self, serializer):
+#         serializer.save(user=self.request.user)
 
 
 
