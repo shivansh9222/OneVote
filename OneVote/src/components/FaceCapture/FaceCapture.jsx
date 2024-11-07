@@ -1,35 +1,17 @@
 import React, { useRef } from 'react';
 import Webcam from 'react-webcam';
 
-function FaceCapture({ endpoint, onCaptureSuccess, onCaptureError }) {
+function FaceCapture({ onCaptureSuccess, onCaptureError }) {
     const webcamRef = useRef(null);
 
-    const captureImage = async () => {
+    const captureImage = () => {
         const imageSrc = webcamRef.current.getScreenshot(); // Capture image as base64
         if (!imageSrc) {
-            alert("Failed to capture image");
+            onCaptureError("Failed to capture image");
             return;
         }
 
-        // Send the image to the backend
-        try {
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ image: imageSrc }),
-            });
-
-            const data = await response.json();
-            if (data.success) {
-                onCaptureSuccess(data.message); // Handle success (e.g., navigate, display message)
-            } else {
-                onCaptureError(data.error); // Handle error message
-            }
-        } catch (error) {
-            onCaptureError("An error occurred while capturing image.");
-        }
+        onCaptureSuccess(imageSrc); // Pass the captured image to the parent component
     };
 
     return (
