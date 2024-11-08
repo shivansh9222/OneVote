@@ -4,7 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import Modal from '../../Modal/Modal';
 import FaceCapture from '../../FaceCapture/FaceCapture';
 
-function SignUp() {
+function SignUp({toggleComponent}) {
+
+    const [isFocusedName , setIsFocusedName] = useState(false);
+    const [isFocusedEmail, setisFocusedEmail] = useState(false)
+    const [isFocusedUid, setIsFocusedUid] = useState(false)
+
     const [showModal, setShowModal] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const [path, setPath] = useState('');
@@ -127,83 +132,255 @@ function SignUp() {
             />
             <form 
                 onSubmit={handleSubmit}
-                className='flex flex-col box-border my-3 mx-auto md:my-0 w-max max-h-max md:w-full p-4 text-orange-500 shadow-lg shadow-gray-400 bg-gray-100 md:bg-white text-base ubuntu-light-italic md:ubuntu-light-italic md:text-lg rounded-lg gap-y-3 md:gap-y-4 justify-center md:shadow-none'
+                className='h-max max-w-[80vw] w-max border-2 border-orange-500 mx-auto flex flex-col items-center justify-between px-3 py-4 gap-y-1
+                shadow-glow-orange animate-pulse-glow 
+                bg-white
+                rounded-xl'
             >
-                <h1 className="text-xl text-center md:hidden">Sign Up</h1>
-                <div className="border-[1px] border-orange-400 w-1/2 mb-4 mx-auto md:hidden"></div>
+
+                {/* header section starts here */}
+                <h1 className="text-2xl text-orange-500">Sign Up</h1>
+                <div className="w-[70%] border-2 border-orange-500  mb-4"></div>
+                {/* header section ends here */}
                 
-                {/* Name Input */}
-                <label htmlFor="name">
-                    Name:
+
+                {/* Name Input section starts here*/}
+                <div className="w-full h-14 mt-3 border-box px-0.5 flex relative rounded-lg">
+
+                    {/* label section starts here */}
+                    <label 
+                        htmlFor="name"
+                        className={`absolute left-4
+                            ${isFocusedName || formData.name ? 'top-0   -translate-y-1/2 bg-white text-sm text-orange-500 z-10' : 'top-1/2 -translate-y-1/2 text-base text-gray-500 -z-10'} p-1 px-2 rounded-xl transition-all ease-in-out duration-150`
+                        }
+                    >
+                        Name
+                    </label>
+                    {/* label section ends here */}
+
+                    {/* input section starts here */}
                     <input 
                         type="text"
                         value={formData.name}
+
                         onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                        className='w-full rounded-lg md:rounded-full p-2 text-sm md:text-base focus-within:bg-orange-400 focus-within:text-white outline-none md:text-center bg-gray-200 md:bg-gray-100' 
+                        onFocus={ (e) => {
+                                setIsFocusedName(true)
+                                e.target.placeholder=''
+                            }
+                        }
+                        onBlur={(e) => {
+                                setIsFocusedName(false)
+                                e.target.placeholder = 'username'
+                            }
+                        }
+                        placeholder="username"
+                        className='w-full h-full text-black bg-orange-50 ubuntu-medium-italic outline-none border-b-4 border-b-orange-500  transition-all ease-in-out duration-150 rounded-md focus-within:border-2 focus-within:border-orange-400 focus-within:rounded-lg pl-2 pt-1 pr-9
+                        focus-within:placeholder:none placeholder:text-sm focus-within:bg-white cursor-text' 
                         required
                     />
-                </label>
+                    {/* input section ends here */}
 
-                {/* Email Input */}
-                <label htmlFor="email">
-                    Email:
+                    {/* icon section starts here */}
+                    <div
+                        className={`
+                            h-6 w-6 absolute right-2  ${isFocusedName || formData.name ? 'h-8 w-8 top-0 right-4 -translate-y-1/2 bg-white p-1 z-10 rounded-lg' : ' top-1/2 -translate-y-1/2' }  transition-all ease-in-out duration-150
+                            
+                        `}
+                    >
+                        <img 
+                            src="https://cdn-icons-png.flaticon.com/512/3596/3596091.png"
+                            alt="icon" 
+                            className="h-full w-full object-contain object-center"
+                        />
+                    </div>
+                    {/* icon section ends here */}
+                    
+                </div>
+                {/* Name input section ends here */}
+                
+
+                {/* Email Input section starts here*/}
+                <div className="w-full h-14 mt-3 border-box px-0.5 flex relative rounded-lg">
+
+                    {/* label section starts here */}
+                    <label 
+                        htmlFor="email"
+                        className={`absolute left-4
+                            ${isFocusedEmail || formData.email ? 'top-0   -translate-y-1/2 bg-white text-sm text-orange-500 z-10' : 'top-1/2 -translate-y-1/2 text-base text-gray-500 -z-10'} p-1 px-2 rounded-xl transition-all ease-in-out duration-150`
+                        }
+                    >
+                        Email:
+                    </label>
+                    {/* label section ends here */}
+
+                    {/* input section starts here */}
                     <input 
                         type="email"
                         value={formData.email}
                         onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                        className='w-full rounded-lg md:rounded-full p-2 text-sm focus-within:bg-orange-400 focus-within:text-white outline-none md:text-base md:text-center bg-gray-200 md:bg-gray-100' 
+
+                        onFocus={ (e) => {
+                            setisFocusedEmail(true)
+                            e.target.placeholder=''
+                            }
+                        }
+                        onBlur={(e) => {
+                                setisFocusedEmail(false)
+                                e.target.placeholder = 'email here'
+                            }
+                        }
+
+                        placeholder="email here"
+                        className='w-full h-full text-black bg-orange-50 ubuntu-medium-italic outline-none border-b-4 border-b-orange-500  transition-all ease-in-out duration-150 rounded-md focus-within:border-2 focus-within:border-orange-400 focus-within:rounded-lg pl-2 pt-1 pr-9
+                        focus-within:placeholder:none placeholder:text-sm focus-within:bg-white cursor-text' 
                         required
                     />
-                </label>
+                    {/* input section ends here */}
 
-                {/* Unique ID Input */}
-                <label htmlFor="UniqueId">
-                    Unique Id:
+                    {/* icon section starts here */}
+                    <div
+                        className={`
+                            h-6 w-6 absolute right-2  ${isFocusedEmail || formData.email ? 'h-8 w-8 top-0 right-4 -translate-y-1/2 bg-white z-10 rounded-lg' : ' top-1/2 -translate-y-1/2' }  transition-all ease-in-out duration-150
+                            
+                        `}
+                    >
+                        <img 
+                            src="https://cdn-icons-png.flaticon.com/512/18225/18225534.png"
+                            alt="icon" 
+                            className="h-full w-full object-contain object-center"
+                        />
+                    </div>
+                    {/* icon section ends here */}
+
+                </div>
+                {/* Email Input section ends here */}
+
+                
+                {/* Unique ID Input starts here */}
+                <div className="w-full h-14 mt-3 border-box px-0.5 flex relative rounded-lg">
+
+                    {/* label section starts here */}
+                    <label 
+                        htmlFor="UniqueId"
+                        className={`absolute left-4
+                            ${isFocusedUid || formData.uniqueId ? 'top-0   -translate-y-1/2 bg-white text-sm text-orange-500 z-10' : 'top-1/2 -translate-y-1/2 text-base text-gray-500 -z-10'} p-1 px-2 rounded-xl transition-all ease-in-out duration-150`
+                        }
+                    >
+                        Unique Id
+                    </label>
+                    {/* label section ends here */}
+
+                    {/* input section starts here */}
                     <input 
                         type="text"
                         value={formData.uniqueId}
+
                         onChange={(e) => setFormData(prev => ({ ...prev, uniqueId: e.target.value }))}
+
                         placeholder='Enter 12 digit aadhar id'
-                        className='w-full rounded-lg md:rounded-full p-2 text-sm focus-within:bg-orange-400 focus-within:text-white outline-none md:text-base md:text-center bg-gray-200 md:bg-gray-100 appearance-none' 
+                        onFocus={ (e) => {
+                                setIsFocusedUid(true)
+                                e.target.placeholder=''
+                            }
+                        }
+                        onBlur={(e) => {
+                                setIsFocusedUid(false)
+                                e.target.placeholder = 'Unique Id'
+                            }
+                        }
+
+                        className="w-full h-full text-black bg-orange-50 ubuntu-medium-italic outline-none border-b-4 border-b-orange-500  transition-all ease-in-out duration-150 rounded-md focus-within:border-2 focus-within:border-orange-400 focus-within:rounded-lg pl-2 pt-1 pr-9
+                        focus-within:placeholder:none placeholder:text-sm focus-within:bg-white cursor-text" 
+
                         required
                     />
-                </label>
+                    {/* input section ends here */}
+                    
+                    {/* icon section starts here */}
+                    <div 
+                        className={`
+                            h-6 w-6 absolute right-2  ${isFocusedUid || formData.uniqueId ? 'h-8 w-8 top-0 right-4 -translate-y-1/2 bg-white z-10 rounded-md p-1' : ' top-1/2 -translate-y-1/2' }  transition-all ease-in-out duration-150
+                            
+                        `}
+                    >
+                        <img 
+                            src="https://cdn-icons-png.flaticon.com/512/14632/14632474.png"
+                            alt="icon" 
+                            className="h-full w-full object-contain object-center"
+                        />
+                    </div>
+                    {/* icon section ends here */}
+                </div>
+                {/* Unique Id input ends here */}
+                
 
-                {/* Password Input */}
-                <label htmlFor="password">
-                    Create Password: 
-                    <PasswordInput 
-                        value={formData.password}
-                        onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                    />
-                </label>
+                {/* Password Input section starts here*/}
+                <PasswordInput 
+                    value={formData.password}
+                    placeholder={'password'}
+                    label={'Password'}
+                    onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                />
+                {/* password section ends here */}
 
-                {/* Confirm Password Input */}
-                <label htmlFor="confirmPassword">
-                    Confirm Password: 
-                    <PasswordInput 
-                        value={formData.confirmPassword}
-                        onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                    />
-                </label>
+                {/* Confirm Password Input starts here*/}
+                <PasswordInput 
+                    value={formData.confirmPassword}
+                    placeholder={'confirm password'}
+                    label={'confirm password'}
+                    onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                />
+                {/* confirm password section ends here */}
 
-                {/* Submit Button */}
-                <button 
-                    type='submit' 
-                    className={`bg-orange-400 text-white w-max p-2 rounded-lg md:rounded-full md:px-4 mx-auto ${loading ? 'opacity-50' : 'hover:bg-orange-500'}`} 
-                    disabled={loading}
+
+                {/* Face Capture Component starts here*/}
+                <div 
+                    className='w-full flex h-12 box-border bg-orange-50 rounded-lg cursor-pointer items-center justify-between p-1 hover:bg-orange-200 text-gray-700 transition-colors ease-in-out duration-200 mt-3'
                 >
-                    {loading ? "Signing Up..." : "Sign-Up"}
-                </button>
+                    <span className='flex text-base italic'>
+                        Capture Biometric
+                    </span>
+                    <img 
+                        src="https://cdn-icons-png.flaticon.com/512/8003/8003466.png" 
+                        alt="capture image" 
+                        className='h-8 w-8 object-cover object-center'
+                    />
+                </div>
 
-                {/* Face Capture Component */}
-                <div>
+                {/* <div>
                     <h2>Signup - Face Registration</h2>
                     <FaceCapture
                         onCaptureSuccess={handleCaptureSuccess}
                         onCaptureError={handleCaptureError}
                     />
+                </div> */}
+                {/* Face Capture Component ends here */}
+
+                {/* Submit Button */}
+                <button 
+                    type='submit' 
+                    className={`bg-orange-400 text-white w-max md:rounded-full px-4 py-1 rounded-3xl md:px-4 mx-auto ${loading ? 'opacity-50' : 'hover:bg-orange-500'} mt-3`} 
+                    disabled={loading}
+                >
+                    {loading ? "Signing Up..." : "Sign-Up"}
+                </button>
+                {/* submit button section ends here */}
+
+                {/* New User Section starts here */}
+                <div className="mb-2">
+                    <p className="text-base text-orange-500 mt-2 font-light italic">
+                        Already an User ?
+                        <button 
+                            onClick={toggleComponent}
+                            className="ml-2 text-sm text-blue-500 hover:text-blue-700 italic underline"
+                        >
+                            login here.
+                        </button>
+                    </p>
                 </div>
+                {/* New User Section ends here */}
+                
             </form>
         </>
     );
