@@ -11,5 +11,6 @@ import Hero from "./Hero/Hero";
 import Result from "./Result/Result";
 import Modal from "./Modal/Modal";
 import FaceCapture from "./FaceCapture/FaceCapture";
+import FaceCaptureModal from "./Modal/FaceCaptureModal";
 
-export {Header,Footer , Home,About , User,Extra, Login, SignUp , Profile , Hero , Result , Modal , FaceCapture };
+export {Header,Footer , Home,About , User,Extra, Login, SignUp , Profile , Hero , Result , Modal , FaceCapture , FaceCaptureModal};
