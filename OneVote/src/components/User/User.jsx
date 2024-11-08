@@ -21,7 +21,7 @@ function User(){
                 {/* <PasswordInput /> */}
                 {/* <Login /> */}
                 {/* <SignUp /> */}
-                <Registeration />
+                {/* <Registeration /> */}
             </div>
         </>
     )
