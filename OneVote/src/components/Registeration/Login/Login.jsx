@@ -89,15 +89,15 @@ function Login({toggleComponent}){
             />
 
             <form action=""
-                className="h-max max-w-[80vw] w-max box-border border-2 border-orange-500 mx-auto flex flex-col items-center justify-between px-3 py-4 gap-y-1
+                className="h-max max-w-[80vw] w-max sm:w-[400px] box-border border-2 border-orange-500 mx-auto flex flex-col items-center justify-between px-3 py-4 gap-y-1
                 shadow-glow-orange animate-pulse-glow 
                 bg-white
-                rounded-xl
+                rounded-xl text-black
                 "
             >
                 {/* Heading section starts here */}
-                <h1 className="text-2xl text-orange-500">Login</h1>
-                <div className="w-[70%] border-2 border-orange-500  mb-4"></div>
+                <h1 className="text-2xl sm:text-3xl text-orange-500">Login</h1>
+                <div className="w-[70%] sm:w-[60%] border-2 border-orange-500  mb-4"></div>
                 {/* Heading section ends here */}
 
                 {/* Input id sectio starts here */}
@@ -107,7 +107,7 @@ function Login({toggleComponent}){
                     <label 
                         htmlFor="userid" 
                         className={`absolute left-4
-                            ${isFocused || uniqueId ? 'top-0   -translate-y-1/2 bg-white text-sm text-orange-500 z-10' : 'top-1/2 -translate-y-1/2 text-base text-gray-500 -z-10'} p-1 px-2 rounded-xl transition-all ease-in-out duration-150`
+                            ${isFocused || uniqueId ? 'top-0   -translate-y-1/2 bg-white text-sm sm:text-base text-orange-500 z-10' : 'top-1/2 -translate-y-1/2 text-base text-gray-500 -z-10'} p-1 px-2 rounded-xl transition-all ease-in-out duration-150`
                         }
                     >
                         Unique Id
@@ -142,7 +142,7 @@ function Login({toggleComponent}){
                     {/* icon section starts here */}
                     <div 
                         className={`
-                            h-6 w-6 absolute right-2  ${isFocused || uniqueId ? 'h-8 w-8 top-0 right-4 -translate-y-1/2 bg-white z-10 rounded-lg' : ' top-1/2 -translate-y-1/2' }  transition-all ease-in-out duration-150
+                            h-6 w-6 sm:h-8 sm:w-8 absolute right-2  ${isFocused || uniqueId ? 'h-8 w-8 top-0 right-4 -translate-y-1/2 bg-white z-10 rounded-lg' : ' top-1/2 -translate-y-1/2' }  transition-all ease-in-out duration-150
                             
                         `}
                     >
@@ -158,7 +158,7 @@ function Login({toggleComponent}){
                 {/* Input Id section endss here */}
                 
                 {/* Enter password section starts here */}
-                <div className="">
+                <div className="w-full">
                     {/* Password Input component added here */}
                     <PasswordInput 
                         value={password}

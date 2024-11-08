@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Modal from '../../Modal/Modal';
 import FaceCapture from '../../FaceCapture/FaceCapture';
 
-function SignUp({toggleComponent}) {
+function SignUp({toggleComponent , success}) {
 
     const [isFocusedName , setIsFocusedName] = useState(false);
     const [isFocusedEmail, setisFocusedEmail] = useState(false)
@@ -132,20 +132,20 @@ function SignUp({toggleComponent}) {
             />
             <form 
                 onSubmit={handleSubmit}
-                className='h-max max-w-[80vw] w-max border-2 border-orange-500 mx-auto flex flex-col items-center justify-between px-3 py-4 gap-y-1
+                className='max-h-[90vh] max-w-[80vw] w-max sm:w-[400px] border-2 border-orange-500 mx-auto flex flex-col items-center justify-between px-3 py-4 gap-y-1
                 shadow-glow-orange animate-pulse-glow 
                 bg-white
-                rounded-xl mt-36'
+                rounded-xl mt-8 overflow-y-auto mb-3'
             >
 
                 {/* header section starts here */}
                 <h1 className="text-2xl text-orange-500">Sign Up</h1>
-                <div className="w-[70%] border-2 border-orange-500  mb-4"></div>
+                <div className="w-[70%] border-2 border-orange-500 mb-2 sm:mb-4"></div>
                 {/* header section ends here */}
                 
 
                 {/* Name Input section starts here*/}
-                <div className="w-full h-14 mt-3 border-box px-0.5 flex relative rounded-lg">
+                <div className="w-full h-14 mt-2 sm:mt-3 border-box px-0.5 flex relative rounded-lg">
 
                     {/* label section starts here */}
                     <label 
@@ -176,7 +176,7 @@ function SignUp({toggleComponent}) {
                         }
                         placeholder="username"
                         className='w-full h-full text-black bg-orange-50 ubuntu-medium-italic outline-none border-b-4 border-b-orange-500  transition-all ease-in-out duration-150 rounded-md focus-within:border-2 focus-within:border-orange-400 focus-within:rounded-lg pl-2 pt-1 pr-9
-                        focus-within:placeholder:none placeholder:text-sm focus-within:bg-white cursor-text' 
+                        focus-within:placeholder:none placeholder:text-sm focus-within:bg-white ' 
                         required
                     />
                     {/* input section ends here */}
@@ -201,7 +201,7 @@ function SignUp({toggleComponent}) {
                 
 
                 {/* Email Input section starts here*/}
-                <div className="w-full h-14 mt-3 border-box px-0.5 flex relative rounded-lg">
+                <div className="w-full h-14 mt-2 sm:mt-3 border-box px-0.5 flex relative rounded-lg">
 
                     {/* label section starts here */}
                     <label 
@@ -258,7 +258,7 @@ function SignUp({toggleComponent}) {
 
                 
                 {/* Unique ID Input starts here */}
-                <div className="w-full h-14 mt-3 border-box px-0.5 flex relative rounded-lg">
+                <div className="w-full h-14 mt-2 sm:mt-3 border-box px-0.5 flex relative rounded-lg">
 
                     {/* label section starts here */}
                     <label 
@@ -336,9 +336,9 @@ function SignUp({toggleComponent}) {
 
                 {/* Face Capture Component starts here*/}
                 <div 
-                    className='w-full flex h-12 box-border bg-orange-50 rounded-lg cursor-pointer items-center justify-between p-1 hover:bg-orange-200 text-gray-700 transition-colors ease-in-out duration-200 mt-3'
+                    className={`w-full flex h-12 box-border rounded-lg cursor-pointer items-center justify-between p-1 text-gray-700 transition-colors ease-in-out duration-200 mt-3 ${success ? 'bg-green-400 cursor-not-allowed text-white' : 'bg-orange-50 hover:bg-orange-200'}`}
                 >
-                    <span className='flex text-base italic'>
+                    <span className='flex text-base italic '>
                         Capture Biometric
                     </span>
                     <img 
