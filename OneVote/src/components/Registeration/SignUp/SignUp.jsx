@@ -2,23 +2,37 @@ import React, { useState } from 'react';
 import PasswordInput from '../PasswordInput/PasswordInput';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../../Modal/Modal';
-import FaceCapture from '../../FaceCapture/FaceCapture';
+import FaceCaptureModal from '../../Modal/FaceCaptureModal';
 
-function SignUp({toggleComponent , success}) {
+function SignUp({toggleComponent}) {
 
     const [isFocusedName , setIsFocusedName] = useState(false);
     const [isFocusedEmail, setisFocusedEmail] = useState(false)
     const [isFocusedUid, setIsFocusedUid] = useState(false)
 
+    //Modal section starts here
     const [showModal, setShowModal] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const [path, setPath] = useState('');
+    //Modal section ends here
+
     const [loading, setLoading] = useState(false);
-    const [capturedImage, setCapturedImage] = useState(null); // New state for the captured image
+
+    // New state for the captured image
+    const [capturedImage, setCapturedImage] = useState(null);
+    
+    //Face Capture Modal starts here
+    const[isOpenFace , setIsOpenFace] = useState(false);
+    const [success, setsuccess] = useState(false)
+    const closeFaceModal = () => {
+        setIsOpenFace(false)
+    }
+    //Face Capture Modal ends here
 
     const closeModal = () => {
         setShowModal(false);
         if (path) navigate(path);
+        setIsOpenFace(false)
     };
 
     const [formData, setFormData] = useState({
@@ -84,6 +98,8 @@ function SignUp({toggleComponent , success}) {
                 })
             });
 
+            // console.log(capturedImage)
+
             const data = await response.json();
             setModalMessage(data.message);
             setShowModal(true);
@@ -100,11 +116,13 @@ function SignUp({toggleComponent , success}) {
                 password: '',
                 confirmPassword: ''
             });
-            setCapturedImage(null); // Clear captured image
+            setCapturedImage(null); 
+            setsuccess(false)// Clear captured image
         } catch (error) {
             console.error('Error during signup:', error);
             setModalMessage('Sign-Up failed.');
             setShowModal(true);
+            setsuccess(false)
         } finally {
             setLoading(false);
         }
@@ -112,16 +130,19 @@ function SignUp({toggleComponent , success}) {
 
     const navigate = useNavigate();
 
+    //Image capture section starts
     const handleCaptureSuccess = (image) => {
         setCapturedImage(image); // Set captured image in state
         setModalMessage('Face captured successfully.');
         setShowModal(true);
+        setsuccess(true)
     };
 
     const handleCaptureError = (error) => {
         setModalMessage(error);
         setShowModal(true);
     };
+    //Image capture section ends
 
     return (
         <>
@@ -129,6 +150,12 @@ function SignUp({toggleComponent , success}) {
                 isOpen={showModal}
                 closeModal={closeModal}
                 message={modalMessage}
+            />
+            <FaceCaptureModal 
+                isOpenFace={isOpenFace}
+                closeFaceModal={closeFaceModal}
+                onCaptureError={handleCaptureError}
+                onCaptureSuccess={handleCaptureSuccess}
             />
             <form 
                 onSubmit={handleSubmit}
@@ -336,7 +363,8 @@ function SignUp({toggleComponent , success}) {
 
                 {/* Face Capture Component starts here*/}
                 <div 
-                    className={`w-full flex h-12 box-border rounded-lg cursor-pointer items-center justify-between p-1 text-gray-700 transition-colors ease-in-out duration-200 mt-3 ${success ? 'bg-green-400 cursor-not-allowed text-white' : 'bg-orange-50 hover:bg-orange-200'}`}
+                    className={`w-full flex h-12 box-border rounded-lg cursor-pointer items-center justify-between p-1 text-gray-700 transition-colors ease-in-out duration-200 mt-3 ${success ? 'bg-green-400 cursor-not-allowed pointer-events-none text-white' : 'bg-orange-50 hover:bg-orange-200'}`}
+                    onClick={() => setIsOpenFace(true)}
                 >
                     <span className='flex text-base italic '>
                         Capture Biometric
