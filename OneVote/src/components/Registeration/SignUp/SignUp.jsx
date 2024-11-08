@@ -135,7 +135,7 @@ function SignUp({toggleComponent}) {
                 className='h-max max-w-[80vw] w-max border-2 border-orange-500 mx-auto flex flex-col items-center justify-between px-3 py-4 gap-y-1
                 shadow-glow-orange animate-pulse-glow 
                 bg-white
-                rounded-xl'
+                rounded-xl mt-36'
             >
 
                 {/* header section starts here */}
