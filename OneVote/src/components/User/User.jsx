@@ -10,17 +10,18 @@ function User(){
     return(
         <>
             
-
             {/* <Login /> */}
             {/* <SignUp /> */}
             {/* <Registeration /> */}
             
-            <div className="h-[100vh] w-[100vw] bg-gray-700 text-white">
-                <h1 className="text-center text-white text-2xl">
+            <div className="h-[100vh] w-[100vw] bg-gradient-to-r from-white to-orange-50">
+                {/* <h1 className="text-center text-black text-2xl">
                     User: {userId}
-                </h1>
+                </h1> */}
                 {/* <PasswordInput /> */}
-                <Login />
+                {/* <Login /> */}
+                {/* <SignUp /> */}
+                <Registeration />
             </div>
         </>
     )
