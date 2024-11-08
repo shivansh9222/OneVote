@@ -7,12 +7,12 @@ import { Link } from "react-router-dom";
 
 function Registeration(){
 
-    const[isLoginClicked, setIsLoginClicked] = useState(true);
-    const[isSignUpClicked, setIsSignUpClicked] = useState(false);
+    const [showLogin, setshowLogin] = useState(true)
+    const [setshowSignUp, setSetshowSignUp] = useState(false)
 
-    const handleClick = () => {
-        setIsLoginClicked(isSignUpClicked);
-        setIsSignUpClicked(isLoginClicked);
+    const toggleComponent = () => {
+        setshowLogin(!showLogin)
+        setSetshowSignUp(!setshowSignUp)
     }
 
     return (
@@ -20,7 +20,7 @@ function Registeration(){
             className="h-[100vh] w-[100vw] flex flex-col sm:flex-row bg-gradient-to-r from-orange-50 to-orange-100"
         >
             <nav 
-                className="bg-orange-400 h-[20%] w-full sm:h-full sm:w-[40%] flex items-center"
+                className="bg-orange-400 h-[20%] w-full sm:h-full sm:w-[40%] flex items-center justify-center"
             >
                 <h1 
                     className="box-border text-center ubuntu-bold-italic text-xl text-white p-4"
@@ -29,9 +29,9 @@ function Registeration(){
                 </h1>
             </nav>
             <div 
-                className="bg-pink-500 h-[80%] w-full sm:h-full sm:w-[90%]"
+                className="bg-white h-[80%] w-full sm:h-full sm:w-[90%] flex items-center justify-center overflow-x-hidden overflow-y-auto transition-all ease-in-out duration-200 "
             >
-
+                {showLogin ? <Login toggleComponent={toggleComponent} /> : <SignUp toggleComponent={toggleComponent} />}
             </div>
         </main>
     );
