@@ -89,6 +89,7 @@ function Home() {
     const onCaptureSuccess = (image) => {
         // setModalMessage('Face captured successfully');
         // setShowModal(true);
+        setFaceVerificationInProgress(true)
         verifyFace(image);
     }
 
@@ -105,6 +106,7 @@ function Home() {
             });
 
             const data = await response.json();
+            setFaceVerificationInProgress(false)
             if(response.ok){
                 setisFaceVerified(true);
                 localStorage.setItem('faceVerified', 'true');
@@ -136,7 +138,7 @@ function Home() {
             setShowModal(true);
             return;
         }
-        
+        console.log(isFaceVerified)
         if (!isFaceVerified) {
             setisOpenFace(true);
             setPendingVoteCardId(cardId); 
@@ -187,6 +189,7 @@ function Home() {
                 setModalMessage('Thank You for voting.')
                 setModalLink('/home')
                 setShowModal(true)
+                localStorage.removeItem('faceVerified')
             } else {
                 setModalMessage(data.error || 'Failed To Vote')
                 // setModalLink(voteSuccessfulurl)
@@ -224,11 +227,16 @@ function Home() {
                     closeFaceModal={closeFaceModal}
                     onCaptureError={onCaptureError}
                     onCaptureSuccess={onCaptureSuccess}
+                    faceVerificationInProgress= {faceVerificationInProgress}
                 />
                 {/* Face Capture modal section ends here */}
 
-
-
+                {/* Verifying message */}
+                {/* { faceVerificationInProgress && (
+                    <div className="verifying-message">
+                        Verifying face, please wait...
+                    </div>
+                )} */}
                 <main 
                     className='w-full h-max grid grid-cols-1 gap-5 justify-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
                 >
