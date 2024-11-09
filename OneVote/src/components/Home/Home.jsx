@@ -3,34 +3,38 @@ import UserContext from '../../context/UserContext';
 import Card from './Card/Card';
 import { useContext, useEffect, useState } from 'react';
 import Modal from '../Modal/Modal';
-import FaceCapture from '../FaceCapture/FaceCapture';
+import FaceCaptureModal from '../Modal/FaceCaptureModal';
 
 function Home() {
-    const [partyData, setPartyData] = useState([]);
+    const [partyData , setPartyData] = useState([]);
     const navigate = useNavigate();
-    const { user, isLoggedIn, setUser, setIsLoggedIn } = useContext(UserContext);
+    const {user , isLoggedIn , setUser , setIsLoggedIn} = useContext(UserContext);
 
     // Modal section starts here.
-    const [showModal, setShowModal] = useState(false);
-    const [modalMessage, setModalMessage] = useState('');
+    const [showModal , setShowModal] = useState(false);
+    const [modalMessage , setModalMessage] = useState('');
     const [modalLink, setModalLink] = useState('');
-    const [path, setPath] = useState('');
-    const [showFaceCapture, setShowFaceCapture] = useState(false);  // State to show/hide face capture
+    const [path , setPath] = useState('');
 
     const closeModal = () => {
         setShowModal(false);
+        setisOpenFace(false);
         navigate(path);
     }
     // Modal section ends here
+
 
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (!token) {
             navigate('/registeration'); 
+          // Redirect to login if token is absent
         } else {
+          // Call an API to verify the token and load user data if necessary
             fetchUserData(token);
         }
     }, [navigate]);
+
 
     const fetchUserData = async (token) => {
         try {
@@ -46,34 +50,51 @@ function Home() {
                 // alert(data.message);
             } else {
                 localStorage.removeItem('token');
-                setModalMessage('Token Expired');
-                setPath('/registeration');
-                setShowModal(true);
+                setModalMessage('Token Expired')
+                setPath('/registeration')
+                setShowModal(true)
+                // <Modal isOpen={showModal} closeModal={closeModal} link={sessionExpired} message={'Token Expired'}/>
+                // alert('Token Expired.');
+                
+                // navigate('/registeration'); 
             }
         } catch (error) {
             console.error('Error verifying user:', error);
             navigate('/registeration');
         }
-    };
-
-    const handleVote = async (cardId) => {
-        const token = localStorage.getItem('token');
-
-        if (!isLoggedIn) {
-            setModalMessage("Please login to vote");
-            setPath('/registeration');
-            setShowModal(true);
-            return;
-        }
-
-        // Trigger face capture for verification before voting
-        setShowFaceCapture(true);
-    };
-
-    const verifyFaceAndVote = async (capturedImage) => {
-        const token = localStorage.getItem('token');
         
-        // Call the backend to verify the captured face against the registered face
+    };
+
+
+    // Face modal sections starts here
+    const [isFaceVerified, setisFaceVerified] = useState( () => {
+        const storedFaceVerified = localStorage.getItem('faceVerified');
+        return storedFaceVerified === 'true' ? true : false;
+    })
+    const [isOpenFace, setisOpenFace] = useState(false)
+
+    const [faceVerificationInProgress, setFaceVerificationInProgress] = useState(false);
+    const [pendingVoteCardId, setPendingVoteCardId] = useState(null);
+
+    const closeFaceModal = () => {
+        setisOpenFace(false)
+    }
+
+    const onCaptureError = (error) => {
+        setModalMessage(error);
+        setShowModal(true);
+        setisOpenFace(false);
+    }
+
+    const onCaptureSuccess = (image) => {
+        // setModalMessage('Face captured successfully');
+        // setShowModal(true);
+        setFaceVerificationInProgress(true)
+        verifyFace(image);
+    }
+
+    const verifyFace =async (capturedImage) => {
+        const token = localStorage.getItem('token');
         try {
             const response = await fetch('http://localhost:8000/api/verify_face/', {
                 method: 'POST',
@@ -85,22 +106,68 @@ function Home() {
             });
 
             const data = await response.json();
-            if (response.ok && data.face_verified) {
-                // If face is verified, proceed with voting
-                await submitVote();
-                setShowFaceCapture(false);  // Hide face capture after successful verification
-            } else {
-                setModalMessage('Face verification failed.');
+            setFaceVerificationInProgress(false)
+            if(response.ok){
+                setisFaceVerified(true);
+                localStorage.setItem('faceVerified', 'true');
+                setModalMessage(data.message);
                 setShowModal(true);
-                setShowFaceCapture(false);  // Hide face capture on failure
+
+                if (pendingVoteCardId) {
+                    castVote(pendingVoteCardId); 
+                    // Call castVote after successful face verification
+                }
+
+            } else{
+                setModalMessage('face do not match');
+                setShowModal(true);
             }
         } catch (error) {
-            console.log('Error verifying face:', error);
+            setModalMessage('Server error')
+            setShowModal(true);
+            console.error(error);
         }
-    };
+    }
+    // Face modal sections ends here
 
-    const submitVote = async () => {
+
+    const handleVote = async (cardId) => {
+        if (!isLoggedIn) {
+            setModalMessage("Please login to vote");
+            setPath('/registeration');
+            setShowModal(true);
+            return;
+        }
+        console.log(isFaceVerified)
+        if (!isFaceVerified) {
+            setisOpenFace(true);
+            setPendingVoteCardId(cardId); 
+            return;
+        }
+
+        // Directly cast vote if face is already verified
+        castVote(cardId);
+    }
+
+    const castVote = async (cardId) => {
         const token = localStorage.getItem('token');
+
+        // //Face verification section starts here
+        // setisOpenFace(true);
+        // // if()
+        // if(!isFaceVerified){
+        //     alert('face not verified')
+        //     return;
+        // }
+        // //Face verification section ends here
+
+        // if(!isLoggedIn){
+        //         setModalMessage("Please login to vote")
+        //         setPath('/registeration')
+        //         setShowModal(true)
+        //     // return alert("Please login to vote");
+        // }
+        // let data;
         try {
             const response = await fetch('http://localhost:8000/api/updatevote/', {
                 method: 'POST',
@@ -108,73 +175,95 @@ function Home() {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ partyId: selectedCardId }),  // Assuming selectedCardId is set when voting
+                body: JSON.stringify({ partyId: cardId }),
             });
-
+    
             const data = await response.json();
             if (response.ok) {
                 const now = new Date();
-                setUser((prev) => ({
+                setUser( (prev) => ({
                     ...prev,
                     has_voted: true,
                     voted_at: now.toLocaleDateString()
-                }));
-                setModalMessage('Thank You for voting.');
-                setModalLink('/home');
-                setShowModal(true);
+                }))
+                setModalMessage('Thank You for voting.')
+                setModalLink('/home')
+                setShowModal(true)
+                localStorage.removeItem('faceVerified')
             } else {
-                setModalMessage(data.error || 'Failed To Vote');
-                setModalLink('/home');
-                setShowModal(true);
+                setModalMessage(data.error || 'Failed To Vote')
+                // setModalLink(voteSuccessfulurl)
+                setModalLink('/home')
+                setShowModal(true)
+                // alert();
             }
         } catch (error) {
+            // if(data.status === 404) return alert(data.error)
+            // if (data.status === 500) return alert(data.error)
             console.log('Error casting vote:', error);
         }
     };
 
-    useEffect(() => {
+    //fetching all the card data for creating party cards.
+    useEffect( () => {
         fetch('http://localhost:8000/api/party/')
-            .then(response => response.json())
-            .then(data => setPartyData(data));
-    }, []);
+        .then( response => response.json())
+        .then( data => setPartyData(data));
+    } , [])
 
-    return (
-        <>
-            {/* Modal Component */}
-            <Modal 
-                isOpen={showModal} 
-                closeModal={closeModal} 
-                message={modalMessage}
-                link={modalLink}
-            />
-            {showFaceCapture && (
-                <FaceCapture 
-                    onCaptureSuccess={verifyFaceAndVote}
-                    onCaptureError={(errorMessage) => {
-                        setModalMessage(errorMessage);
-                        setShowModal(true);
-                    }}
+        return(
+            <>
+                {/* Modal Component */}
+                <Modal 
+                    isOpen={showModal} 
+                    closeModal={closeModal} 
+                    message={modalMessage}
+                    link={modalLink}
                 />
-            )}
-            <main 
-                className='w-full h-max grid grid-cols-1 gap-5 justify-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
-            >
-                {
-                    partyData.map((party, index) => (
-                        <div key={index}>
-                            <Card 
-                                name={party.name}
-                                logo={party.logo}
-                                description={party.description}
-                                manifestoLink={party.manifestoLink}
-                                onVote={() => handleVote(party.party_id)}  // Trigger vote and face capture
-                            />
-                        </div>
-                    ))
-                }
-            </main>
-        </>
-    );
+
+                {/* Face Capture modal section starts here */}
+                <FaceCaptureModal 
+                    isOpenFace={isOpenFace}
+                    closeFaceModal={closeFaceModal}
+                    onCaptureError={onCaptureError}
+                    onCaptureSuccess={onCaptureSuccess}
+                    faceVerificationInProgress= {faceVerificationInProgress}
+                />
+                {/* Face Capture modal section ends here */}
+
+                {/* Verifying message */}
+                {/* { faceVerificationInProgress && (
+                    <div className="verifying-message">
+                        Verifying face, please wait...
+                    </div>
+                )} */}
+                <main 
+                    className='w-full h-max grid grid-cols-1 gap-5 justify-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+                >
+                    {
+                        partyData.map((party,index)=>{
+                            return(
+                                <div key={index}>
+                                    <Card 
+                                        name={party.name}
+                                        logo={party.logo}
+                                        description={party.description}
+                                        manifestoLink={party.manifestoLink}
+                                        onVote={() => {
+                                            handleVote(party.party_id);
+                                        }}
+                                    />
+                                </div>
+                            )
+                        })
+                    }
+                </main>
+            </>
+            
+        );
+    
+    
+    
 }
 
 export default Home;
