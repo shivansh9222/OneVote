@@ -77,3 +77,16 @@ function User(){
 }
 
 export default User;
+
+
+
+// const response = await fetch('http://localhost:8000/api/verify_face/', {
+//     method: 'POST',
+//     headers: {
+//         'Authorization': `Bearer ${token}`,
+//         'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({ image: capturedImage }),  // Send captured image for verification
+// });
+
+// const data = await response.json();
