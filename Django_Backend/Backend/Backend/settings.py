@@ -25,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-d-_knlry@9d14+69ehprv912jr3-t!ii+e#o@(8155&_p847^)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -130,7 +130,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # React frontend (default port for React dev server)
+    # "http://localhost:5173",  # React frontend (default port for React dev server)
+    "https://your-frontend-app.vercel.app",
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_HEADERS = [
@@ -173,3 +174,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
