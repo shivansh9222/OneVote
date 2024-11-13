@@ -189,9 +189,9 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': API_SECRET,
 }
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = 'OneVoteBiometric/'
 
-MEDIA_URL = f'https://res.cloudinary.com/did5gvbtr/'
+MEDIA_URL = f'https://res.cloudinary.com/did5gvbtr/{MEDIA_ROOT}/'
 
 
 # STATIC_ROOT = BASE_DIR / 'staticfiles'
