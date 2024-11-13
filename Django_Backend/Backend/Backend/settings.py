@@ -191,9 +191,9 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': API_SECRET,
 }
 
-MEDIA_ROOT = 'OneVoteBiometric/'
+MEDIA_ROOT = 'media/'
 
-MEDIA_URL = f'https://res.cloudinary.com/did5gvbtr/{MEDIA_ROOT}/'
+MEDIA_URL = f'https://res.cloudinary.com/did5gvbtr/'
 
 
 # STATIC_ROOT = BASE_DIR / 'staticfiles'
