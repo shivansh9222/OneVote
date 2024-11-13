@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'api',
     'corsheaders',
     'rest_framework_simplejwt'
+    'cloudinary_storage',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -57,8 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'cloudinary',
-    'cloudinary_storage',
+    'cloudinary.middleware.CloudinaryMiddleware',
 ]
 
 ROOT_URLCONF = 'Backend.urls'
