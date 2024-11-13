@@ -182,10 +182,11 @@ SIMPLE_JWT = {
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+API_KEY = os.environ.get("CLOUDINARY_STORAGE_API_KEY")
 API_SECRET = os.environ.get("CLOUDINARY_STORAGE_SECRET_KEY")
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'did5gvbtr',
-    'API_KEY': '372145785747542',
+    'API_KEY': API_KEY,
     'API_SECRET': API_SECRET,
 }
 
