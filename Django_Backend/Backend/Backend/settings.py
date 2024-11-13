@@ -57,6 +57,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 ROOT_URLCONF = 'Backend.urls'
@@ -178,9 +180,18 @@ SIMPLE_JWT = {
    'BLACKLIST_AFTER_ROTATION': True,
 }
 
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+API_SECRET = os.environ.get("CLOUDINARY_STORAGE_SECRET_KEY")
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'did5gvbtr',
+    'API_KEY': '372145785747542',
+    'API_SECRET': API_SECRET,
+}
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-MEDIA_URL = '/media/'
+MEDIA_URL = f'https://res.cloudinary.com/did5gvbtr/'
 
 
 # STATIC_ROOT = BASE_DIR / 'staticfiles'
