@@ -59,7 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'cloudinary.middleware.CloudinaryMiddleware',
+    # 'cloudinary.middleware.CloudinaryMiddleware',
 ]
 
 ROOT_URLCONF = 'Backend.urls'
