@@ -165,6 +165,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Local development (React dev server)
     "https://one-vote-khaki.vercel.app",  # Production URL (Vercel app)
 ]
+
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_HEADERS = [
     'content-type',
@@ -180,8 +181,6 @@ CORS_ALLOW_CREDENTIALS = True
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework.authentication.SessionAuthentication',  # Requires CSRF tokens
-        # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
@@ -191,10 +190,6 @@ CSRF_TRUSTED_ORIGINS = [
     'https://one-vote-khaki.vercel.app',
 ]
 
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:5173',
-    'https://one-vote-khaki.vercel.app',
-]  
 
 SIMPLE_JWT = {
    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
@@ -220,3 +215,5 @@ MEDIA_URL = f'https://res.cloudinary.com/did5gvbtr/'
 
 # STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
