@@ -2,6 +2,7 @@ import React from "react";
 import { Link, NavLink } from "react-router-dom";
 
 function Hero () {
+    // console.log(`${apiUrl}/api/login/`)
     return (
         <main className="h-screen w-screen">
             <header className=" sticky top-0 right-0 z-30 text-orange-500 bg-white w-full h-[15vh] md:h-[10vh]">

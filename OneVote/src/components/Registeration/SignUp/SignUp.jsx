@@ -3,6 +3,7 @@ import PasswordInput from '../PasswordInput/PasswordInput';
 import { useNavigate } from 'react-router-dom';
 import Modal from '../../Modal/Modal';
 import FaceCaptureModal from '../../Modal/FaceCaptureModal';
+import { apiUrl } from '../..';
 
 function SignUp({toggleComponent}) {
 
@@ -84,7 +85,7 @@ function SignUp({toggleComponent}) {
         // Sending signup data including captured image
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:8000/api/signup/', {
+            const response = await fetch( `${apiUrl}/api/signup/` , {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',

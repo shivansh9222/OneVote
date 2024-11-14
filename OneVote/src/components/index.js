@@ -13,4 +13,7 @@ import Modal from "./Modal/Modal";
 import FaceCapture from "./FaceCapture/FaceCapture";
 import FaceCaptureModal from "./Modal/FaceCaptureModal";
 
-export {Header,Footer , Home,About , User,Extra, Login, SignUp , Profile , Hero , Result , Modal , FaceCapture , FaceCaptureModal};
+const apiUrl = import.meta.env.VITE_BASE_URL_PROD;
+// const apiUrl = import.meta.env.VITE_BASE_URL_DEV;
+
+export {Header,Footer , Home,About , User,Extra, Login, SignUp , Profile , Hero , Result , Modal , FaceCapture , FaceCaptureModal , apiUrl};

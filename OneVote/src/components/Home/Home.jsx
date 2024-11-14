@@ -4,8 +4,10 @@ import Card from './Card/Card';
 import { useContext, useEffect, useState } from 'react';
 import Modal from '../Modal/Modal';
 import FaceCaptureModal from '../Modal/FaceCaptureModal';
+import {apiUrl} from '../index'
 
 function Home() {
+
     const [partyData , setPartyData] = useState([]);
     const navigate = useNavigate();
     const {user , isLoggedIn , setUser , setIsLoggedIn} = useContext(UserContext);
@@ -38,7 +40,7 @@ function Home() {
 
     const fetchUserData = async (token) => {
         try {
-            const response = await fetch('http://localhost:8000/api/protected_view/', {
+            const response = await fetch( `${apiUrl}/api/protected_view/`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -53,10 +55,6 @@ function Home() {
                 setModalMessage('Token Expired')
                 setPath('/registeration')
                 setShowModal(true)
-                // <Modal isOpen={showModal} closeModal={closeModal} link={sessionExpired} message={'Token Expired'}/>
-                // alert('Token Expired.');
-                
-                // navigate('/registeration'); 
             }
         } catch (error) {
             console.error('Error verifying user:', error);
@@ -96,7 +94,7 @@ function Home() {
     const verifyFace =async (capturedImage) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch('http://localhost:8000/api/verify_face/', {
+            const response = await fetch( `${apiUrl}/api/verify_face/`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -151,25 +149,8 @@ function Home() {
 
     const castVote = async (cardId) => {
         const token = localStorage.getItem('token');
-
-        // //Face verification section starts here
-        // setisOpenFace(true);
-        // // if()
-        // if(!isFaceVerified){
-        //     alert('face not verified')
-        //     return;
-        // }
-        // //Face verification section ends here
-
-        // if(!isLoggedIn){
-        //         setModalMessage("Please login to vote")
-        //         setPath('/registeration')
-        //         setShowModal(true)
-        //     // return alert("Please login to vote");
-        // }
-        // let data;
         try {
-            const response = await fetch('http://localhost:8000/api/updatevote/', {
+            const response = await fetch( `${apiUrl}/api/updatevote/`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -189,12 +170,14 @@ function Home() {
                 setModalMessage('Thank You for voting.')
                 setModalLink('/home')
                 setShowModal(true)
+                setFaceVerificationInProgress(false)
                 localStorage.removeItem('faceVerified')
             } else {
                 setModalMessage(data.error || 'Failed To Vote')
                 // setModalLink(voteSuccessfulurl)
                 setModalLink('/home')
                 setShowModal(true)
+                setFaceVerificationInProgress(false)
                 // alert();
             }
         } catch (error) {
@@ -206,7 +189,7 @@ function Home() {
 
     //fetching all the card data for creating party cards.
     useEffect( () => {
-        fetch('http://localhost:8000/api/party/')
+        fetch(`${apiUrl}/api/party/`)
         .then( response => response.json())
         .then( data => setPartyData(data));
     } , [])

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { apiUrl } from "..";
 
 export default function Contact(){
     const [name , setUserName] = useState('');
@@ -8,7 +9,7 @@ export default function Contact(){
     const handleSubmit = async (e) => {
 
         e.preventDefault();
-        const response = await fetch('http://localhost:8000/api/contactus/',{
+        const response = await fetch(`${apiUrl}/api/contactus/`,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

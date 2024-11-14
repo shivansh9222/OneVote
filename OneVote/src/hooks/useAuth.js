@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { apiUrl } from '../components';
 
 const useAuth = () => {
     const navigate = useNavigate();
@@ -15,7 +16,7 @@ const useAuth = () => {
 
     const fetchUserData = async (token) => {
         try {
-            const response = await fetch('http://localhost:8000/api/protected_view/', {
+            const response = await fetch( `${apiUrl}/api/protected_view/` , {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,

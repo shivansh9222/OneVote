@@ -4,8 +4,11 @@ import PasswordInput from "../PasswordInput/PasswordInput";
 import UserContext from '../../../context/UserContext'
 import Modal from "../../Modal/Modal";
 import FaceCapture from "../../FaceCapture/FaceCapture";
+import { apiUrl } from "../..";
 
 function Login({toggleComponent}){
+
+    // console.log(`${apiUrl}/api/login/`)
 
     //style elements
     const [isFocused , setIsFocused] = useState(false);
@@ -39,12 +42,13 @@ function Login({toggleComponent}){
 
         try {
             // if(!uniq 
-            const response = await fetch('http://localhost:8000/api/login/' , {
+            const response = await fetch( `${apiUrl}/api/login/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({unique_id:uniqueId , password}) //{unique_id: uniqueId , password}
+                body: JSON.stringify({unique_id:uniqueId , password}) 
+                //{unique_id: uniqueId , password}
             })
 
             const data = await response.json();
