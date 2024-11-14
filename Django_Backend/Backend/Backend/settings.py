@@ -27,7 +27,6 @@ ENVIRONMENT = os.getenv("DJANGO_ENV", "production")
 print (ENVIRONMENT)
 if ENVIRONMENT == "development":
     load_dotenv()  # Load environment variables from .env file
-    print("Loaded DJANGO_ENV:", os.getenv("DJANGO_ENV"))
 
 # Settings for both development and production
 SECRET_KEY = os.getenv("SECRET_KEY", "DJANGO_SECRET_KEY")
@@ -38,8 +37,6 @@ if ENVIRONMENT == "development":
     ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 else:
     ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "your-app-name.onrender.com").split(",")
-
-print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
 
 
 
@@ -165,10 +162,10 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    # "http://localhost:5173",  # React frontend (default port for React dev server)
-    "https://your-frontend-app.vercel.app",
+    "http://localhost:5173",  # Local development (React dev server)
+    "https://one-vote-khaki.vercel.app",  # Production URL (Vercel app)
 ]
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_HEADERS = [
     'content-type',
     'x-csrftoken',
@@ -190,11 +187,13 @@ REST_FRAMEWORK = {
 }
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'https://one-vote-khaki.vercel.app',
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'https://one-vote-khaki.vercel.app',
 ]  
 
 SIMPLE_JWT = {
@@ -214,9 +213,10 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': API_SECRET,
 }
 
-MEDIA_ROOT = 'media/'
+
+# MEDIA_ROOT = 'media/'
 
 MEDIA_URL = f'https://res.cloudinary.com/did5gvbtr/'
 
-
 # STATIC_ROOT = BASE_DIR / 'staticfiles'
+
