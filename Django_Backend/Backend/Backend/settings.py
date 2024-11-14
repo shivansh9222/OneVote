@@ -47,7 +47,6 @@ print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-d-_knlry@9d14+69ehprv912jr3-t!ii+e#o@(8155&_p847^)'
 # SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 
