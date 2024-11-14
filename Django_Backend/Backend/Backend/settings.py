@@ -14,9 +14,33 @@ from datetime import timedelta
 import os
 from pathlib import Path
 import dj_database_url
+from dotenv import load_dotenv
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+ENVIRONMENT = os.getenv("DJANGO_ENV", "production")
+
+# Load .env only if in development mode
+print (ENVIRONMENT)
+if ENVIRONMENT == "development":
+    load_dotenv()  # Load environment variables from .env file
+    print("Loaded DJANGO_ENV:", os.getenv("DJANGO_ENV"))
+
+# Settings for both development and production
+SECRET_KEY = os.getenv("SECRET_KEY", "DJANGO_SECRET_KEY")
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+
+# Configure allowed hosts based on environment
+if ENVIRONMENT == "development":
+    ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+else:
+    ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "your-app-name.onrender.com").split(",")
+
+print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -24,13 +48,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-d-_knlry@9d14+69ehprv912jr3-t!ii+e#o@(8155&_p847^)'
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+# SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+# # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(',')
+# ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(',')
 
 
 # Application definition
@@ -95,7 +119,7 @@ DATABASES = {
 }
 
 # If DATABASE_URL is set (i.e., in production), override the default with that configuration
-database_url = os.environ.get("DATABASE_URL")
+database_url = os.getenv("DATABASE_URL")
 
 if database_url:
     DATABASES["default"] = dj_database_url.parse(database_url)

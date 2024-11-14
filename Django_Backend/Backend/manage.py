@@ -3,6 +3,11 @@
 import os
 import sys
 
+from dotenv import load_dotenv
+
+# Conditionally load .env file only if DJANGO_ENV is not already set to "production"
+if os.getenv("DJANGO_ENV") != "production":
+    load_dotenv()
 
 def main():
     """Run administrative tasks."""
