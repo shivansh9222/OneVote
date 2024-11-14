@@ -3,7 +3,7 @@ import Footer from "./Footer/Footer";
 import Home from "./Home/Home";
 import About from "./About/About";
 import User from "./User/User"
-import Extra from "./Footer/extra";
+import Extra from "./Footer/Extra";
 import Login from "./Registeration/Login/Login";
 import SignUp from "./Registeration/SignUp/SignUp";
 import Profile from "./Profile/Profile";

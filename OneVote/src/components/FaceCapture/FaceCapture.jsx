@@ -1,3 +1,5 @@
+// Not being used
+
 import React, { useRef } from 'react';
 import Webcam from 'react-webcam';
 
