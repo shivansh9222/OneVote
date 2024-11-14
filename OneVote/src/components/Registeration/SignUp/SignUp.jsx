@@ -7,6 +7,8 @@ import { apiUrl } from '../..';
 
 function SignUp({toggleComponent}) {
 
+    console.log(`${apiUrl}/api/signup/`)
+
     const [isFocusedName , setIsFocusedName] = useState(false);
     const [isFocusedEmail, setisFocusedEmail] = useState(false)
     const [isFocusedUid, setIsFocusedUid] = useState(false)

@@ -8,10 +8,11 @@ import { apiUrl } from "../..";
 
 function Login({toggleComponent}){
 
-    // console.log(`${apiUrl}/api/login/`)
+    console.log(`${apiUrl}/api/login/`)
 
     //style elements
     const [isFocused , setIsFocused] = useState(false);
+    const [loggingIn, setloggingIn] = useState(false)
 
     //Biometrics section starts here
     const handleSuccess = (message) => alert(message);
@@ -42,6 +43,7 @@ function Login({toggleComponent}){
 
         try {
             // if(!uniq 
+            setloggingIn(true);
             const response = await fetch( `${apiUrl}/api/login/`, {
                 method: 'POST',
                 headers: {
@@ -61,8 +63,10 @@ function Login({toggleComponent}){
 
                 // Modal section
                 setModalMessage(data.message)
+                setloggingIn(false)
                 setPath('/home')
                 setShowModal(true)
+                
             } else{
                 setModalMessage(data.message)
                 // setModalLink(crossSymbol)
@@ -181,8 +185,9 @@ function Login({toggleComponent}){
                         type="submit"
                         onClick={handleSubmit}
                         className="box-border bg-orange-500 text-white py-1 rounded-2xl hover:bg-orange-600"
+                        disabled={loggingIn}
                     >
-                        Login
+                        {loggingIn ? 'Logging ....' : 'Login'}
                     </button>
                     {/* Login Button section ends here */}
 
