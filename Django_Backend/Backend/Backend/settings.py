@@ -36,8 +36,9 @@ DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 if ENVIRONMENT == "development":
     ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 else:
-    ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "https://onevote-a49c.onrender.com,https://one-vote-khaki.vercel.app").split(",")
+    ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "onevote-a49c.onrender.com,one-vote-khaki.vercel.app").split(",")
 
+print(f"ALLOWED_HOSTS: {ALLOWED_HOSTS}")
 
 
 
