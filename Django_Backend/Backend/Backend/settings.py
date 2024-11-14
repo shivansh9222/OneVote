@@ -169,6 +169,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Local development (React dev server)
     "https://one-vote-khaki.vercel.app",  # Production URL (Vercel app)
+    "https://one-vote-git-main-anmol-rais-projects.vercel.app",
+    "https://one-vote-mnkknii8o-anmol-rais-projects.vercel.app",
+    "https://one-vote-anmol-rais-projects.vercel.app"
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False
