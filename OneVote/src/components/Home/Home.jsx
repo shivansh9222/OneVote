@@ -8,10 +8,10 @@ import {apiUrl} from '../index'
 
 function Home() {
 
-    console.log(`Protected view : ${apiUrl}/api/protected_view/`)
-    console.log(`Verify face: ${apiUrl}/api/verify_face/`)
-    console.log(`Update Vote: ${apiUrl}/api/updatevote/`)
-    console.log(`party: ${apiUrl}/api/party/`)
+    // console.log(`Protected view : ${apiUrl}/api/protected_view/`)
+    // console.log(`Verify face: ${apiUrl}/api/verify_face/`)
+    // console.log(`Update Vote: ${apiUrl}/api/updatevote/`)
+    // console.log(`party: ${apiUrl}/api/party/`)
 
     const [partyData , setPartyData] = useState([]);
     const navigate = useNavigate();
@@ -141,7 +141,7 @@ function Home() {
             setShowModal(true);
             return;
         }
-        console.log(isFaceVerified)
+        // console.log(isFaceVerified)
         if (!isFaceVerified) {
             setisOpenFace(true);
             setPendingVoteCardId(cardId); 
