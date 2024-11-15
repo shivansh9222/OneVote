@@ -8,7 +8,7 @@ import { apiUrl } from "../..";
 
 function Login({toggleComponent}){
 
-    console.log(`${apiUrl}/api/login/`)
+    // console.log(`${apiUrl}/api/login/`)
 
     //style elements
     const [isFocused , setIsFocused] = useState(false);
@@ -63,7 +63,7 @@ function Login({toggleComponent}){
 
                 // Modal section
                 setModalMessage(data.message)
-                setloggingIn(false)
+                
                 setPath('/home')
                 setShowModal(true)
                 
@@ -73,12 +73,14 @@ function Login({toggleComponent}){
                 setPath('/registeration')
                 setShowModal(true)
             }
+            setloggingIn(false)
         } catch (error) {
             setModalMessage('server error')
             setPath('/registeration')
             setShowModal(true)
             // alert('server error');
             console.log(error);
+            setloggingIn(false)
         }
 
         //setData to default
@@ -184,10 +186,10 @@ function Login({toggleComponent}){
                     <button 
                         type="submit"
                         onClick={handleSubmit}
-                        className="box-border bg-orange-500 text-white py-1 rounded-2xl hover:bg-orange-600"
+                        className={`box-border text-white py-1 rounded-2xl  ${loggingIn ? 'bg-orange-200' : 'bg-orange-500 hover:bg-orange-600'}`}
                         disabled={loggingIn}
                     >
-                        {loggingIn ? 'Logging ....' : 'Login'}
+                        {loggingIn ? 'Logging In ....' : 'Login'}
                     </button>
                     {/* Login Button section ends here */}
 
