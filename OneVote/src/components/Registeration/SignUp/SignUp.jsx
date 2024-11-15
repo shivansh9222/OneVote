@@ -167,9 +167,9 @@ function SignUp({toggleComponent}) {
             setModalMessage(data.message);
             setShowModal(true);
 
-            if (data.status === 'success') {
-                setPath('/registeration');
-            }
+            // if (data.status === 'success') {
+            //     setPath('/registeration');
+            // }
 
             // Reset fields after signup
             setFormData({
@@ -429,7 +429,7 @@ function SignUp({toggleComponent}) {
 
                 {/* Face Capture Component starts here*/}
                 <div 
-                    className={`w-full flex h-12 box-border rounded-lg cursor-pointer items-center justify-between p-1 text-gray-700 transition-colors ease-in-out duration-200 mt-3 ${caputureSuccess ? '' : 'shadow-none animate-none' }  ${uploadSuccess ? 'bg-green-400 cursor-not-allowed pointer-events-none text-white'  : 'bg-orange-100 hover:bg-orange-200 shadow-glow-orange animate-pulse-glow'}  ` }
+                    className={`w-full flex h-12 box-border rounded-lg cursor-pointer items-center justify-between p-1 text-gray-700 transition-colors ease-in-out duration-200 mt-3 ${caputureSuccess ? '' : 'shadow-none animate-none' }  ${uploadSuccess ? 'bg-green-400 cursor-not-allowed pointer-events-none text-white'  : 'bg-orange-100 hover:bg-orange-200 shadow-glow-orange animate-pulse-glow'} ` }
                     
                 >
                     <button 
