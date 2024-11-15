@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PasswordInput from '../PasswordInput/PasswordInput';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate , Link } from 'react-router-dom';
 import Modal from '../../Modal/Modal';
 import FaceCaptureModal from '../../Modal/FaceCaptureModal';
 import { apiUrl } from '../..';
 
 function SignUp({toggleComponent}) {
 
-    console.log(`${apiUrl}/api/signup/`)
+    // console.log(`${apiUrl}/api/signup/`)
 
     const [isFocusedName , setIsFocusedName] = useState(false);
     const [isFocusedEmail, setisFocusedEmail] = useState(false)
@@ -26,11 +26,70 @@ function SignUp({toggleComponent}) {
     
     //Face Capture Modal starts here
     const[isOpenFace , setIsOpenFace] = useState(false);
-    const [success, setsuccess] = useState(false)
     const closeFaceModal = () => {
         setIsOpenFace(false)
     }
     //Face Capture Modal ends here
+
+
+
+
+    //Face Verification section starts here
+
+    const [caputureSuccess, setCaptureSuccess] = useState(false)
+    const [uploadSuccess, setuploadSuccess] = useState(false)
+    const [imageUrl , setimageUrl] = useState('');
+    const [loadingUpload, setLoadingUpload] = useState(false);
+
+
+    
+    const uploadBiometrics = async (image) => {
+
+        const uploadPreset = import.meta.env.VITE_UPLOAD_PRESET;
+        const cloudapi = import.meta.env.VITE_CLOUDINARY_URL;
+
+        const imageData = new FormData();
+        imageData.append("file", image);
+        imageData.append("upload_preset", uploadPreset);
+
+        try {
+        setLoadingUpload(true);
+        const response = await fetch(cloudapi, {
+            method: "POST",
+            body: imageData,
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // console.log("Image uploaded successfully:", data);
+            setimageUrl(data.url);
+            // console.log('res' , data.url);
+            
+            setuploadSuccess(true);
+            setModalMessage('Image uploaded successfully!')
+            setShowModal(true);
+        } else {
+            console.error("Image upload failed:", data.error);
+            setuploadSuccess(false);
+            setCaptureSuccess(false)
+            setModalMessage('Image upload failed!')
+            setShowModal(true)
+        }
+        } catch (error) {
+            console.error("An error occurred while uploading:", error);
+            setuploadSuccess(false);
+            setCaptureSuccess(false)
+            setModalMessage("An unexpected error occurred!")
+            setShowModal(true);
+        } finally {
+            setLoadingUpload(false);
+            
+        }
+        
+    }
+
+    //Face Verification section ends here.
 
     const closeModal = () => {
         setShowModal(false);
@@ -60,7 +119,7 @@ function SignUp({toggleComponent}) {
         }
 
         if (!isUniqueIdValid(formData.uniqueId)) {
-            setModalMessage('UniqueId must contain only numbers');
+            setModalMessage('Unique Id must contain only numbers');
             setShowModal(true);
             return;
         }
@@ -97,7 +156,8 @@ function SignUp({toggleComponent}) {
                     email: formData.email,
                     password: formData.password,
                     unique_id: formData.uniqueId,
-                    image: capturedImage  // Include captured image
+                    image: imageUrl  
+                    // Include captured image url
                 })
             });
 
@@ -120,12 +180,13 @@ function SignUp({toggleComponent}) {
                 confirmPassword: ''
             });
             setCapturedImage(null); 
-            setsuccess(false)// Clear captured image
+            setimageUrl('')
+            setCaptureSuccess(false)// Clear captured image
         } catch (error) {
             console.error('Error during signup:', error);
             setModalMessage('Sign-Up failed.');
             setShowModal(true);
-            setsuccess(false)
+            setCaptureSuccess(false)
         } finally {
             setLoading(false);
         }
@@ -135,10 +196,11 @@ function SignUp({toggleComponent}) {
 
     //Image capture section starts
     const handleCaptureSuccess = (image) => {
-        setCapturedImage(image); // Set captured image in state
+        setCapturedImage(image);
+        // Set captured image in state
         setModalMessage('Face captured successfully.');
         setShowModal(true);
-        setsuccess(true)
+        setCaptureSuccess(true)
     };
 
     const handleCaptureError = (error) => {
@@ -161,7 +223,6 @@ function SignUp({toggleComponent}) {
                 onCaptureSuccess={handleCaptureSuccess}
             />
             <form 
-                onSubmit={handleSubmit}
                 className='max-h-[90vh] max-w-[80vw] w-max sm:w-[400px] border-2 border-orange-500 mx-auto flex flex-col items-center justify-between px-3 py-4 gap-y-1
                 shadow-glow-orange animate-pulse-glow 
                 bg-white
@@ -169,7 +230,9 @@ function SignUp({toggleComponent}) {
             >
 
                 {/* header section starts here */}
-                <h1 className="text-2xl text-orange-500">Sign Up</h1>
+                <h1 className="text-2xl text-orange-500">
+                    Sign Up
+                </h1>
                 <div className="w-[70%] border-2 border-orange-500 mb-2 sm:mb-4"></div>
                 {/* header section ends here */}
                 
@@ -366,26 +429,39 @@ function SignUp({toggleComponent}) {
 
                 {/* Face Capture Component starts here*/}
                 <div 
-                    className={`w-full flex h-12 box-border rounded-lg cursor-pointer items-center justify-between p-1 text-gray-700 transition-colors ease-in-out duration-200 mt-3 ${success ? 'bg-green-400 cursor-not-allowed pointer-events-none text-white' : 'bg-orange-50 hover:bg-orange-200'}`}
-                    onClick={() => setIsOpenFace(true)}
+                    className={`w-full flex h-12 box-border rounded-lg cursor-pointer items-center justify-between p-1 text-gray-700 transition-colors ease-in-out duration-200 mt-3 ${caputureSuccess ? '' : 'shadow-none animate-none' }  ${uploadSuccess ? 'bg-green-400 cursor-not-allowed pointer-events-none text-white'  : 'bg-orange-100 hover:bg-orange-200 shadow-glow-orange animate-pulse-glow'}  ` }
+                    
                 >
-                    <span className='flex text-base italic '>
+                    <button 
+                        className={`${caputureSuccess ? 'hidden' : 'flex'} text-base italic w-full text-center`}
+                        onClick={() => setIsOpenFace(true)}
+                    >
                         Capture Biometric
-                    </span>
+                    </button>
+
+                    <button 
+                        className={`${!caputureSuccess ? 'hidden' : 'flex'} flex text-md italic w-full h-full items-center justify-center`}
+                        onClick={
+                            () => {
+                                uploadBiometrics(capturedImage)
+                            }
+                        }
+                        disabled={loadingUpload}
+                    >
+                        {loadingUpload ? 'Uploading Biometrics ...' : 'Upload Biometrics Now'}
+                    </button>
+
                     <img 
                         src="https://cdn-icons-png.flaticon.com/512/8003/8003466.png" 
                         alt="capture image" 
                         className='h-8 w-8 object-cover object-center'
                     />
-                </div>
 
-                {/* <div>
-                    <h2>Signup - Face Registration</h2>
-                    <FaceCapture
-                        onCaptureSuccess={handleCaptureSuccess}
-                        onCaptureError={handleCaptureError}
-                    />
-                </div> */}
+                    {/* Image preview section starts here */}
+                    {/* {uploadSuccess && <p> Uploaded Image URL : {imageUrl}</p>} */}
+                    {/* Image preview section ends here */}
+                    
+                </div>
                 {/* Face Capture Component ends here */}
 
                 {/* Submit Button */}
@@ -393,6 +469,7 @@ function SignUp({toggleComponent}) {
                     type='submit' 
                     className={`bg-orange-400 text-white w-max md:rounded-full px-4 py-1 rounded-3xl md:px-4 mx-auto ${loading ? 'opacity-50' : 'hover:bg-orange-500'} mt-3`} 
                     disabled={loading}
+                    onClick={handleSubmit}
                 >
                     {loading ? "Signing Up..." : "Sign-Up"}
                 </button>
