@@ -9,6 +9,7 @@ from PIL import Image
 import numpy as np
 from io import BytesIO
 import tempfile
+import requests
 
 from .models import Party, Contact, Profile
 from django.contrib.auth.models import User
@@ -50,18 +51,81 @@ class LoginSerializer(serializers.Serializer):
         else:
             raise serializers.ValidationError("Invalid login credentials")
 
-# Signup Serializer
+# # Signup Serializer
+# class SignupSerializer(serializers.ModelSerializer):
+#     unique_id = serializers.CharField(max_length=12)
+#     image = serializers.CharField(write_only=True, required=False)  # Optional for cases without photo
+ 
+#     class Meta:
+#         model = User
+#         fields = ['username', 'email', 'password', 'unique_id', 'image']
+#         extra_kwargs = {'password': {'write_only': True}}  # Make password write-only
+
+#     def create(self, validated_data):
+#         image_data = validated_data.pop('image', None)  # Image may not always be provided
+#         unique_id = validated_data.pop('unique_id')
+
+#         # Create the user object
+#         user = User.objects.create_user(
+#             username=unique_id,  # Using unique_id as username
+#             email=validated_data['email'],
+#             first_name=validated_data['username'],  # Use provided username for first name
+#             password=validated_data['password']
+#         )
+
+#         # Create the Profile object for the user
+#         profile = Profile.objects.create(user=user, unique_id=unique_id)
+
+#         # Handle image processing (if image data is provided)
+#         if image_data:
+#             try:
+#                 # Decode the base64 image string
+#                 format, imgstr = image_data.split(';base64,')  # Split base64 metadata from actual data
+#                 img_data = ContentFile(base64.b64decode(imgstr), name=f'{unique_id}_profile.jpg')  # Create file from image data
+
+#                 # Convert the ContentFile to a PIL Image to pass to DeepFace
+#                 image = Image.open(BytesIO(img_data.read()))  # Convert to a PIL Image object
+
+#                 # Convert the PIL Image to a numpy array (DeepFace accepts numpy arrays)
+#                 image_np = np.array(image)
+
+#                 # Now, use DeepFace to extract face embeddings (face encoding)
+#                 face_encoding = DeepFace.represent(image_np, model_name="Facenet")[0]["embedding"]  # Extract embedding
+
+#                 # Save the image and encoding in the profile
+#                 profile.face_image = img_data
+#                 profile.face_encoding = face_encoding  # Save the face encoding to the profile
+#                 profile.save()  # Save the profile object
+
+#             except Exception as e:
+#                 logger.error(f"Error during image processing or face encoding: {str(e)}")
+#                 raise Exception("Error during image processing or face encoding")
+
+#         return user  # Return the created user object
+
+
+
+import logging
+import requests
+from io import BytesIO
+from django.core.files.base import ContentFile
+from PIL import Image
+from deepface import DeepFace
+from .models import User, Profile
+
+logger = logging.getLogger(__name__)
+
 class SignupSerializer(serializers.ModelSerializer):
     unique_id = serializers.CharField(max_length=12)
-    image = serializers.CharField(write_only=True, required=False)  # Optional for cases without photo
+    imageUrl = serializers.URLField(write_only=True, required=False)  # Use 'imageUrl' to match frontend data
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'unique_id', 'image']
+        fields = ['username', 'email', 'password', 'unique_id', 'imageUrl']  # Ensure 'imageUrl' is included here
         extra_kwargs = {'password': {'write_only': True}}  # Make password write-only
 
     def create(self, validated_data):
-        image_data = validated_data.pop('image', None)  # Image may not always be provided
+        image_url = validated_data.pop('imageUrl', None)  # Now 'imageUrl' matches the frontend field name
         unique_id = validated_data.pop('unique_id')
 
         # Create the user object
@@ -75,32 +139,43 @@ class SignupSerializer(serializers.ModelSerializer):
         # Create the Profile object for the user
         profile = Profile.objects.create(user=user, unique_id=unique_id)
 
-        # Handle image processing (if image data is provided)
-        if image_data:
+        # Handle image processing (if image URL is provided)
+        if image_url:
             try:
-                # Decode the base64 image string
-                format, imgstr = image_data.split(';base64,')  # Split base64 metadata from actual data
-                img_data = ContentFile(base64.b64decode(imgstr), name=f'{unique_id}_profile.jpg')  # Create file from image data
+                # Fetch the image from the URL
+                response = requests.get(image_url)
+                response.raise_for_status()  # Raise HTTPError if the request failed
 
-                # Convert the ContentFile to a PIL Image to pass to DeepFace
+                # Create a ContentFile from the response content
+                img_data = ContentFile(response.content, name=f'{unique_id}_profile.jpg')
+
+                # Convert the ContentFile to a PIL Image
                 image = Image.open(BytesIO(img_data.read()))  # Convert to a PIL Image object
 
                 # Convert the PIL Image to a numpy array (DeepFace accepts numpy arrays)
                 image_np = np.array(image)
 
                 # Now, use DeepFace to extract face embeddings (face encoding)
-                face_encoding = DeepFace.represent(image_np, model_name="Facenet")[0]["embedding"]  # Extract embedding
+                try:
+                    face_encoding = DeepFace.represent(image_np, model_name="Facenet")[0]["embedding"]  # Extract embedding
+                except Exception as e:
+                    logger.error(f"Error during face encoding with DeepFace: {str(e)}")
+                    raise Exception("Error during face encoding with DeepFace")
 
                 # Save the image and encoding in the profile
-                profile.face_image = img_data
+                profile.face_image = img_data  # Save the image file
                 profile.face_encoding = face_encoding  # Save the face encoding to the profile
                 profile.save()  # Save the profile object
 
+            except requests.exceptions.RequestException as e:
+                logger.error(f"Error fetching image from URL: {str(e)}")
+                raise Exception("Error fetching image from URL")
             except Exception as e:
                 logger.error(f"Error during image processing or face encoding: {str(e)}")
-                raise Exception("Error during image processing or face encoding")
+                raise Exception(f"Error during image processing or face encoding: {str(e)}")
 
         return user  # Return the created user object
+
 
 # Face Verification Serializer
 class FaceVerificationSerializer(serializers.Serializer):
