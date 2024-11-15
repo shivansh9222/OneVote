@@ -105,27 +105,28 @@ class LoginSerializer(serializers.Serializer):
 
 
 
-import logging
+from rest_framework import serializers
 import requests
-from io import BytesIO
-from django.core.files.base import ContentFile
 from PIL import Image
+import numpy as np
+from io import BytesIO
 from deepface import DeepFace
-from .models import User, Profile
+from django.core.files.base import ContentFile
+import logging
 
 logger = logging.getLogger(__name__)
 
 class SignupSerializer(serializers.ModelSerializer):
     unique_id = serializers.CharField(max_length=12)
-    imageUrl = serializers.URLField(write_only=True, required=False)  # Use 'imageUrl' to match frontend data
+    imageUrl = serializers.URLField(write_only=True, required=False)  # Use 'imageUrl' as sent by the frontend
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'unique_id', 'imageUrl']  # Ensure 'imageUrl' is included here
+        fields = ['username', 'email', 'password', 'unique_id', 'imageUrl']
         extra_kwargs = {'password': {'write_only': True}}  # Make password write-only
 
     def create(self, validated_data):
-        image_url = validated_data.pop('imageUrl', None)  # Now 'imageUrl' matches the frontend field name
+        image_url = validated_data.pop('imageUrl', None)  # Get 'imageUrl' from the request data
         unique_id = validated_data.pop('unique_id')
 
         # Create the user object
@@ -142,37 +143,35 @@ class SignupSerializer(serializers.ModelSerializer):
         # Handle image processing (if image URL is provided)
         if image_url:
             try:
-                # Fetch the image from the URL
+                # Store the Cloudinary image URL directly in the profile
+                profile.face_image_url = image_url  # Save the image URL from Cloudinary in the profile
+
+                # Optionally, process the image (e.g., face encoding) if needed
+                # Fetch the image from Cloudinary
                 response = requests.get(image_url)
-                response.raise_for_status()  # Raise HTTPError if the request failed
+                response.raise_for_status()  # Ensure the request was successful
 
-                # Create a ContentFile from the response content
-                img_data = ContentFile(response.content, name=f'{unique_id}_profile.jpg')
+                # Convert the image to a PIL Image object
+                image = Image.open(BytesIO(response.content))
 
-                # Convert the ContentFile to a PIL Image
-                image = Image.open(BytesIO(img_data.read()))  # Convert to a PIL Image object
-
-                # Convert the PIL Image to a numpy array (DeepFace accepts numpy arrays)
+                # Convert to a numpy array (DeepFace expects numpy arrays)
                 image_np = np.array(image)
 
-                # Now, use DeepFace to extract face embeddings (face encoding)
-                try:
-                    face_encoding = DeepFace.represent(image_np, model_name="Facenet")[0]["embedding"]  # Extract embedding
-                except Exception as e:
-                    logger.error(f"Error during face encoding with DeepFace: {str(e)}")
-                    raise Exception("Error during face encoding with DeepFace")
+                # Use DeepFace to extract face encoding from the image
+                face_encoding = DeepFace.represent(image_np, model_name="Facenet")[0]["embedding"]
 
-                # Save the image and encoding in the profile
-                profile.face_image = img_data  # Save the image file
-                profile.face_encoding = face_encoding  # Save the face encoding to the profile
-                profile.save()  # Save the profile object
+                # Save the face encoding to the profile
+                profile.face_encoding = face_encoding  # Store face encoding in the profile
+
+                # Save the profile object
+                profile.save()
 
             except requests.exceptions.RequestException as e:
                 logger.error(f"Error fetching image from URL: {str(e)}")
                 raise Exception("Error fetching image from URL")
             except Exception as e:
                 logger.error(f"Error during image processing or face encoding: {str(e)}")
-                raise Exception(f"Error during image processing or face encoding: {str(e)}")
+                raise Exception("Error during image processing or face encoding")
 
         return user  # Return the created user object
 

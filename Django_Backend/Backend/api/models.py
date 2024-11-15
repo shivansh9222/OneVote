@@ -29,7 +29,7 @@ class Profile(models.Model):
     is_voted = models.BooleanField(default=False)
     voted_at = models.DateTimeField(null=True, blank=True)
     face_encoding = models.JSONField(null=True, blank=True)  # Store face encoding as JSON
-    face_image = models.ImageField(upload_to="face_images/", null=True, blank=True)  # Store profile image
+    face_image_url = models.CharField(max_length=255, null=True, blank=True)  # Store Cloudinary URL
 
     def __str__(self):
         return f"Vote by {self.user.username}"
