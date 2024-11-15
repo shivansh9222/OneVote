@@ -219,12 +219,12 @@ CLOUDINARY_STORAGE = {
 
 # settings.py
 
-import os
+# import os
 
-BASE_DIR = Path(__file__).resolve().parent.parent  # This points to the root of your Django project
+# BASE_DIR = Path(__file__).resolve().parent.parent  # This points to the root of your Django project
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # 'media' folder will be in your project root
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # 'media' folder will be in your project root
 
 
 # MEDIA_URL = f'https://res.cloudinary.com/did5gvbtr/'
