@@ -213,6 +213,8 @@ function SignUp({toggleComponent}) {
         setCaptureSuccess(false)
         setuploadSuccess(false)
         setGlow(false)
+        setModalMessage('Reset Success');
+        setShowModal(true)
     }
 
     //Preview image here
@@ -487,7 +489,7 @@ function SignUp({toggleComponent}) {
 
                 {/* Reset and preview section starts here */}
                 <div 
-                    className='w-full h-10 flex items-center justify-evenly mt-3 bg-orange-100 rounded-lg'
+                    className='w-full h-12 flex items-center justify-evenly mt-3 bg-orange-100 rounded-lg'
                 >
                     {/* Capture Reset starts here */}
                     <div 
@@ -495,7 +497,7 @@ function SignUp({toggleComponent}) {
                     >
                         <Tooltip content="Reset Capture" position={`-bottom-[40%] left-[100%]`}>
                             <button 
-                                className='h-full w-full flex' 
+                                className='h-full w-full flex transition-all ease-in-out duration-150 hover:animate-bounce' 
                                 onClick={resetCamera} 
                                 disabled={loading}
                             >
@@ -515,7 +517,7 @@ function SignUp({toggleComponent}) {
                     >
                         <Tooltip content="Preview image" position={`-bottom-[40%] left-[100%]`}>
                             <button 
-                                className='h-full w-full flex' 
+                                className='h-full w-full flex transition-all ease-in-out duration-150 hover:animate-bounce' 
                                 onClick={previewImage} 
                                 disabled={loading}
                             >
@@ -524,6 +526,24 @@ function SignUp({toggleComponent}) {
                                     alt="preview" 
                                     className='h-full w-full object-cover object-center'
                                 />
+                                {/* <video
+                                    width="h-full"
+                                    height="w-full"
+                                    preload="none"
+                                    style={{
+                                        background: "transparent url('https://cdn-icons-png.flaticon.com/512/12744/12744527.png') 50% 50% / fit no-repeat",
+                                    }}
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    >
+                                    <source
+                                        src="https://cdn-icons-mp4.flaticon.com/512/12744/12744527.mp4"
+                                        type="video/mp4"
+                                    />
+                                </video> */}
+                                
                             </button>
                         </Tooltip>
                     </div>

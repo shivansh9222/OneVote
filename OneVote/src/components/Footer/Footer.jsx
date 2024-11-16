@@ -5,6 +5,12 @@ import Contact from './Contact';
 
 
 function Footer(){
+    // Function to scroll to the top of the page
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+
     return(
         <>
             <footer 
@@ -13,9 +19,14 @@ function Footer(){
             >
                 {/* Info Section starts here */}
                 <section>
-                    <section className='md:flex md:w-full md:justify-around md:items-center md:border-b-[2px] md:mb-2'>
+                    <section 
+                        className='md:flex md:w-full md:justify-around md:items-center md:border-b-[2px] md:mb-2'
+                    >
+
                         {/* About us of company starts here */}
-                        <article className='flex flex-col items-center gap-y-0.5 mb-3 text-base md:font-semibold lg:text-xl md:w-1/2 md:max-w-[300px] md:mt-4'>
+                        <article 
+                            className='flex flex-col items-center gap-y-0.5 mb-3 text-base md:font-semibold lg:text-xl md:w-1/2 md:max-w-[300px] md:mt-4'
+                        >
                             <h2>About</h2>
                             <div className='w-1/2 border-[1px] border-orange-600 mb-2'></div>
                             <img 
@@ -32,29 +43,31 @@ function Footer(){
                         {/* About us of the company ends here */}
 
                         {/* Quick Link section starts here */}
-                        <article className='flex flex-col items-center gap-y-0.5 text-base md:font-semibold md:w-1/2 md:max-w-[300px] lg:text-xl'>
+                        <article 
+                            className='flex flex-col items-center gap-y-0.5 text-base md:font-semibold md:w-1/2 md:max-w-[300px] lg:text-xl'
+                        >
                             <h2>Quick Links</h2>
                             <div className='w-1/2 border-[1px] border-orange-600 mb-2'></div>
                             <ul 
                                 className='text-sm md:text-base text-orange-600 ubuntu-light-italic md:ubuntu-medium'
                             >
                                 <li className='underline hover:text-blue-500'> 
-                                    <Link to='/home'>
+                                    <Link to='/home' onClick={scrollToTop}>
                                         Home
                                     </Link>
                                 </li>
                                 <li className='underline hover:text-blue-500'> 
-                                    <Link to='/extra'>
+                                    <Link to='/extra' onClick={scrollToTop}>
                                         FAQ
                                     </Link>
                                 </li>
                                 <li className='underline hover:text-blue-500'> 
-                                    <Link to='/extra'>
+                                    <Link to='/extra' onClick={scrollToTop}>
                                         Terms and Conditions
                                     </Link>
                                 </li>
                                 <li className='underline hover:text-blue-500'> 
-                                    <Link to='/extra'>
+                                    <Link to='/extra' onClick={scrollToTop}>
                                         Privacy Policy
                                     </Link>
                                 </li>
