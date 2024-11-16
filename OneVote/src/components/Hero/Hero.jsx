@@ -5,8 +5,12 @@ function Hero () {
     // console.log(`${apiUrl}/api/login/`)
     return (
         <main className="h-screen w-screen">
-            <header className=" sticky top-0 right-0 z-30 text-orange-500 bg-white w-full h-[15vh] md:h-[10vh]">
-                <nav className="container mx-auto flex justify-between items-center p-3 border-b-[2px] border-white w-full h-full">
+            <header 
+                className="flex items-center justify-center sticky top-0 right-0 z-30 bg-orange-500 text-white w-full max-h-[15vh] min-h-[70px] md:h-[10vh]  "
+                >
+                <nav 
+                    className="container mx-auto flex justify-between items-center p-3 w-full h-full"
+                >
 
                     <Link 
                         to='' 
@@ -26,7 +30,7 @@ function Hero () {
                     <NavLink 
                         to="/results"
                         className={({isActive}) => {
-                            return `text-base md:text-xl transition-all duration-200 ease-in-out rounded-[24px]  p-2 ${isActive ? 'bg-orange-500 text-white' : ''} hover:bg-orange-400 hover:text-white`
+                            return `text-base md:text-xl transition-all duration-200 ease-in-out rounded-[20px]  py-1 px-3 ${isActive ? 'text-orange-500 bg-white' : ''} hover:text-orange-400 hover:bg-white flex`
                         }}
                     >
                         Result
@@ -35,7 +39,7 @@ function Hero () {
             </header>
 
             <div 
-                className="flex flex-col items-center justify-center h-[85vh] md:h-[90vh] w-full text-center text-black overflow-y-auto 
+                className="flex flex-col items-center justify-center h-[90vh] md:h-[90vh] w-full text-center text-black overflow-y-auto 
                 bg-[url('https://i.pinimg.com/originals/16/10/79/161079382ab41eb5712b3c97aa9145a1.gif')]
                 bg-cover md:bg-contain bg-center bg-repeat-none
                 "
