@@ -326,7 +326,6 @@ class SignupSerializer(serializers.ModelSerializer):
 
 
 
-
 import os
 import requests
 from django.core.files.base import ContentFile
@@ -339,57 +338,92 @@ from django.core.exceptions import ObjectDoesNotExist
 # Disable GPU for DeepFace
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
+
 class FaceVerificationSerializer(serializers.Serializer):
     image = serializers.CharField(write_only=True)  # Base64 image for verification
 
     def validate(self, data):
         image_data = data.get('image')
 
-        # Split base64 string into format and the actual base64 string
-        format, imgstr = image_data.split(';base64,')
-        
+        if not image_data:
+            raise serializers.ValidationError("The 'image' field is required.")
+
+        try:
+            # Split base64 string into format and the actual base64 string
+            format, imgstr = image_data.split(';base64,')
+        except ValueError:
+            raise serializers.ValidationError("Invalid base64 image format.")
+
         # Decode the base64 string to get the image content
-        live_img = ContentFile(base64.b64decode(imgstr), name='live_temp.jpg')
+        try:
+            live_img = ContentFile(base64.b64decode(imgstr), name='live_temp.jpg')
+        except base64.binascii.Error:
+            raise serializers.ValidationError("Invalid base64 encoding.")
 
         # Save the ContentFile as a temporary file
         live_img_path = self.save_temp_image(live_img)
 
+        # Retrieve the authenticated user
         user = self.context['request'].user
-
         try:
             profile = Profile.objects.get(user=user)
         except ObjectDoesNotExist:
-            raise serializers.ValidationError("Profile not found for the user.")
+            raise serializers.ValidationError("No profile associated with the authenticated user.")
 
-        # Download the image from the face_image_url
+        # Validate and download the profile image
         profile_img_path = self.download_temp_image(profile.face_image_url)
 
-        # Verify face using DeepFace with SFace model
-        result = DeepFace.verify(
-            img1_path=live_img_path, 
-            img2_path=profile_img_path, 
-            model_name="SFace"  # Specify the SFace model
-        )
+        # Perform DeepFace verification
+        try:
+            result = DeepFace.verify(
+                img1_path=live_img_path,
+                img2_path=profile_img_path,
+                model_name="SFace"  # Specify the SFace model
+            )
+        except Exception as e:
+            raise serializers.ValidationError(f"Face verification error: {str(e)}")
 
-        if not result["verified"]:
-            raise serializers.ValidationError("Face verification failed.")
+        # Ensure verification succeeded
+        if not result.get("verified", False):
+            raise serializers.ValidationError("Face verification failed. Please try again.")
+
+        # Cleanup temporary files
+        self.cleanup_temp_files([live_img_path, profile_img_path])
 
         return data
 
     def save_temp_image(self, content_file):
-        # Save the ContentFile as a temporary file
+        """
+        Save the ContentFile as a temporary file and return its path.
+        """
         temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.jpg')
         temp_file.write(content_file.read())
         temp_file.close()
-        return temp_file.name  # Return the path of the temporary file
+        return temp_file.name
 
     def download_temp_image(self, url):
-        # Download the image from the URL
-        response = requests.get(url)
-        if response.status_code != 200:
-            raise serializers.ValidationError("Unable to download face image from the URL.")
-        
+        """
+        Download an image from the URL and save it as a temporary file.
+        """
+        if not url:
+            raise serializers.ValidationError("The 'face_image_url' is empty or invalid.")
+
+        try:
+            response = requests.get(url)
+            response.raise_for_status()  # Raise error for HTTP issues
+        except requests.exceptions.RequestException as e:
+            raise serializers.ValidationError(f"Error downloading profile image: {e}")
+
+        # Save the image content to a temporary file
         temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.jpg')
         temp_file.write(response.content)
         temp_file.close()
-        return temp_file.name  # Return the path of the downloaded temporary file
+        return temp_file.name
+
+    def cleanup_temp_files(self, file_paths):
+        """
+        Remove temporary files from the system.
+        """
+        for file_path in file_paths:
+            if file_path and os.path.exists(file_path):
+                os.remove(file_path)
