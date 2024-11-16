@@ -190,25 +190,31 @@ from .models import User, Profile
 # Initialize logger
 logger = logging.getLogger(__name__)
 
-# Define model name and path
-MODEL_NAME = "Facenet"  # Use Facenet for lightweight deployment
-MODEL_PATH = f"./.deepface/{MODEL_NAME}"
+# Define the lightweight model name
+MODEL_NAME = "SFace"  # Lightweight model for resource-constrained environments
 
-# Check if the model exists locally; if not, download it
+# Disable GPU (important for free-tier deployments without GPU support)
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
+# Load or download the DeepFace model
 def load_model():
-    if not os.path.exists(MODEL_PATH):
-        logger.info(f"Model {MODEL_NAME} not found locally. Downloading...")
+    """
+    Ensures the lightweight model is available locally; downloads it if necessary.
+    """
+    try:
+        logger.info(f"Loading model: {MODEL_NAME}")
         DeepFace.build_model(MODEL_NAME)
-        logger.info(f"Model {MODEL_NAME} downloaded and loaded.")
-    else:
-        logger.info(f"Model {MODEL_NAME} already exists locally. Using existing model.")
+        logger.info(f"Model {MODEL_NAME} loaded successfully.")
+    except Exception as e:
+        logger.error(f"Error loading model {MODEL_NAME}: {str(e)}")
+        raise Exception(f"Model {MODEL_NAME} could not be loaded: {str(e)}")
 
-# Call the load_model function before any face recognition
+# Load the model at module initialization
 load_model()
 
 class SignupSerializer(serializers.ModelSerializer):
     unique_id = serializers.CharField(max_length=12)
-    imageUrl = serializers.URLField(write_only=True, required=False)  # Use 'imageUrl' as sent by the frontend
+    imageUrl = serializers.URLField(write_only=True, required=False)  # Use 'imageUrl' from the frontend
 
     class Meta:
         model = User
@@ -216,64 +222,69 @@ class SignupSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}  # Make password write-only
 
     def create(self, validated_data):
-        image_url = validated_data.pop('imageUrl', None)  # Get 'imageUrl' from the request data
+        """
+        Creates a User and Profile, processing the optional image for face encoding.
+        """
+        image_url = validated_data.pop('imageUrl', None)  # Extract 'imageUrl' if provided
         unique_id = validated_data.pop('unique_id')
 
-        # Create the user object
+        # Create the User object
         logger.info(f"Creating user with unique_id: {unique_id}")
         user = User.objects.create_user(
-            username=unique_id,  # Using unique_id as username
+            username=unique_id,  # Use unique_id as username
             email=validated_data['email'],
-            first_name=validated_data['username'],  # Use provided username for first name
+            first_name=validated_data['username'],  # Use 'username' for first name
             password=validated_data['password']
         )
 
-        # Create the Profile object for the user
+        # Create the Profile object
         logger.info(f"Creating profile for user: {user.username}")
         profile = Profile.objects.create(user=user, unique_id=unique_id)
 
-        # Handle image processing (if image URL is provided)
+        # Process the image if a URL is provided
         if image_url:
-            logger.info(f"Image URL provided: {image_url}")
+            logger.info(f"Processing image from URL: {image_url}")
             try:
-                # Store the Cloudinary image URL directly in the profile
-                profile.face_image_url = image_url  # Save the image URL from Cloudinary in the profile
-
-                # Optionally, process the image (e.g., face encoding) if needed
-                logger.info(f"Fetching image from URL: {image_url}")
-                response = requests.get(image_url)
-                response.raise_for_status()  # Ensure the request was successful
-                logger.info(f"Image fetched successfully from {image_url}")
-
-                # Convert the image to a PIL Image object
-                image = Image.open(BytesIO(response.content))
-                logger.info(f"Image successfully loaded from URL: {image_url}")
-
-                # Convert to a numpy array (DeepFace expects numpy arrays)
-                image_np = np.array(image)
-                logger.info(f"Converted image to numpy array.")
-
-                # Use DeepFace to extract face encoding from the image with Facenet
-                logger.info("Extracting face encoding using Facenet...")
-                face_encoding = DeepFace.represent(image_np, model_name=MODEL_NAME)[0]["embedding"]
-                logger.info("Face encoding extracted successfully.")
-
-                # Save the face encoding to the profile
-                profile.face_encoding = face_encoding  # Store face encoding in the profile
-                logger.info("Face encoding saved to profile.")
-
-                # Save the profile object
-                profile.save()
-                logger.info(f"Profile saved for user: {user.username}")
-
-            except requests.exceptions.RequestException as e:
-                logger.error(f"Error fetching image from URL {image_url}: {str(e)}")
-                raise Exception(f"Error fetching image from URL {image_url}: {str(e)}")
+                self.process_image(image_url, profile)
             except Exception as e:
-                logger.error(f"Error during image processing or face encoding for user {user.username}: {str(e)}")
-                raise Exception(f"Error during image processing or face encoding for user {user.username}: {str(e)}")
+                logger.error(f"Image processing failed for user {user.username}: {str(e)}")
+                raise serializers.ValidationError({"imageUrl": str(e)})
 
-        return user  # Return the created user object
+        return user
+
+    def process_image(self, image_url, profile):
+        """
+        Fetches an image from a URL, extracts a face encoding, and updates the profile.
+        """
+        try:
+            # Fetch the image from the URL
+            response = requests.get(image_url, timeout=10)  # Set a timeout to avoid long waits
+            response.raise_for_status()  # Raise an exception for HTTP errors
+            logger.info(f"Image successfully fetched from URL: {image_url}")
+
+            # Convert the image to a numpy array (DeepFace expects numpy arrays)
+            image = Image.open(BytesIO(response.content))
+            image_np = np.array(image)
+            logger.info(f"Image converted to numpy array.")
+
+            # Extract face encoding using the lightweight model
+            logger.info(f"Extracting face encoding using {MODEL_NAME}...")
+            face_encoding = DeepFace.represent(image_np, model_name=MODEL_NAME)[0]["embedding"]
+            logger.info(f"Face encoding successfully extracted.")
+
+            # Update the profile with face encoding and image URL
+            profile.face_encoding = face_encoding  # Save face encoding to profile
+            profile.face_image_url = image_url  # Save the image URL
+            profile.save()
+            logger.info(f"Profile updated and saved for user: {profile.user.username}")
+
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Error fetching image from URL {image_url}: {str(e)}")
+            raise Exception(f"Error fetching image from URL {image_url}: {str(e)}")
+        except Exception as e:
+            logger.error(f"Error during face encoding process: {str(e)}")
+            raise Exception(f"Error during face encoding process: {str(e)}")
+
 
 
 
