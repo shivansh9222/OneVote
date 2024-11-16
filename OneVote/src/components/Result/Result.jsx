@@ -34,20 +34,26 @@ function Result() {
 
     return (
         <main 
-            className="h-screen w-screen flex flex-col items-center justify-around bg-orange-100 text-white"
+            className="h-screen w-screen flex flex-col items-center justify-around bg-orange-100 text-white overflow-y-auto"
         >
-            {/* Heading section */}
-            <section className="text-2xl font-bold mb-4 text-white bg-orange-500 p-4 rounded-lg shadow-md shadow-white w-[60vw] text-center cursor-pointer">
+            {/* Heading section starts here*/}
+            <section 
+                className="text-xl md:text-2xl font-bold mb-8 text-white bg-orange-500 py-4 px-6 rounded-[30px] shadow-md shadow-gray-500 min-w-[60vw] text-center cursor-pointer mt-3"
+            >
                 Results Are Here
             </section>
+            {/* Header section ends here */}
 
-            {/* Winner section */}
-            <section className="text-xl mb-4 p-3 bg-blue-600 rounded-xl cursor-pointer">
+            {/* Winner section starts here*/}
+            <section className="text-xl mb-4 py-3 px-6 bg-blue-600 rounded-xl cursor-pointer">
                 {winner ? `${winner} Wins!` : "No winner determined."}
             </section>
+            {/* Winner section ends here */}
 
-            {/* Party Vote count section */}
-            <section className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-10 cursor-pointer">
+            {/* Party Vote count section starts here*/}
+            <section 
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-10 cursor-pointer"
+            >
                 {partyData.map((party, index) => (
                     <div 
                         key={index} 
@@ -67,15 +73,17 @@ function Result() {
                     </div>
                 ))}
             </section>
+            {/* Party Vote count section ends here*/}
 
-            {/* Return section */}
+            {/* Return section starts here*/}
             <section className="mt-4">
-                <button className="p-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-xl shadow-lg shadow-white mt-5">
+                <button className="py-2 px-4 rounded-[30px] bg-orange-500 hover:bg-orange-600 text-white text-xl shadow-lg shadow-gray-600 mt-5 sm:mt-8 mb-3">
                     <Link to='/hero'>
                         Go back
                     </Link>
                 </button>
             </section>
+            {/* Return section ends here */}
         </main>
     );
 }
