@@ -156,7 +156,7 @@ function SignUp({toggleComponent}) {
                     email: formData.email,
                     password: formData.password,
                     unique_id: formData.uniqueId,
-                    image: imageUrl  
+                    imageUrl: imageUrl  
                     // Include captured image url
                 })
             });
