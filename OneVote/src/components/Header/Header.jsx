@@ -2,6 +2,10 @@ import React from "react";
 import {Link , NavLink} from 'react-router-dom';
 
 export default function Header() {
+
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
     return (
         <header 
             className="sticky top-0 z-20 w-[100vw]"
@@ -12,6 +16,7 @@ export default function Header() {
                     <Link 
                         to='/home' 
                         className="flex w-1/3 p-2 md:p-3"
+                        onClick={scrollToTop}
                     >
                         <img 
                             src="https://cdn-icons-png.flaticon.com/512/7444/7444400.png" 
@@ -27,6 +32,7 @@ export default function Header() {
                             <NavLink 
                                 to='/home'
                                 className={({isActive}) =>`${isActive? 'bg-orange-600 text-white' : 'bg-none text-orange-600'} p-2 rounded-2xl hover:-translate-y-2 ${!isActive ? 'hover:bg-orange-200' : ''} transition duration-300 ease-in-out` }
+                                onClick={scrollToTop}
                             
                             >
                                 Home
@@ -37,6 +43,7 @@ export default function Header() {
                             <NavLink 
                                 to='/about'
                                 className={({isActive}) =>`${isActive? 'bg-orange-600 text-white' : 'bg-none text-orange-600'} p-2 rounded-2xl  ${!isActive ? 'hover:bg-orange-200' : ''} transition duration-100 ease-in-out`}
+                                onClick={scrollToTop}
                             >
                                 About
                             </NavLink>
@@ -46,6 +53,7 @@ export default function Header() {
                             <NavLink 
                                 to='/profile'
                                 className={({isActive}) =>`block ${isActive? 'bg-orange-500 text-white' : 'bg-none text-orange-600'} p-2 rounded-full items-center ${!isActive ? 'hover:bg-orange-200' : ''} transition duration-100 ease-in-out`}
+                                onClick={scrollToTop}
                             >
                                 <img 
                                     src="https://cdn-icons-png.flaticon.com/512/10628/10628940.png" 
