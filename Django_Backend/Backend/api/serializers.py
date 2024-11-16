@@ -174,6 +174,9 @@ class LoginSerializer(serializers.Serializer):
 #                 raise Exception("Error during image processing or face encoding")
 
 #         return user  # Return the created user object
+
+
+
 import logging
 import requests
 from PIL import Image
@@ -188,7 +191,7 @@ from .models import User, Profile
 logger = logging.getLogger(__name__)
 
 # Define model name and path
-MODEL_NAME = "VGG-Face"
+MODEL_NAME = "Facenet"  # Use Facenet for lightweight deployment
 MODEL_PATH = f"./.deepface/{MODEL_NAME}"
 
 # Check if the model exists locally; if not, download it
@@ -250,8 +253,8 @@ class SignupSerializer(serializers.ModelSerializer):
                 image_np = np.array(image)
                 logger.info(f"Converted image to numpy array.")
 
-                # Use DeepFace to extract face encoding from the image
-                logger.info("Extracting face encoding using DeepFace...")
+                # Use DeepFace to extract face encoding from the image with Facenet
+                logger.info("Extracting face encoding using Facenet...")
                 face_encoding = DeepFace.represent(image_np, model_name=MODEL_NAME)[0]["embedding"]
                 logger.info("Face encoding extracted successfully.")
 
