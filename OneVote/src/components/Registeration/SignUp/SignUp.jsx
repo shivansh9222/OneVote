@@ -53,39 +53,34 @@ function SignUp({toggleComponent}) {
         imageData.append("upload_preset", uploadPreset);
 
         try {
-            setLoadingUpload(true);
-            const response = await fetch(cloudapi, {
-                method: "POST",
-                body: imageData,
-            });
+                setLoadingUpload(true);
+                const response = await fetch(cloudapi, {
+                    method: "POST",
+                    body: imageData,
+                });
 
-            const data = await response.json();
+                const data = await response.json();
 
-            if (response.ok) {
-            // console.log("Image uploaded successfully:", data);
-            setimageUrl(data.url);
-            // console.log('res' , data.url);
-            
-            setuploadSuccess(true);
-            setModalMessage('Image uploaded successfully!')
-            setShowModal(true);
-        } else {
-            console.error("Image upload failed:", data.error);
-            // setuploadSuccess(false);
-            // setCaptureSuccess(false)
-            setModalMessage('Image upload failed!')
-            setShowModal(true)
-        }
-        } catch (error) {
-            console.error("An error occurred while uploading:", error);
-            // setuploadSuccess(false);
-            // setCaptureSuccess(false)
-            setModalMessage("An unexpected error occurred!")
-            setShowModal(true);
-        } finally {
-            setLoadingUpload(false);
-            
-        }
+                if (response.ok) {
+                    setimageUrl(data.url);
+                    console.log(data.url);
+                    setModalMessage('Image uploaded successfully!')
+                    setShowModal(true);
+                    setuploadSuccess(true);
+                } else {
+                    console.error("Image upload failed:", data.error);
+                    setModalMessage('Image upload failed!')
+                    setShowModal(true)
+                    setCaptureSuccess(false)
+                }
+            } catch (error) {
+                console.error("An error occurred while uploading:", error);
+                setModalMessage("An unexpected error occurred!")
+                setShowModal(true);
+                setCaptureSuccess(false)
+            } finally {
+                setLoadingUpload(false);
+            }
         
     }
 
@@ -144,6 +139,7 @@ function SignUp({toggleComponent}) {
         }
 
         // Sending signup data including captured image
+        console.log('handle submit' , imageUrl)
         try {
             setLoading(true);
             const response = await fetch( `${apiUrl}/api/signup/` , {
