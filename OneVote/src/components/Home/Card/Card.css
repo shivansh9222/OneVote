@@ -1,7 +1,7 @@
 .cardContainer{
     position: relative;
-    height: min(300px , 70vh);
-    width: min(240px,80vw);
+    height: min(300px , 60vh);
+    width: min(240px,70vw);
     margin: 10px auto;
     border-radius: 10px;
     overflow: hidden;

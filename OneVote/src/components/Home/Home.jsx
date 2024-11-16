@@ -221,12 +221,6 @@ function Home() {
                 />
                 {/* Face Capture modal section ends here */}
 
-                {/* Verifying message */}
-                {/* { faceVerificationInProgress && (
-                    <div className="verifying-message">
-                        Verifying face, please wait...
-                    </div>
-                )} */}
                 <main 
                     className='w-full h-max grid grid-cols-1 gap-5 justify-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
                 >
