@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Tooltip({ content, children }) {
+function Tooltip({ content , position , children }) {
     const [isVisible, setVisibility] = useState(false);
 
     const handleMouseOver = () => {
@@ -20,7 +20,7 @@ function Tooltip({ content, children }) {
         {children}
         {isVisible && (
         <div 
-            className="tooltip border-[2px] border-transparent bg-gray-600 text-white ubuntu-light-italic px-1 text-sm absolute bottom-[-8px] left-0 cursor-pointer z-10 transition-all ease-in-out duration-300"
+            className={`tooltip border-[2px] border-transparent bg-gray-600 text-white ubuntu-light-italic px-1 text-sm absolute  cursor-pointer z-10 transition-all ease-in-out duration-300 opacity-90 rounded-lg ${position ? position : 'bottom-[-8px] left-0'}  `}
         >
             {content}
         </div>
