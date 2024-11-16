@@ -109,7 +109,7 @@ function Home() {
             });
 
             const data = await response.json();
-            setFaceVerificationInProgress(false)
+            
             if(response.ok){
                 setisFaceVerified(true);
                 localStorage.setItem('faceVerified', 'true');
@@ -129,6 +129,8 @@ function Home() {
             setModalMessage('Server error')
             setShowModal(true);
             console.error(error);
+        } finally{
+            setFaceVerificationInProgress(false);
         }
     }
     // Face modal sections ends here

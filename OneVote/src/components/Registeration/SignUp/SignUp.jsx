@@ -53,15 +53,15 @@ function SignUp({toggleComponent}) {
         imageData.append("upload_preset", uploadPreset);
 
         try {
-        setLoadingUpload(true);
-        const response = await fetch(cloudapi, {
-            method: "POST",
-            body: imageData,
-        });
+            setLoadingUpload(true);
+            const response = await fetch(cloudapi, {
+                method: "POST",
+                body: imageData,
+            });
 
-        const data = await response.json();
+            const data = await response.json();
 
-        if (response.ok) {
+            if (response.ok) {
             // console.log("Image uploaded successfully:", data);
             setimageUrl(data.url);
             // console.log('res' , data.url);
@@ -71,15 +71,15 @@ function SignUp({toggleComponent}) {
             setShowModal(true);
         } else {
             console.error("Image upload failed:", data.error);
-            setuploadSuccess(false);
-            setCaptureSuccess(false)
+            // setuploadSuccess(false);
+            // setCaptureSuccess(false)
             setModalMessage('Image upload failed!')
             setShowModal(true)
         }
         } catch (error) {
             console.error("An error occurred while uploading:", error);
-            setuploadSuccess(false);
-            setCaptureSuccess(false)
+            // setuploadSuccess(false);
+            // setCaptureSuccess(false)
             setModalMessage("An unexpected error occurred!")
             setShowModal(true);
         } finally {
@@ -137,7 +137,7 @@ function SignUp({toggleComponent}) {
         }
 
         // Check if image is captured
-        if (!capturedImage) {
+        if (!capturedImage || !imageUrl) {
             setModalMessage('Please capture your face before signing up.');
             setShowModal(true);
             return;
