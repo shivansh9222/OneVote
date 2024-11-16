@@ -186,7 +186,7 @@ function Login({toggleComponent}){
                     <button 
                         type="submit"
                         onClick={handleSubmit}
-                        className={`box-border text-white py-1 rounded-2xl  ${loggingIn ? 'bg-orange-200' : 'bg-orange-500 hover:bg-orange-600'}`}
+                        className={`box-border text-white py-1 rounded-2xl  ${loggingIn ? 'bg-orange-300' : 'bg-orange-400 hover:bg-orange-500'}`}
                         disabled={loggingIn}
                     >
                         {loggingIn ? 'Logging In ....' : 'Login'}
