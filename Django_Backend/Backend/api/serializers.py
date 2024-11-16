@@ -290,13 +290,61 @@ class SignupSerializer(serializers.ModelSerializer):
 
 
 
-# Face Verification Serializer
+# # Face Verification Serializer
+# class FaceVerificationSerializer(serializers.Serializer):
+#     image = serializers.CharField(write_only=True)  # Base64 image for verification
+
+#     def validate(self, data):
+#         image_data = data.get('image')
+        
+#         # Split base64 string into format and the actual base64 string
+#         format, imgstr = image_data.split(';base64,')
+        
+#         # Decode the base64 string to get the image content
+#         live_img = ContentFile(base64.b64decode(imgstr), name='live_temp.jpg')
+
+#         # Save the ContentFile as a temporary file
+#         live_img_path = self.save_temp_image(live_img)
+
+#         user = self.context['request'].user
+#         profile = Profile.objects.get(user=user)
+
+#         # Verify face using DeepFace
+#         result = DeepFace.verify(img1_path=live_img_path, img2_path=profile.face_image.path, model_name="Facenet")
+
+#         if not result["verified"]:
+#             raise serializers.ValidationError("Face verification failed.")
+
+#         return data
+
+#     def save_temp_image(self, content_file):
+#         # Save the ContentFile as a temporary file
+#         temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.jpg')
+#         temp_file.write(content_file.read())
+#         temp_file.close()
+#         return temp_file.name  # Return the path of the temporary file
+
+
+
+
+import os
+import requests
+from django.core.files.base import ContentFile
+import base64
+import tempfile
+from deepface import DeepFace
+from rest_framework import serializers
+from django.core.exceptions import ObjectDoesNotExist
+
+# Disable GPU for DeepFace
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
 class FaceVerificationSerializer(serializers.Serializer):
     image = serializers.CharField(write_only=True)  # Base64 image for verification
 
     def validate(self, data):
         image_data = data.get('image')
-        
+
         # Split base64 string into format and the actual base64 string
         format, imgstr = image_data.split(';base64,')
         
@@ -307,10 +355,21 @@ class FaceVerificationSerializer(serializers.Serializer):
         live_img_path = self.save_temp_image(live_img)
 
         user = self.context['request'].user
-        profile = Profile.objects.get(user=user)
 
-        # Verify face using DeepFace
-        result = DeepFace.verify(img1_path=live_img_path, img2_path=profile.face_image.path, model_name="Facenet")
+        try:
+            profile = Profile.objects.get(user=user)
+        except ObjectDoesNotExist:
+            raise serializers.ValidationError("Profile not found for the user.")
+
+        # Download the image from the face_image_url
+        profile_img_path = self.download_temp_image(profile.face_image_url)
+
+        # Verify face using DeepFace with SFace model
+        result = DeepFace.verify(
+            img1_path=live_img_path, 
+            img2_path=profile_img_path, 
+            model_name="SFace"  # Specify the SFace model
+        )
 
         if not result["verified"]:
             raise serializers.ValidationError("Face verification failed.")
@@ -323,3 +382,14 @@ class FaceVerificationSerializer(serializers.Serializer):
         temp_file.write(content_file.read())
         temp_file.close()
         return temp_file.name  # Return the path of the temporary file
+
+    def download_temp_image(self, url):
+        # Download the image from the URL
+        response = requests.get(url)
+        if response.status_code != 200:
+            raise serializers.ValidationError("Unable to download face image from the URL.")
+        
+        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.jpg')
+        temp_file.write(response.content)
+        temp_file.close()
+        return temp_file.name  # Return the path of the downloaded temporary file
