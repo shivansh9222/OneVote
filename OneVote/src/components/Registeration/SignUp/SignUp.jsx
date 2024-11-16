@@ -493,7 +493,7 @@ function SignUp({toggleComponent}) {
                 >
                     {/* Capture Reset starts here */}
                     <div 
-                        className='h-8 w-8 sm:h-10 sm:w-10 box-border flex items-center justify-center bg-orange-200 hover:bg-orange-300 rounded-full'
+                        className='h-6 w-6 sm:h-8 sm:w-8 box-border flex items-center justify-center bg-orange-200 hover:bg-orange-300 rounded-full'
                     >
                         <Tooltip content="Reset Capture" position={`-bottom-[40%] left-[100%]`}>
                             <button 
@@ -513,7 +513,7 @@ function SignUp({toggleComponent}) {
 
                     {/* Preview image section starts here */}
                     <div 
-                        className='h-8 w-8 sm:h-10 sm:w-10 box-border flex items-center justify-center rounded-lg'
+                        className='h-6 w-6 sm:h-8 sm:w-8 box-border flex items-center justify-center rounded-lg'
                     >
                         <Tooltip content="Preview image" position={`-bottom-[40%] left-[100%]`}>
                             <button 
