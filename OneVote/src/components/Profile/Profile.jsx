@@ -3,6 +3,7 @@ import UserContext from '../../context/UserContext'
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import Modal from "../Modal/Modal";
+import { apiUrl } from "..";
 
 
 function Profile() {
@@ -31,7 +32,7 @@ function Profile() {
             // navigate('/registeration')
             // return 
         }
-        fetch('http://localhost:8000/api/logout/', {
+        fetch(`${apiUrl}/api/logout/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -4,11 +4,15 @@ import PasswordInput from "../PasswordInput/PasswordInput";
 import UserContext from '../../../context/UserContext'
 import Modal from "../../Modal/Modal";
 import FaceCapture from "../../FaceCapture/FaceCapture";
+import { apiUrl } from "../..";
 
 function Login({toggleComponent}){
 
+    // console.log(`${apiUrl}/api/login/`)
+
     //style elements
     const [isFocused , setIsFocused] = useState(false);
+    const [loggingIn, setloggingIn] = useState(false)
 
     //Biometrics section starts here
     const handleSuccess = (message) => alert(message);
@@ -39,12 +43,14 @@ function Login({toggleComponent}){
 
         try {
             // if(!uniq 
-            const response = await fetch('http://localhost:8000/api/login/' , {
+            setloggingIn(true);
+            const response = await fetch( `${apiUrl}/api/login/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({unique_id:uniqueId , password}) //{unique_id: uniqueId , password}
+                body: JSON.stringify({unique_id:uniqueId , password}) 
+                //{unique_id: uniqueId , password}
             })
 
             const data = await response.json();
@@ -57,20 +63,24 @@ function Login({toggleComponent}){
 
                 // Modal section
                 setModalMessage(data.message)
+                
                 setPath('/home')
                 setShowModal(true)
+                
             } else{
                 setModalMessage(data.message)
                 // setModalLink(crossSymbol)
                 setPath('/registeration')
                 setShowModal(true)
             }
+            setloggingIn(false)
         } catch (error) {
             setModalMessage('server error')
             setPath('/registeration')
             setShowModal(true)
             // alert('server error');
             console.log(error);
+            setloggingIn(false)
         }
 
         //setData to default
@@ -176,9 +186,10 @@ function Login({toggleComponent}){
                     <button 
                         type="submit"
                         onClick={handleSubmit}
-                        className="box-border bg-orange-500 text-white py-1 rounded-2xl hover:bg-orange-600"
+                        className={`box-border text-white py-1 rounded-2xl  ${loggingIn ? 'bg-orange-200' : 'bg-orange-500 hover:bg-orange-600'}`}
+                        disabled={loggingIn}
                     >
-                        Login
+                        {loggingIn ? 'Logging In ....' : 'Login'}
                     </button>
                     {/* Login Button section ends here */}
 

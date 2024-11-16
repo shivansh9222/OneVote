@@ -6,6 +6,7 @@ import PasswordInput from "../Registeration/PasswordInput/PasswordInput";
 import Registeration from "../Registeration/Registeration";
 import FaceCaptureModal from "../Modal/FaceCaptureModal";
 import {Modal} from '../index'
+import Contact from "../Footer/Contact";
 
 function User(){
     const {userId} = useParams();
@@ -38,7 +39,7 @@ function User(){
     }
     return(
         <>
-            <FaceCaptureModal 
+            {/* <FaceCaptureModal 
                 isOpenFace={isOpenFace}
                 closeFaceModal={closeFaceModal}
                 onCaptureError={onCaptureError}
@@ -48,12 +49,12 @@ function User(){
                 isOpen={showModal}
                 closeModal={closeModal}
                 message={showMsg}
-            />
+            /> */}
             {/* <Login /> */}
             {/* <SignUp /> */}
             {/* <Registeration /> */}
             
-            <div className="h-[100vh] w-[100vw] bg-gradient-to-r from-white to-orange-50">
+            {/* <div className="h-[100vh] w-[100vw] bg-gradient-to-r from-white to-orange-50"> */}
                 
                 {/* <h1 className="text-center text-black text-2xl">
                     User: {userId}
@@ -62,7 +63,7 @@ function User(){
                 {/* <Login /> */}
                 {/* <SignUp /> */}
                 {/* <Registeration /> */}
-                <button 
+                {/* <button 
                     onClick={ (e) => {
                             setIsOpenFace(true)
                             // setpath()
@@ -71,7 +72,10 @@ function User(){
                 >
                         open
                 </button>
-            </div>
+            </div> */}
+
+
+            {/* <Contact /> */}
         </>
     )
 }

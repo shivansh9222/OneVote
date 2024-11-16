@@ -1,13 +1,14 @@
 
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { apiUrl } from "..";
 
 function Result() {
     const [partyData, setPartyData] = useState([]);
     const [winner, setWinner] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/party/')
+        fetch( `${apiUrl}/api/party/`)
             .then(response => response.json())
             .then(data => {
                 setPartyData(data);
