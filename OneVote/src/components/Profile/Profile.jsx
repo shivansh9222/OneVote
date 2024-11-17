@@ -113,7 +113,7 @@ function Profile() {
 
                         {user.has_voted && 
                             (<p>
-                                <strong>Voted At:</strong> {new Date(user.voted_at).toLocaleDateString()}
+                                <strong>Voted At:</strong> {user.voted_at}
                             </p>)
                         }
                     </div>

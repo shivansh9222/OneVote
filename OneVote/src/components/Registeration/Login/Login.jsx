@@ -59,6 +59,7 @@ function Login({toggleComponent}){
                 
                 setIsLoggedIn(true);
                 setUser(data.user_profile)
+                // console.log(data.user_profile);
                 localStorage.setItem('token' , data.access);
 
                 // Modal section
