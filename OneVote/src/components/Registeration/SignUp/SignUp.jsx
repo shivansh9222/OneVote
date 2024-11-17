@@ -146,6 +146,9 @@ function SignUp({toggleComponent}) {
             setLoading(true);
             const response = await fetch( `${apiUrl}/api/signup/` , {
                 method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
                 body: JSON.stringify({
                     username: formData.name,
                     email: formData.email,
