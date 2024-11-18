@@ -215,8 +215,9 @@ function SignUp({toggleComponent}) {
     const resetCamera = () => {
         setCaptureSuccess(false)
         setuploadSuccess(false)
+        setCapturedImage(null)
         setGlow(false)
-        setModalMessage('Reset Success');
+        setModalMessage('Image Reset Success');
         setShowModal(true)
     }
 
